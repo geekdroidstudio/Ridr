@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -18,10 +20,14 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import geekdroidstudio.ru.ridr.R;
+import geekdroidstudio.ru.ridr.presenter.MapFragmentPresenter;
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback,
+public class MapFragment extends MvpAppCompatFragment implements MapView, OnMapReadyCallback,
         GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
+    @InjectPresenter
+    MapFragmentPresenter mapPresenter;
+
     private GoogleMap mMap;
     private OnFragmentInteractionListener onFragmentInteractionListener;
 
@@ -29,24 +35,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     }
 
-
     public static MapFragment newInstance() {
         return new MapFragment();
     }
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_map, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
-                .findFragmentById(R.id.gm_fragment_map_map);
-        mapFragment.getMapAsync(this);
     }
 
     @Override
@@ -56,8 +52,52 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             onFragmentInteractionListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + getString(R.string.error_implement_frag_interact_list));
         }
+    }
+
+    @Override
+    public void loadMap() {
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.gm_fragment_map_map);
+        mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    //onMapReadyCallback
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        mapPresenter.onMapReady();
+    }
+
+    //onMapClickCallback
+    @Override
+    public void onMapClick(LatLng latLng) {
+        mapPresenter.onMapClick(latLng);
+    }
+
+    //onMarkerClickCallback
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        mapPresenter.onMarkerClick(marker);
+        return true;
+    }
+
+    @Override
+    public void showDummyData() {
+        LatLng sydney = new LatLng(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+    @Override
+    public void showLoading() {
+
     }
 
     @Override
@@ -65,29 +105,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         super.onDetach();
         onFragmentInteractionListener = null;
     }
-
-    //onMapReadyCallback
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        //dummy
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-    }
-
-    //onMapClickCallback
-    @Override
-    public void onMapClick(LatLng latLng) {
-
-    }
-
-    //onMarkerClickCallback
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        return false;
-    }
-
 
     public interface OnFragmentInteractionListener {
 
