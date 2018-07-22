@@ -19,10 +19,12 @@ public class MapFragmentPresenter extends MvpPresenter<MapView> {
 
     public void onMapReady() {
         getViewState().hideLoading();
-        getViewState().showDummyData();
+        getViewState().setupMap();
+
     }
 
     public void onMapClick(LatLng latLng) {
+        getViewState().showMarker(latLng);
     }
 
     public void onMarkerClick(Marker marker) {

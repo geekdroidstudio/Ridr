@@ -3,11 +3,10 @@ package geekdroidstudio.ru.ridr.view.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -15,20 +14,29 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.R;
 import geekdroidstudio.ru.ridr.presenter.MapFragmentPresenter;
 
 
 public class MapFragment extends MvpAppCompatFragment implements MapView, OnMapReadyCallback,
         GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
+    @BindView(R.id.pb_fragment_map_loading)
+    ProgressBar loadingProgress;
+
     @InjectPresenter
     MapFragmentPresenter mapPresenter;
 
-    private GoogleMap mMap;
+    private GoogleMap map;
+    private Marker marker;
+    private Unbinder unbinder;
     private OnFragmentInteractionListener onFragmentInteractionListener;
 
     public MapFragment() {
@@ -42,7 +50,9 @@ public class MapFragment extends MvpAppCompatFragment implements MapView, OnMapR
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_map, container, false);
+        View view = inflater.inflate(R.layout.fragment_map, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -64,14 +74,30 @@ public class MapFragment extends MvpAppCompatFragment implements MapView, OnMapR
     }
 
     @Override
-    public void hideLoading() {
+    public void setupMap() {
+        map.setOnMapClickListener(this);
+        map.setOnMarkerClickListener(this);
 
+        UiSettings uiSettings = map.getUiSettings();
+        uiSettings.setZoomControlsEnabled(true);
+    }
+
+    @Override
+    public void showMarker(LatLng latLng) {
+        if (marker == null) {
+           marker=  map.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .alpha(Float.parseFloat(getString(R.string.map_fragment_map_marker_alpha))));
+        //наверное лучше не в стрингах хранить
+        } else {
+            marker.setPosition(latLng);
+        }
     }
 
     //onMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        map = googleMap;
         mapPresenter.onMapReady();
     }
 
@@ -91,19 +117,31 @@ public class MapFragment extends MvpAppCompatFragment implements MapView, OnMapR
     @Override
     public void showDummyData() {
         LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        marker = map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
+
 
     @Override
     public void showLoading() {
+        loadingProgress.setVisibility(View.VISIBLE);
+    }
 
+    @Override
+    public void hideLoading() {
+        loadingProgress.setVisibility(View.GONE);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         onFragmentInteractionListener = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     public interface OnFragmentInteractionListener {

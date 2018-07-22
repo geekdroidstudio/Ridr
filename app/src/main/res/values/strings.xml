@@ -4,4 +4,5 @@
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyA4yMoJ0qPEn09zeBvjijevu0if79MnZ_k</string>
     <string name="error_implement_frag_interact_list">must implement OnFragmentInteractionListener</string>
+    <string name="map_fragment_map_marker_alpha">0.6</string>
 </resources>
