@@ -15,4 +15,6 @@ public interface MapView extends MvpView{
     void loadMap();
 
     void hideLoading();
+
+    void setupMap();
 }
