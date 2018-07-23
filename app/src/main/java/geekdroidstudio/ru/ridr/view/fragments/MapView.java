@@ -12,11 +12,12 @@ public interface MapView extends MvpView{
     void showDummyData();
 
     void showLoading();
-
+    @StateStrategyType(OneExecutionStateStrategy.class)
     void loadMap();
 
     void hideLoading();
 
+    @StateStrategyType(OneExecutionStateStrategy.class)
     void setupMap();
 
     void showMarker(LatLng latLng);
