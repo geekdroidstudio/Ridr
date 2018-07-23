@@ -1,4 +1,4 @@
-package geekdroidstudio.ru.ridr.view.fragments;
+package geekdroidstudio.ru.ridr.view.fragments.mapFragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -47,13 +47,6 @@ public class MapFragment extends MvpAppCompatFragment implements MapView, OnMapR
         return new MapFragment();
     }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_map, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -64,6 +57,14 @@ public class MapFragment extends MvpAppCompatFragment implements MapView, OnMapR
             throw new RuntimeException(context.toString()
                     + getString(R.string.error_implement_frag_interact_list));
         }
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_map, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override

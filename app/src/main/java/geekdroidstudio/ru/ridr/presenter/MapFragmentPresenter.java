@@ -5,7 +5,7 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
-import geekdroidstudio.ru.ridr.view.fragments.MapView;
+import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapView;
 
 @InjectViewState
 public class MapFragmentPresenter extends MvpPresenter<MapView> {

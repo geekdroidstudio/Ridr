@@ -8,4 +8,7 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 public interface PassMainView extends MvpView {
 
     void showMapFragment();
+
+
+    void showRouteDataFragment();
 }

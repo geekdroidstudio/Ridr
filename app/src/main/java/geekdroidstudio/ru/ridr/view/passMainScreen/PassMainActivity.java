@@ -8,10 +8,11 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import geekdroidstudio.ru.ridr.R;
 import geekdroidstudio.ru.ridr.presenter.PassMainActivityPresenter;
-import geekdroidstudio.ru.ridr.view.fragments.MapFragment;
+import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
+import geekdroidstudio.ru.ridr.view.fragments.routeDataFragment.RouteDataFragment;
 
 public class PassMainActivity extends MvpAppCompatActivity implements PassMainView,
-        MapFragment.OnFragmentInteractionListener {
+        MapFragment.OnFragmentInteractionListener, RouteDataFragment.OnFragmentInteractionListener {
     @InjectPresenter
     PassMainActivityPresenter passMainPresenter;
 
@@ -26,7 +27,16 @@ public class PassMainActivity extends MvpAppCompatActivity implements PassMainVi
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fl_activity_main_map_container, MapFragment.newInstance())
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
+    }
+
+    @Override
+    public void showRouteDataFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fl_activity_main_frame, RouteDataFragment.newInstance())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }
 }

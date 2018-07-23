@@ -1,4 +1,4 @@
-package geekdroidstudio.ru.ridr.view.fragments;
+package geekdroidstudio.ru.ridr.view.fragments.mapFragment;
 
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;

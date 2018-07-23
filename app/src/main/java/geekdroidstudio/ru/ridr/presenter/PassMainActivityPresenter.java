@@ -12,5 +12,6 @@ public class PassMainActivityPresenter extends MvpPresenter<PassMainView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         getViewState().showMapFragment();
+        getViewState().showRouteDataFragment();
     }
 }
