@@ -25,7 +25,6 @@ import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.R;
 import geekdroidstudio.ru.ridr.presenter.MapFragmentPresenter;
 
-
 public class MapFragment extends MvpAppCompatFragment implements MapView, OnMapReadyCallback,
         GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
     @BindView(R.id.pb_fragment_map_loading)

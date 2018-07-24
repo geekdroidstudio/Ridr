@@ -1,19 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_authentication"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".view.passMainScreen.PassMainActivity">
 
-    <View
+    <TextView
+        android:id="@+id/attantion"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="wrap_content"
+        android:text="@string/attantion"/>
 
-    <FrameLayout
-        android:id="@+id/fl_activity_main_map_container"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-</LinearLayout>
+    <EditText
+        android:id="@+id/edit_text_email"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/attantion"
+        android:layout_centerHorizontal="true"
+        android:hint="Email"
+        android:textSize="30dp" />
+
+    <EditText
+        android:id="@+id/edit_text_password"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/edit_text_email"
+        android:layout_centerHorizontal="true"
+        android:hint="Password"
+        android:textSize="30dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_text_password"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/button_sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Sign in" />
+
+        <Button
+            android:id="@+id/button_sign_up"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Sign up" />
+
+    </LinearLayout>
+</RelativeLayout>
