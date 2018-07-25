@@ -5,6 +5,31 @@
     <string name="map_fragment_map_marker_alpha">0.6</string>
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyA4yMoJ0qPEn09zeBvjijevu0if79MnZ_k</string>
-    <string name="error_load_route">Ошибка загрузки маршрута</string>
-    <string name="retry">ПОВТОР</string>
+    <string name="authorization_text">Вход</string>
+    <string name="login_field">Логин</string>
+    <string name="pass_field">Пароль</string>
+    <string name="registration_link">ЗАРЕГИСТРИРОВАТЬСЯ</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="license_agreement">При регистрации вы принимаете условия пользовательского соглашения и политику о данных пользователей</string>
+    <string name="hint_email_phone_text">Введите номер телефона или электронную почту</string>
+    <string name="choose_role_driver_btn">Я-водитель</string>
+    <string name="сhoose_role_passenger_btn">Я-пассажир</string>
+    <string name="objects_around_text">Сейчас рядом с Вами</string>
+    <string name="user_name">Имя</string>
+    <string name="raiting_text">Рейтинг</string>
+    <string name="finish_route">Финиш</string>
+    <string name="start_route">Старт</string>
+    <string name="registration_header_text">Регистрация</string>
+    <string name="edit_name_auth">Введите имя</string>
+    <string name="edit_email">Введите email</string>
+    <string name="edit_phone_auth">Номер телефона</string>
+    <string name="gender_text">Ваш пол</string>
+    <string name="gender_female">Женский</string>
+    <string name="gender_male">Мужской</string>
+    <string name="finish_registration_text_btn">Зарегистрироваться</string>
+    <string name="enter_email_phone_label">ВОЙТИ ЧЕРЕЗ ТЕЛЕФОН ИЛИ ПОЧТУ</string>
+    <string name="date_new_trip">Дата поездки</string>
+    <string name="start_from_hint">Откуда</string>
 </resources>
