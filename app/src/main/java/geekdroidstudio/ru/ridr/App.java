@@ -10,21 +10,19 @@ public class App extends Application {
 
     private AppComponent appComponent;
 
+    public static App getInstance() {
+        return instance;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
-        instance= this;
+        instance = this;
         appComponent = DaggerAppComponent.builder()
                 .build();
     }
 
-    public static App getInstance()
-    {
-        return instance;
-    }
-
-    public AppComponent getAppComponent()
-    {
+    public AppComponent getAppComponent() {
         return appComponent;
     }
 }

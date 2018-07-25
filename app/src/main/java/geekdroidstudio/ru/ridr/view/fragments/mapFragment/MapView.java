@@ -9,7 +9,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 
 @StateStrategyType(AddToEndSingleStrategy.class)
-public interface MapView extends MvpView{
+public interface MapView extends MvpView {
 
     void showDummyData();
 
