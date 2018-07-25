@@ -54,7 +54,7 @@ public class PassMainActivity extends MvpAppCompatActivity implements PassMainVi
     public void showRouteInMapFragment(List<LatLng> routePoints) {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
         if (fragment != null && fragment instanceof MapView) {
-            ((MapView) fragment).showRoute(routePoints);
+            ((MapView) fragment).drawRoute(routePoints);
         }
     }
 

@@ -91,8 +91,6 @@ public class RouteDataFragment extends MvpAppCompatFragment implements RouteData
 
     @Override
     public void init() {
-
-
         Context context = getContext();
         assert context != null;
 
@@ -150,6 +148,13 @@ public class RouteDataFragment extends MvpAppCompatFragment implements RouteData
                     routeDataPresenter.onEndPointSelected(item);
                     break;
                 }
+                /*в этом кейсе мы можем обрабатывать промежуточные точки маршрута
+                 *
+                 *   default:{
+                 *      doSomething()
+                 *      break;
+                 *   }
+                 */
             }
         };
     }
