@@ -54,12 +54,12 @@ public class RouteDataFragment extends MvpAppCompatFragment implements RouteData
     private OnFragmentInteractionListener onFragmentInteractionListener;
     private Unbinder unbinder;
 
-    public static RouteDataFragment newInstance() {
-        return new RouteDataFragment();
-    }
-
     public RouteDataFragment() {
 
+    }
+
+    public static RouteDataFragment newInstance() {
+        return new RouteDataFragment();
     }
 
     @ProvidePresenter
