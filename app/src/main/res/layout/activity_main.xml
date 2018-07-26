@@ -13,10 +13,19 @@
         android:text="@string/attantion"/>
 
     <EditText
-        android:id="@+id/edit_text_email"
+        android:id="@+id/edit_text_name"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_below="@+id/attantion"
+        android:layout_centerHorizontal="true"
+        android:hint="Name"
+        android:textSize="30dp" />
+
+    <EditText
+        android:id="@+id/edit_text_email"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/edit_text_name"
         android:layout_centerHorizontal="true"
         android:hint="Email"
         android:textSize="30dp" />
