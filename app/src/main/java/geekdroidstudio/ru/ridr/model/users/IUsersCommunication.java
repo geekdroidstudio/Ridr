@@ -7,6 +7,7 @@ import geekdroidstudio.ru.ridr.model.entity.users.Driver;
 import geekdroidstudio.ru.ridr.model.entity.users.DriverResponse;
 import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
 import geekdroidstudio.ru.ridr.model.entity.users.PassengerRequest;
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 public interface IUsersCommunication {
@@ -14,12 +15,12 @@ public interface IUsersCommunication {
     /*
      * Обновляет данные о местонахождении водителя
      */
-    void postDriverLocation(Driver driver);
+    Completable postDriverLocation(Driver driver);
 
     /*
      * Обновляет данные о местонахождении пассажира
      */
-    void postPassengerLocation(Passenger passenger);
+    Completable postPassengerLocation(Passenger passenger);
 
     /*
      * Для подписки на обновление местоположений водителей
@@ -34,7 +35,7 @@ public interface IUsersCommunication {
     /*
      * Отправляет запрос водителю на добавление своего маршрута
      */
-    void postPassengerRouteForDriver(PassengerRequest passengerRequest);
+    Completable postPassengerRouteForDriver(PassengerRequest passengerRequest);
 
     /*
      * Для подписки на запросы пассажиров
@@ -44,7 +45,7 @@ public interface IUsersCommunication {
     /*
      * Отправляет ответ на запрос пассажира
      */
-    void postPassengerResponse(DriverResponse driverResponse);
+    Completable postPassengerResponse(DriverResponse driverResponse);
 
     /*
      * Для подписки на ответ водителя к зопросу пассажира
