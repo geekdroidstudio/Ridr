@@ -7,16 +7,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.server.authentication.AuthenticationDatabase;
 import geekdroidstudio.ru.ridr.server.authentication.Authentication;
 
-public class PassMainActivity extends AppCompatActivity implements Authentication.IAuthentication{
-
-	private Authentication authentication;
+public class MainActivity extends AppCompatActivity implements Authentication.IAuthentication{
 
 	@BindView (R.id.edit_text_name) EditText editTextName;
 	@BindView(R.id.edit_text_email) EditText editTextEmail;
@@ -24,7 +24,8 @@ public class PassMainActivity extends AppCompatActivity implements Authenticatio
 
 	public static final String BUNDLE_PARAM_USER_ID = "bundleParamUserId";
 
-
+	@Inject
+	Authentication authentication;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +39,9 @@ public class PassMainActivity extends AppCompatActivity implements Authenticatio
 		editTextEmail.setText("qw@qw.qw");
 		editTextPassword.setText("123456");
 
-		authentication = new Authentication(this);
-
-
+		//authentication = new Authentication();
+		App.getComponent().injects(this);
+		authentication.setContext(this);
 
 	}
 
@@ -56,26 +57,26 @@ public class PassMainActivity extends AppCompatActivity implements Authenticatio
 
 	@Override
 	public void wasSignIn() {
-		Toast.makeText(PassMainActivity.this, "sign in is successful", Toast.LENGTH_SHORT).show();
-		Intent intent = new Intent(PassMainActivity.this, EnteredActivity.class);
+		Toast.makeText(MainActivity.this, "sign in is successful", Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent(MainActivity.this, EnteredActivity.class);
 		startActivity(intent);
 	}
 
 
 	@Override
 	public void wasNotSignIn() {
-		Toast.makeText(PassMainActivity.this, "sign in is not successful", Toast.LENGTH_SHORT).show();
+		Toast.makeText(MainActivity.this, "sign in is not successful", Toast.LENGTH_SHORT).show();
 	}
 
 
 	@Override
 	public void wasSignUp() {
-		Toast.makeText(PassMainActivity.this, "sign up is successful", Toast.LENGTH_SHORT).show();
+		Toast.makeText(MainActivity.this, "sign up is successful", Toast.LENGTH_SHORT).show();
 	}
 
 
 	@Override
 	public void wasNotSignUp() {
-		Toast.makeText(PassMainActivity.this, "sign up is not successful", Toast.LENGTH_SHORT).show();
+		Toast.makeText(MainActivity.this, "sign up is not successful", Toast.LENGTH_SHORT).show();
 	}
 }

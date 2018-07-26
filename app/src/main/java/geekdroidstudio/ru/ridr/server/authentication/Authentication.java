@@ -55,13 +55,13 @@ public class Authentication {
 	}
 
 	//регистрация пользователя
-	public void signUp(final String name, final String email, String password) {
-		firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(context,
+	public void signUp(final String userName, final String userEmail, String userPassword) {
+		firebaseAuth.createUserWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(context,
 				new OnCompleteListener<AuthResult>() {
 					@Override
 					public void onComplete(@NonNull Task<AuthResult> task) {
 						if (task.isSuccessful()) {
-							authenticationDatabase.addUser(firebaseAuth.getUid(), name, email);
+							authenticationDatabase.addUser(firebaseAuth.getUid(), userName, userEmail);
 							Timber.d("onComplete: wasSignUp()");
 							context.wasSignUp();
 						} else {
@@ -70,5 +70,9 @@ public class Authentication {
 						}
 					}
 				});
+	}
+	
+	public void getUserData(String userId){
+		authenticationDatabase.getUser(userId);
 	}
 }
