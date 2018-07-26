@@ -22,6 +22,8 @@ public class PassMainActivity extends AppCompatActivity implements Authenticatio
 	@BindView(R.id.edit_text_email) EditText editTextEmail;
 	@BindView(R.id.edit_text_password) EditText editTextPassword;
 
+	public static final String BUNDLE_PARAM_USER_ID = "bundleParamUserId";
+
 
 
 	@Override

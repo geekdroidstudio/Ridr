@@ -10,6 +10,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import geekdroidstudio.ru.ridr.R;
+import geekdroidstudio.ru.ridr.server.authentication.Authentication;
 
 public class EnteredActivity extends AppCompatActivity {
 
@@ -32,6 +33,5 @@ public class EnteredActivity extends AppCompatActivity {
 
 	@OnClick(R.id.button_add_item)
 	public void onClick(View view){
-
 	}
 }

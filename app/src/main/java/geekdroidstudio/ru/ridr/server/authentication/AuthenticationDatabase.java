@@ -3,6 +3,7 @@ package geekdroidstudio.ru.ridr.server.authentication;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import geekdroidstudio.ru.ridr.entity.User;
 import timber.log.Timber;
 
 public class AuthenticationDatabase {
@@ -42,4 +43,13 @@ public class AuthenticationDatabase {
 			databaseReference.child(BOOK_AUTHENTICATION).child(userId).child("email").setValue(userEmail);
 		}
 	}
+
+	public User getUser(String userId){
+
+		Timber.d(databaseReference.child(BOOK_AUTHENTICATION).child(userId).getKey());
+
+		return new User();
+	}
+
+
 }
