@@ -21,7 +21,7 @@ import timber.log.Timber;
 
 public class Database extends AppCompatActivity {
 
-	public static final String BOOK = "book";
+	public static final String BOOK_AUTHENTICATION = "authentication";
 
 	private FirebaseDatabase firebaseDatabase;
 	private DatabaseReference databaseReference;
@@ -44,10 +44,11 @@ public class Database extends AppCompatActivity {
 		editTextItemKey.setText("111");
 		editTextItemValue.setText("aaa");
 
-		databaseReference.getRoot().addValueEventListener(new ValueEventListener() {
+		databaseReference.child(BOOK_AUTHENTICATION).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 				Timber.d("All notes");
+
 				for(DataSnapshot childDataSnapshot : dataSnapshot.getChildren()){
 					Timber.d(childDataSnapshot.getKey() + " " + childDataSnapshot.getValue());
 				}
@@ -63,7 +64,7 @@ public class Database extends AppCompatActivity {
 	@OnClick(R.id.button_add_item)
 	public void onClick(View view){
 		if(view.getId() == R.id.button_add_item){
-			databaseReference.child(editTextItemKey.getText().toString())
+			databaseReference.child(BOOK_AUTHENTICATION).child(editTextItemKey.getText().toString())
 					.setValue(editTextItemValue.getText().toString());
 		}
 	}

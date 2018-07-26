@@ -58,6 +58,7 @@ public class PassMainActivity extends AppCompatActivity {
 					@Override
 					public void onComplete(@NonNull Task<AuthResult> task) {
 						if (task.isSuccessful()) {
+							firebaseAuth.getUid();
 							Toast.makeText(PassMainActivity.this, "sign in is successful", Toast.LENGTH_SHORT).show();
 							Intent intent = new Intent(PassMainActivity.this, Database.class);
 							startActivity(intent);
