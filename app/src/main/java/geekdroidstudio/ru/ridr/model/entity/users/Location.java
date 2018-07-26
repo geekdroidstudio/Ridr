@@ -4,7 +4,7 @@ public class Location {
 
     private String keyId;
 
-    private Point point;
+    private CoordinatePoint coordinatePoint;
 
     public Location() {
     }
@@ -17,11 +17,11 @@ public class Location {
         this.keyId = keyId;
     }
 
-    public Point getPoint() {
-        return point;
+    public CoordinatePoint getCoordinatePoint() {
+        return coordinatePoint;
     }
 
-    public void setPoint(Point point) {
-        this.point = point;
+    public void setCoordinatePoint(CoordinatePoint coordinatePoint) {
+        this.coordinatePoint = coordinatePoint;
     }
 }

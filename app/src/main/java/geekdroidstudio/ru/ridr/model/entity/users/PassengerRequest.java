@@ -5,10 +5,10 @@ public class PassengerRequest {
     private String passengerId;
     private String driverId;
 
-    private Point start;
-    private Point finish;
+    private CoordinatePoint start;
+    private CoordinatePoint finish;
 
-    public PassengerRequest(String passengerId, String driverId, Point start, Point finish) {
+    public PassengerRequest(String passengerId, String driverId, CoordinatePoint start, CoordinatePoint finish) {
         this.passengerId = passengerId;
         this.driverId = driverId;
         this.start = start;
@@ -34,19 +34,19 @@ public class PassengerRequest {
         this.driverId = driverId;
     }
 
-    public Point getStart() {
+    public CoordinatePoint getStart() {
         return start;
     }
 
-    public void setStart(Point start) {
+    public void setStart(CoordinatePoint start) {
         this.start = start;
     }
 
-    public Point getFinish() {
+    public CoordinatePoint getFinish() {
         return finish;
     }
 
-    public void setFinish(Point finish) {
+    public void setFinish(CoordinatePoint finish) {
         this.finish = finish;
     }
 }

@@ -2,22 +2,22 @@ package geekdroidstudio.ru.ridr.model.entity.users;
 
 abstract class User {
 
-    private String keyId;
+    private String id;
 
     private String name;
 
-    private Point point;
+    private CoordinatePoint coordinatePoint;
 
     User() {
 
     }
 
-    public String getKeyId() {
-        return keyId;
+    public String getId() {
+        return id;
     }
 
-    public void setKeyId(String keyId) {
-        this.keyId = keyId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -26,5 +26,13 @@ abstract class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public CoordinatePoint getCoordinatePoint() {
+        return coordinatePoint;
+    }
+
+    public void setCoordinatePoint(CoordinatePoint coordinatePoint) {
+        this.coordinatePoint = coordinatePoint;
     }
 }
