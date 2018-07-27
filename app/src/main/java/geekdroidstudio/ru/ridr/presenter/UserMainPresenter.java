@@ -10,6 +10,6 @@ public class UserMainPresenter extends MvpPresenter<UserMainView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        getViewState().showNewUserAuthorisationFragment();
+        getViewState().showStartAuthorisationFragment();
     }
 }

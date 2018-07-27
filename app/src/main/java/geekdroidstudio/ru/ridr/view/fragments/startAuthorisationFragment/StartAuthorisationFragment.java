@@ -1,4 +1,4 @@
-package geekdroidstudio.ru.ridr.view.fragments.newUserAuthorisationFragment;
+package geekdroidstudio.ru.ridr.view.fragments.startAuthorisationFragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.R;
 
-public class NewUserAuthorisationFragment extends MvpAppCompatFragment implements NewUserAuthorisationView {
+public class StartAuthorisationFragment extends MvpAppCompatFragment implements StartAuthorisationView {
     @BindView(R.id.edit_text_login)
     TextInputEditText editTextLogin;
     @BindView(R.id.edit_text_password)
@@ -27,19 +27,19 @@ public class NewUserAuthorisationFragment extends MvpAppCompatFragment implement
     AppCompatButton buttonEnter;
 
     private Unbinder unbinder;
-    private NewUserAuthorisationFragment.OnFragmentInteractionListener onFragmentInteractionListener;
+    private StartAuthorisationFragment.OnFragmentInteractionListener onFragmentInteractionListener;
 
-    public NewUserAuthorisationFragment(){}
+    public StartAuthorisationFragment(){}
 
-    public static NewUserAuthorisationFragment newInstance() {
-        return new NewUserAuthorisationFragment();
+    public static StartAuthorisationFragment newInstance() {
+        return new StartAuthorisationFragment();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof NewUserAuthorisationFragment.OnFragmentInteractionListener) {
-            onFragmentInteractionListener = (NewUserAuthorisationFragment.OnFragmentInteractionListener) context;
+        if (context instanceof StartAuthorisationFragment.OnFragmentInteractionListener) {
+            onFragmentInteractionListener = (StartAuthorisationFragment.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + getString(R.string.error_implement_frag_interact_list));
@@ -72,7 +72,7 @@ public class NewUserAuthorisationFragment extends MvpAppCompatFragment implement
 
     @OnClick(R.id.button_enter)
     @Override
-    public void finishRegistration(){
+    public void enterApp(){
         String login = editTextLogin.getText().toString();
         String password =  editTextPassword.getText().toString();
         if(login.isEmpty() || password.isEmpty()){

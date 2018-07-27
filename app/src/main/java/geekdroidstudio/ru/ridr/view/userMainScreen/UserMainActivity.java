@@ -8,9 +8,9 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import geekdroidstudio.ru.ridr.R;
 import geekdroidstudio.ru.ridr.presenter.UserMainPresenter;
-import geekdroidstudio.ru.ridr.view.fragments.newUserAuthorisationFragment.NewUserAuthorisationFragment;
+import geekdroidstudio.ru.ridr.view.fragments.startAuthorisationFragment.StartAuthorisationFragment;
 
-public class UserMainActivity extends MvpAppCompatActivity implements UserMainView, NewUserAuthorisationFragment.OnFragmentInteractionListener {
+public class UserMainActivity extends MvpAppCompatActivity implements UserMainView, StartAuthorisationFragment.OnFragmentInteractionListener {
     @InjectPresenter
     UserMainPresenter userMainPresenter;
 
@@ -21,10 +21,10 @@ public class UserMainActivity extends MvpAppCompatActivity implements UserMainVi
     }
 
     @Override
-    public void showNewUserAuthorisationFragment() {
+    public void showStartAuthorisationFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fl_activity_user_main_frame, NewUserAuthorisationFragment.newInstance())
+                .replace(R.id.fl_activity_user_main_frame, StartAuthorisationFragment.newInstance())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }
