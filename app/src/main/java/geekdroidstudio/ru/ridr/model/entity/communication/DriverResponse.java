@@ -1,4 +1,4 @@
-package geekdroidstudio.ru.ridr.model.entity.users;
+package geekdroidstudio.ru.ridr.model.entity.communication;
 
 public class DriverResponse {
     private PassengerRequest passengerRequest;

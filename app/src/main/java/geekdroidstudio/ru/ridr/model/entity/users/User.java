@@ -1,12 +1,12 @@
 package geekdroidstudio.ru.ridr.model.entity.users;
 
-abstract class User {
+public abstract class User {
 
     private String id;
 
     private String name;
 
-    private CoordinatePoint coordinatePoint;
+    private Coordinate location;
 
     User() {
 
@@ -28,11 +28,11 @@ abstract class User {
         this.name = name;
     }
 
-    public CoordinatePoint getCoordinatePoint() {
-        return coordinatePoint;
+    public Coordinate getLocation() {
+        return location;
     }
 
-    public void setCoordinatePoint(CoordinatePoint coordinatePoint) {
-        this.coordinatePoint = coordinatePoint;
+    public void setLocation(Coordinate location) {
+        this.location = location;
     }
 }

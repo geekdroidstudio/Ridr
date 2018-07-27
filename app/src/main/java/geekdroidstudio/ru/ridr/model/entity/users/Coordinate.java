@@ -1,11 +1,11 @@
 package geekdroidstudio.ru.ridr.model.entity.users;
 
-public class CoordinatePoint {
+public class Coordinate {
 
     private Double latitude;
     private Double longitude;
 
-    public CoordinatePoint() {
+    public Coordinate() {
     }
 
     public Double getLatitude() {
