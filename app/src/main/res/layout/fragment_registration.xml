@@ -1,12 +1,13 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <!-- TODO: Update blank fragment layout -->
 
     <TextView
-        android:id="@+id/edit_phone_email_label"
+        android:id="@+id/text_view_change_phone_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -21,24 +22,26 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.015" />
 
-    <EditText
-        android:id="@+id/edit_phone_email_field"
+    <android.support.design.widget.TextInputEditText
+        android:id="@+id/edit_text_phone_email"
+        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
         android:gravity="center"
-        android:hint="+7 XXX XXX XX XX или xxx@xxx.ru"
+        android:hint="@string/edit_text_email_phone_hint"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.096"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextFields" />
 
     <TextView
-        android:id="@+id/license_agreement_label"
+        android:id="@+id/text_view_license_agreement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -54,7 +57,7 @@
 
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/choose_driver_btn"
+        android:id="@+id/button_choose_driver"
         android:layout_width="150dp"
         android:layout_height="40dp"
         android:layout_marginBottom="268dp"
@@ -68,7 +71,7 @@
 
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/choose_pass_btn"
+        android:id="@+id/button_choose_passenger"
         android:layout_width="150dp"
         android:layout_height="40dp"
         android:layout_marginBottom="268dp"

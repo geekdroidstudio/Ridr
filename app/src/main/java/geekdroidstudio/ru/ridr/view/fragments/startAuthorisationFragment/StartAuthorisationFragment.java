@@ -67,7 +67,7 @@ public class StartAuthorisationFragment extends MvpAppCompatFragment implements 
     }
 
     public interface OnFragmentInteractionListener {
-
+        void changeFragmentToRegistration();
     }
 
     @OnClick(R.id.button_enter)
@@ -80,6 +80,7 @@ public class StartAuthorisationFragment extends MvpAppCompatFragment implements 
         }else {
             Toast.makeText(getContext(),R.string.authorisation_success_text, Toast.LENGTH_SHORT).show();
             //presenter.loginUser(login,password);
+            onFragmentInteractionListener.changeFragmentToRegistration();
         }
     }
 }

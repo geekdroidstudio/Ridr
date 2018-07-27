@@ -34,4 +34,8 @@
     <string name="start_from_hint">Откуда</string>
     <string name="authorisation_error_text">Пожалуйста заполните все поля</string>
     <string name="authorisation_success_text">Вход успешно выполнен</string>
+    <string name="edit_text_email_phone_hint">+X XXX XXX XX XX или xxx@xxx.xx</string>
+    <string name="registration_error_text">Введите телефон или почту</string>
+    <string name="driver_success_text">Вы вошли как водитель</string>
+    <string name="passenger_success_text">Вы вошли как пассажир</string>
 </resources>
