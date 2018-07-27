@@ -25,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.presenter.RouteDataFragmentPresenter;
+import geekdroidstudio.ru.ridr.presenter.RouteDataPresenter;
 import geekdroidstudio.ru.ridr.view.adapters.AutocompleteAdapter;
 
 
@@ -37,7 +37,7 @@ public class RouteDataFragment extends MvpAppCompatFragment implements RouteData
     @BindView(R.id.atv_act_pass_main_end_point)
     AutoCompleteTextView endPointAutoText;
     @InjectPresenter
-    RouteDataFragmentPresenter routeDataPresenter;
+    RouteDataPresenter routeDataPresenter;
 
     public RouteDataFragment() {
 

@@ -6,18 +6,12 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:orientation="vertical"
-    tools:context=".view.passengerMainScreen.PassengerMainActivity">
+    tools:context=".view.userMainScreen.UserMainActivity">
 
     <FrameLayout
-        android:id="@+id/fl_activity_main_frame"
+        android:id="@+id/fl_activity_user_main_frame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-
-    <FrameLayout
-        android:id="@+id/fl_activity_main_map_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
 </LinearLayout>

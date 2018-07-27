@@ -32,4 +32,6 @@
     <string name="enter_email_phone_label">ВОЙТИ ЧЕРЕЗ ТЕЛЕФОН ИЛИ ПОЧТУ</string>
     <string name="date_new_trip">Дата поездки</string>
     <string name="start_from_hint">Откуда</string>
+    <string name="authorisation_error_text">Пожалуйста заполните все поля</string>
+    <string name="authorisation_success_text">Вход успешно выполнен</string>
 </resources>

@@ -1,4 +1,4 @@
-package geekdroidstudio.ru.ridr.view.passMainScreen;
+package geekdroidstudio.ru.ridr.view.passengerMainScreen;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -7,14 +7,14 @@ import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.presenter.PassMainActivityPresenter;
+import geekdroidstudio.ru.ridr.presenter.PassengerMainPresenter;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.routeDataFragment.RouteDataFragment;
 
-public class PassMainActivity extends MvpAppCompatActivity implements PassMainView,
+public class PassengerMainActivity extends MvpAppCompatActivity implements PassengerMainView,
         MapFragment.OnFragmentInteractionListener, RouteDataFragment.OnFragmentInteractionListener {
     @InjectPresenter
-    PassMainActivityPresenter passMainPresenter;
+    PassengerMainPresenter passMainPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

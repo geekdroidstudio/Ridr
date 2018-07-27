@@ -1,11 +1,11 @@
-package geekdroidstudio.ru.ridr.view.passMainScreen;
+package geekdroidstudio.ru.ridr.view.passengerMainScreen;
 
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 
 @StateStrategyType(OneExecutionStateStrategy.class)
-public interface PassMainView extends MvpView {
+public interface PassengerMainView extends MvpView {
 
     void showMapFragment();
 

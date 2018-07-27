@@ -20,12 +20,14 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".view.passMainScreen.PassMainActivity">
+        <activity android:name=".view.userMainScreen.UserMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".view.passengerMainScreen.PassengerMainActivity">
         </activity>
 
 

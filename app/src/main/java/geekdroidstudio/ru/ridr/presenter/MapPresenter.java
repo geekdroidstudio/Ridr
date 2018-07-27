@@ -8,7 +8,7 @@ import com.google.android.gms.maps.model.Marker;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapView;
 
 @InjectViewState
-public class MapFragmentPresenter extends MvpPresenter<MapView> {
+public class MapPresenter extends MvpPresenter<MapView> {
 
     @Override
     protected void onFirstViewAttach() {

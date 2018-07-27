@@ -7,7 +7,7 @@ import com.google.android.gms.location.places.AutocompletePrediction;
 import geekdroidstudio.ru.ridr.view.fragments.routeDataFragment.RouteDataView;
 
 @InjectViewState
-public class RouteDataFragmentPresenter extends MvpPresenter<RouteDataView> {
+public class RouteDataPresenter extends MvpPresenter<RouteDataView> {
 
     @Override
     protected void onFirstViewAttach() {

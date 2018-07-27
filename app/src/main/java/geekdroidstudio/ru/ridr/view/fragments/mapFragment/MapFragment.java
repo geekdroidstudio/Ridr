@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.presenter.MapFragmentPresenter;
+import geekdroidstudio.ru.ridr.presenter.MapPresenter;
 
 
 public class MapFragment extends MvpAppCompatFragment implements MapView, OnMapReadyCallback,
@@ -32,7 +32,7 @@ public class MapFragment extends MvpAppCompatFragment implements MapView, OnMapR
     ProgressBar loadingProgress;
 
     @InjectPresenter
-    MapFragmentPresenter mapPresenter;
+    MapPresenter mapPresenter;
 
     private GoogleMap map;
     private Marker marker;
