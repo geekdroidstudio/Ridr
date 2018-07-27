@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 
+def localPropertiesFile = rootProject.file("local.properties")
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(localPropertiesFile))
+
+
 android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -14,7 +19,15 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "GOOGLE_API_KEY", localProperties['GOOGLE_API_KEY']
+        buildConfigField "String", "DIRECTIONS_API_KEY", localProperties['DIRECTIONS_API_KEY']
+
+        manifestPlaceholders = [google_api_key: localProperties['GOOGLE_API_KEY']]
     }
+
+
+
     buildTypes {
         release {
             minifyEnabled false

@@ -10,7 +10,7 @@ import geekdroidstudio.ru.ridr.view.passMainScreen.PassMainView;
 //import io.reactivex.schedulers.Schedulers;
 
 @InjectViewState
-public class PassMainActivityPresenter extends MvpPresenter<PassMainView> {
+public class PassMainPresenter extends MvpPresenter<PassMainView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();

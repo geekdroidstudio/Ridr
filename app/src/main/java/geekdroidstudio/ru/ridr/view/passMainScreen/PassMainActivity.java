@@ -14,7 +14,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.presenter.PassMainActivityPresenter;
+import geekdroidstudio.ru.ridr.presenter.PassMainPresenter;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapView;
 import geekdroidstudio.ru.ridr.view.fragments.routeDataFragment.RouteDataFragment;
@@ -22,7 +22,7 @@ import geekdroidstudio.ru.ridr.view.fragments.routeDataFragment.RouteDataFragmen
 public class PassMainActivity extends MvpAppCompatActivity implements PassMainView,
         MapFragment.OnFragmentInteractionListener, RouteDataFragment.OnFragmentInteractionListener {
     @InjectPresenter
-    PassMainActivityPresenter passMainPresenter;
+    PassMainPresenter passMainPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class PassMainActivity extends MvpAppCompatActivity implements PassMainVi
     public void showRouteInMapFragment(List<LatLng> routePoints) {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
         if (fragment != null && fragment instanceof MapView) {
-            ((MapView) fragment).drawRoute(routePoints);
+            ((MapView) fragment).showRoute(routePoints);
         }
     }
 

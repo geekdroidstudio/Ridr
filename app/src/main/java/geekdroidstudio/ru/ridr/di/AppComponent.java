@@ -3,13 +3,16 @@ package geekdroidstudio.ru.ridr.di;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import geekdroidstudio.ru.ridr.di.modules.MapHelperModule;
 import geekdroidstudio.ru.ridr.di.modules.RepositoryModule;
-import geekdroidstudio.ru.ridr.presenter.RouteDataFragmentPresenter;
+import geekdroidstudio.ru.ridr.presenter.RouteDataPresenter;
+import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 
 @Singleton
-@Component(modules = RepositoryModule.class)
+@Component(modules = {RepositoryModule.class, MapHelperModule.class})
 public interface AppComponent {
 
-    void inject(RouteDataFragmentPresenter routeDataFragmentPresenter);
+    void inject(RouteDataPresenter routeDataFragmentPresenter);
 
+    void inject(MapFragment mapFragment);
 }

@@ -21,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Singleton
 @Module
 public class ApiModule {
-    private static final String BASE_URL = "  https://maps.googleapis.com/maps/api/";
+    private static final String BASE_URL = "https://maps.googleapis.com/maps/api/";
     private static final int CONNECTION_TIMEOUT_SEC = 3;
 
     @Provides
@@ -31,7 +31,7 @@ public class ApiModule {
 
     @Provides
     public Retrofit retrofit(String baseUrl,
-                             @Named("defaultOkHttp") OkHttpClient client,
+                             @Named("interceptOkHttp") OkHttpClient client,
                              RxJava2CallAdapterFactory rxJava2CallAdapterFactory,
                              GsonConverterFactory gsonConverterFactory) {
         return new Retrofit.Builder()

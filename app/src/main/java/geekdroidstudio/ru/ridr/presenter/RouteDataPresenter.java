@@ -18,7 +18,7 @@ import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
 
 @InjectViewState
-public class RouteDataFragmentPresenter extends MvpPresenter<RouteDataView> {
+public class RouteDataPresenter extends MvpPresenter<RouteDataView> {
     @Inject
     Repository repository;
 
@@ -26,7 +26,7 @@ public class RouteDataFragmentPresenter extends MvpPresenter<RouteDataView> {
     private String routeStartPoint;
     private String routeEndPoint;
 
-    public RouteDataFragmentPresenter(Scheduler scheduler) {
+    public RouteDataPresenter(Scheduler scheduler) {
         this.scheduler = scheduler;
     }
 

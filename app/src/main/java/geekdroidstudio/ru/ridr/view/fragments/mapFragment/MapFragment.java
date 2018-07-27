@@ -1,6 +1,5 @@
 package geekdroidstudio.ru.ridr.view.fragments.mapFragment;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,27 +10,30 @@ import android.widget.ProgressBar;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindColor;
 import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.presenter.MapFragmentPresenter;
+import geekdroidstudio.ru.ridr.model.mapHelper.IMapHelper;
+import geekdroidstudio.ru.ridr.presenter.MapPresenter;
 
 
 public class MapFragment extends MvpAppCompatFragment implements MapView {
     public static final String TAG = MapFragment.class.getSimpleName();
-
     @BindView(R.id.pb_fragment_map_loading)
     ProgressBar loadingProgress;
     @BindColor(R.color.colorPrimary)
@@ -40,10 +42,11 @@ public class MapFragment extends MvpAppCompatFragment implements MapView {
     float routeLineWidth;
 
     @InjectPresenter
-    MapFragmentPresenter mapPresenter;
+    MapPresenter mapPresenter;
 
+    @Inject
+    IMapHelper<GoogleMap, BitmapDescriptor, LatLng> mapHelper;
 
-    private Marker marker;
     private Unbinder unbinder;
     private OnFragmentInteractionListener onFragmentInteractionListener;
 
@@ -54,7 +57,6 @@ public class MapFragment extends MvpAppCompatFragment implements MapView {
     public static MapFragment newInstance() {
         return new MapFragment();
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -71,23 +73,34 @@ public class MapFragment extends MvpAppCompatFragment implements MapView {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
+        App.getInstance().getAppComponent().inject(this);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
-    public void loadMap() {
+    public void initMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.gm_fragment_map_map);
         mapFragment.getMapAsync(createOnMapReadyCallback());
     }
 
     @Override
-    public void drawRoute(List<LatLng> routePoints) {
-        mapPresenter.drawRoute(getResources().getDisplayMetrics().widthPixels, routeLineColor,
-                routeLineWidth, routePoints);
+    public void showMap(GoogleMap map) {
+        mapHelper.init(map);
     }
 
+    @Override
+    public void showRoute(List<LatLng> routePoints) {
+        mapPresenter.showRoute(routePoints);
+    }
+
+    @Override
+    public void drawRoute(List<LatLng> routePoints) {
+        mapHelper.drawRoute(getResources().getDisplayMetrics().widthPixels, routeLineColor,
+                routeLineWidth, BitmapDescriptorFactory.fromResource(R.drawable.ic_start_route),
+                BitmapDescriptorFactory.fromResource(R.drawable.ic_end_route), routePoints);
+    }
 
     @Override
     public void showLoading() {
@@ -99,17 +112,10 @@ public class MapFragment extends MvpAppCompatFragment implements MapView {
         loadingProgress.setVisibility(View.GONE);
     }
 
-    @SuppressLint("CheckResult")
     @Override
-    public void createStartMarkerOptions(MarkerOptions startMarkerOptions) {
-        mapPresenter.showEndMarker(startMarkerOptions.icon(
-                BitmapDescriptorFactory.fromResource(R.drawable.ic_start_route)));
-    }
-
-    @Override
-    public void createEndMarkerOptions(MarkerOptions endMarkerOptions) {
-        mapPresenter.showStartMarker(endMarkerOptions
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_end_route)));
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override
@@ -118,16 +124,9 @@ public class MapFragment extends MvpAppCompatFragment implements MapView {
         onFragmentInteractionListener = null;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
     private OnMapReadyCallback createOnMapReadyCallback() {
         return googleMap -> mapPresenter.onMapReady(googleMap);
     }
-
 
     public interface OnFragmentInteractionListener {
     }

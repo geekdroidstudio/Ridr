@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.presenter.RouteDataFragmentPresenter;
+import geekdroidstudio.ru.ridr.presenter.RouteDataPresenter;
 import geekdroidstudio.ru.ridr.view.adapters.AutocompleteAdapter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -47,7 +47,7 @@ public class RouteDataFragment extends MvpAppCompatFragment implements RouteData
     AutoCompleteTextView endPointAutoText;
 
     @InjectPresenter
-    RouteDataFragmentPresenter routeDataPresenter;
+    RouteDataPresenter routeDataPresenter;
 
     private AutocompleteAdapter startPointAdapter;
     private AutocompleteAdapter endPointAdapter;
@@ -63,9 +63,9 @@ public class RouteDataFragment extends MvpAppCompatFragment implements RouteData
     }
 
     @ProvidePresenter
-    public RouteDataFragmentPresenter provideRoutePresenter() {
-        RouteDataFragmentPresenter presenter =
-                new RouteDataFragmentPresenter(AndroidSchedulers.mainThread());
+    public RouteDataPresenter provideRoutePresenter() {
+        RouteDataPresenter presenter =
+                new RouteDataPresenter(AndroidSchedulers.mainThread());
         App.getInstance().getAppComponent().inject(presenter);
         return presenter;
     }
