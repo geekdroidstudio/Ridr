@@ -8,14 +8,13 @@
 
     <TextView
         android:id="@+id/text_view_hi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="24sp"
+        tools:text="text"
+        />
 
-    <Button
-        android:id="@+id/button_get_user_name"
-        android:text="get user name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

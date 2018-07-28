@@ -1,17 +1,27 @@
 package geekdroidstudio.ru.ridr.server.authentication;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import geekdroidstudio.ru.ridr.model.entity.User;
 import timber.log.Timber;
 
 public class AuthDatabase {
 
-	public static final String BOOK_AUTHENTICATION = "authentication";
+	public static final String AUTH_BOOK = "authentication";
+	public static final String AUTH_USER_NAME = "name";
+	public static final String AUTH_USER_EMAIL = "email";
+
+	private static String userId;
 
 	private FirebaseDatabase firebaseDatabase;
 	private DatabaseReference databaseReference;
+	private IAuthDatabase iAuthDatabase;
 
 	public AuthDatabase() {
 
@@ -19,20 +29,45 @@ public class AuthDatabase {
 		databaseReference = firebaseDatabase.getReference();
 	}
 
+	public interface IAuthDatabase{
+		void getUserName(String userName);
+	}
+
+	public void setContext(Context context){
+		iAuthDatabase = (IAuthDatabase) context;
+	}
+
+	public static void setUserId(String userId) {
+		AuthDatabase.userId = userId;
+	}
+
 	//добавление пользователя в базу
 	public void addUser(String userId, String userName, String userEmail) {
 		if (userName != null) {
 			Timber.d("addUser: " + userId + " " + userName);
-			databaseReference.child(BOOK_AUTHENTICATION).child(userId).child("name").setValue(userName);
-			databaseReference.child(BOOK_AUTHENTICATION).child(userId).child("email").setValue(userEmail);
+			databaseReference.child(AUTH_BOOK).child(userId).child(AUTH_USER_NAME).setValue(userName);
+			databaseReference.child(AUTH_BOOK).child(userId).child(AUTH_USER_EMAIL).setValue(userEmail);
 		}
 	}
 
-	public String getUserName(String userId){
+	public void getUserName(){
 
-		Timber.d(databaseReference.child(BOOK_AUTHENTICATION).child(userId).getKey());
+		databaseReference
+				.child(AUTH_BOOK)
+				.child(userId)
+				.child(AUTH_USER_NAME)
+				.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+				iAuthDatabase.getUserName(dataSnapshot.getValue().toString());
+			}
 
-		return "none";
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError) {
+				Timber.e("getUserName: onCancelled");
+			}
+		});
+
 	}
 
 

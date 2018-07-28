@@ -22,8 +22,6 @@ public class MainActivity extends AppCompatActivity implements Authentication.IA
 	@BindView(R.id.edit_text_email) EditText editTextEmail;
 	@BindView(R.id.edit_text_password) EditText editTextPassword;
 
-	public static final String BUNDLE_PARAM_USER_ID = "bundleParamUserId";
-
 	@Inject
 	Authentication authentication;
 
@@ -39,8 +37,8 @@ public class MainActivity extends AppCompatActivity implements Authentication.IA
 		editTextEmail.setText("qw@qw.qw");
 		editTextPassword.setText("123456");
 
-		//authentication = new Authentication();
-		App.getComponent().injects(this);
+		//обязательно заинжектить и передать контекст
+		App.getComponent().inject(this);
 		authentication.setContext(this);
 
 	}
@@ -65,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements Authentication.IA
 
 	@Override
 	public void wasNotSignIn() {
-		Toast.makeText(MainActivity.this, "sign in is not successful", Toast.LENGTH_SHORT).show();
+		Toast.makeText(MainActivity.this, "sign up, please", Toast.LENGTH_SHORT).show();
 	}
 
 
@@ -78,5 +76,10 @@ public class MainActivity extends AppCompatActivity implements Authentication.IA
 	@Override
 	public void wasNotSignUp() {
 		Toast.makeText(MainActivity.this, "sign up is not successful", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void invalidFields() {
+		Toast.makeText(MainActivity.this, "for sign in: email, password\n for sign up: name, email, password", Toast.LENGTH_SHORT).show();
 	}
 }

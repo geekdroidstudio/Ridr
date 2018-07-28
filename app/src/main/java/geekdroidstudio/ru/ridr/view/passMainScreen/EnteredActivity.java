@@ -7,16 +7,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
+import geekdroidstudio.ru.ridr.server.authentication.AuthDatabase;
 import geekdroidstudio.ru.ridr.server.authentication.Authentication;
 
-public class EnteredActivity extends AppCompatActivity {
+public class EnteredActivity extends AppCompatActivity implements AuthDatabase.IAuthDatabase{
 
 	@BindView(R.id.text_view_hi) TextView textViewHi;
-	@BindView(R.id.button_get_user_name) Button buttonGetUserName;
+	@Inject AuthDatabase authDatabase;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,14 +30,16 @@ public class EnteredActivity extends AppCompatActivity {
 
 		ButterKnife.bind(this);
 
-		//пробные, чтобы не вводить каждый раз
-		textViewHi.setText("Hi!");
+		//обязательно заинжектить и передать контекст
+		App.getComponent().inject(this);
+		authDatabase.setContext(this);
+		//проверка имени
+		authDatabase.getUserName();
+
 	}
 
-	@OnClick({R.id.button_get_user_name})
-	public void onClick(View view){
-		buttonGetUserName.setText("Leonid");
+	@Override
+	public void getUserName(String userName) {
+		textViewHi.setText("Hi, " + userName + "!");
 	}
-
-
 }
