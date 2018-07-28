@@ -16,6 +16,7 @@ import geekdroidstudio.ru.ridr.server.authentication.Authentication;
 public class EnteredActivity extends AppCompatActivity {
 
 	@BindView(R.id.text_view_hi) TextView textViewHi;
+	@BindView(R.id.button_get_user_name) Button buttonGetUserName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,11 @@ public class EnteredActivity extends AppCompatActivity {
 
 		//пробные, чтобы не вводить каждый раз
 		textViewHi.setText("Hi!");
+	}
+
+	@OnClick({R.id.button_get_user_name})
+	public void onClick(View view){
+		buttonGetUserName.setText("Leonid");
 	}
 
 

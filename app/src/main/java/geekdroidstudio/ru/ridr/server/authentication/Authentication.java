@@ -8,18 +8,24 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import javax.inject.Inject;
+
 import timber.log.Timber;
 
 public class Authentication {
 
 	private FirebaseAuth firebaseAuth;
 	private FirebaseAuth.AuthStateListener authStateListener;
-	private AuthenticationDatabase authenticationDatabase;
+	@Inject
+	AuthDatabase authDatabase;
 	private IAuthentication iAuthentication;
 
-	public Authentication() {
+
+
+	public Authentication(AuthDatabase authDatabase) {
 		firebaseAuth = FirebaseAuth.getInstance();
-		authenticationDatabase = new AuthenticationDatabase();
+		this.authDatabase = authDatabase;
+		//authDatabase = new AuthDatabase();
 	}
 
 	public interface IAuthentication {
@@ -62,7 +68,7 @@ public class Authentication {
 					@Override
 					public void onComplete(@NonNull Task<AuthResult> task) {
 						if (task.isSuccessful()) {
-							authenticationDatabase.addUser(firebaseAuth.getUid(), userName, userEmail);
+							authDatabase.addUser(firebaseAuth.getUid(), userName, userEmail);
 							Timber.d("onComplete: wasSignUp()");
 							iAuthentication.wasSignUp();
 						} else {
@@ -74,6 +80,6 @@ public class Authentication {
 	}
 	
 	public void getUserData(String userId){
-		authenticationDatabase.getUser(userId);
+		authDatabase.getUserName(userId);
 	}
 }

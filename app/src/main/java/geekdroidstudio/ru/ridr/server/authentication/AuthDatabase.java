@@ -6,14 +6,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import geekdroidstudio.ru.ridr.model.entity.User;
 import timber.log.Timber;
 
-public class AuthenticationDatabase {
+public class AuthDatabase {
 
 	public static final String BOOK_AUTHENTICATION = "authentication";
 
 	private FirebaseDatabase firebaseDatabase;
 	private DatabaseReference databaseReference;
 
-	protected AuthenticationDatabase() {
+	public AuthDatabase() {
 
 		firebaseDatabase = FirebaseDatabase.getInstance();
 		databaseReference = firebaseDatabase.getReference();
@@ -28,11 +28,11 @@ public class AuthenticationDatabase {
 		}
 	}
 
-	public User getUser(String userId){
+	public String getUserName(String userId){
 
 		Timber.d(databaseReference.child(BOOK_AUTHENTICATION).child(userId).getKey());
 
-		return new User();
+		return "none";
 	}
 
 
