@@ -3,7 +3,7 @@ package geekdroidstudio.ru.ridr.server.authentication;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import geekdroidstudio.ru.ridr.entity.User;
+import geekdroidstudio.ru.ridr.model.entity.User;
 import timber.log.Timber;
 
 public class AuthenticationDatabase {
@@ -17,22 +17,6 @@ public class AuthenticationDatabase {
 
 		firebaseDatabase = FirebaseDatabase.getInstance();
 		databaseReference = firebaseDatabase.getReference();
-
-		/*databaseReference.child(BOOK_AUTHENTICATION).addValueEventListener(new ValueEventListener() {
-			@Override
-			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-				Timber.d("All notes");
-
-				for(DataSnapshot childDataSnapshot : dataSnapshot.getChildren()){
-					Timber.d(childDataSnapshot.getKey() + " " + childDataSnapshot.getValue());
-				}
-			}
-
-			@Override
-			public void onCancelled(@NonNull DatabaseError databaseError) {
-
-			}
-		});*/
 	}
 
 	//добавление пользователя в базу

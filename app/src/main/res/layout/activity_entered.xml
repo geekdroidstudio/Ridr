@@ -6,22 +6,10 @@
     android:orientation="vertical"
     tools:context=".server.authentication.AuthenticationDatabase">
 
-    <EditText
-        android:id="@+id/edit_text_item_key"
-        android:hint="key"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <EditText
-        android:id="@+id/edit_text_item_value"
-        android:hint="value"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/button_add_item"
+    <TextView
+        android:id="@+id/text_view_hi"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New item" />
+        android:layout_height="wrap_content" />
+
 
 </LinearLayout>
