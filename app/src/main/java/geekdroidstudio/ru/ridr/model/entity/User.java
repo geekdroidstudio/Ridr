@@ -1,4 +1,4 @@
-package geekdroidstudio.ru.ridr.entity;
+package geekdroidstudio.ru.ridr.model.entity;
 
 public class User {
 	private String id;
