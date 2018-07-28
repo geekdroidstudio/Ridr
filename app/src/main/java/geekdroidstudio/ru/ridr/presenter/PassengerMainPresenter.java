@@ -11,7 +11,8 @@ public class PassengerMainPresenter extends MvpPresenter<PassengerMainView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        getViewState().showMapFragment();
-        getViewState().showRouteDataFragment();
+        getViewState().showFindDriversFragment();
+        //getViewState().showMapFragment();
+        //getViewState().showRouteDataFragment();
     }
 }

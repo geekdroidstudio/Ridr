@@ -7,8 +7,7 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 @StateStrategyType(OneExecutionStateStrategy.class)
 public interface PassengerMainView extends MvpView {
 
-    void showMapFragment();
-
-
-    void showRouteDataFragment();
+    //void showMapFragment();
+    //void showRouteDataFragment();
+    void showFindDriversFragment();
 }

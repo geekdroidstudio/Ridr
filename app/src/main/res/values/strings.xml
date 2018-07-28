@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Ridr</string>
 
-    <string name="error_implement_frag_interact_list">must implement OnFragmentInteractionListener</string>
+    <string name="error_implement_fragment_interaction_listener">must implement OnFragmentInteractionListener</string>
     <string name="map_fragment_map_marker_alpha">0.6</string>
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyA4yMoJ0qPEn09zeBvjijevu0if79MnZ_k</string>
@@ -38,4 +38,5 @@
     <string name="registration_error_text">Введите телефон или почту</string>
     <string name="driver_success_text">Вы вошли как водитель</string>
     <string name="passenger_success_text">Вы вошли как пассажир</string>
+    <string name="text_around_you">Сейчас рядом с Вами</string>
 </resources>

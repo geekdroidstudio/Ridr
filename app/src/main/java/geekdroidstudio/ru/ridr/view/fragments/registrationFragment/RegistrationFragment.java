@@ -42,7 +42,7 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
             onFragmentInteractionListener = (RegistrationFragment.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + getString(R.string.error_implement_frag_interact_list));
+                    + getString(R.string.error_implement_fragment_interaction_listener));
         }
     }
 
@@ -73,7 +73,7 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
 
     @OnClick(R.id.button_choose_driver)
     @Override
-    public void chooseDriver() {
+    public void chooseRoleDriver() {
         String phoneEmail = editTextPhoneEmail.getText().toString();
         if(phoneEmail.isEmpty()){
             Toast.makeText(getContext(),R.string.registration_error_text, Toast.LENGTH_SHORT).show();
@@ -86,7 +86,7 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
 
     @OnClick(R.id.button_choose_passenger)
     @Override
-    public void choosePassenger() {
+    public void chooseRolePassenger() {
         String phoneEmail = editTextPhoneEmail.getText().toString();
         if(phoneEmail.isEmpty()){
             Toast.makeText(getContext(),R.string.registration_error_text, Toast.LENGTH_SHORT).show();

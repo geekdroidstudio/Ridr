@@ -84,7 +84,7 @@ public class RouteDataFragment extends MvpAppCompatFragment implements RouteData
             onFragmentInteractionListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + getString(R.string.error_implement_frag_interact_list));
+                    + getString(R.string.error_implement_fragment_interaction_listener));
         }
     }
 
