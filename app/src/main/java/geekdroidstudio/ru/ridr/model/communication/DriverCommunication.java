@@ -2,7 +2,7 @@ package geekdroidstudio.ru.ridr.model.communication;
 
 import java.util.List;
 
-import geekdroidstudio.ru.ridr.model.communication.repository.ICommunicationRepository;
+import geekdroidstudio.ru.ridr.model.communication.repository.IUserLocationRepository;
 import geekdroidstudio.ru.ridr.model.entity.communication.DriverResponse;
 import geekdroidstudio.ru.ridr.model.entity.communication.PassengerRequest;
 import geekdroidstudio.ru.ridr.model.entity.users.Driver;
@@ -13,7 +13,7 @@ import io.reactivex.Observable;
 public class DriverCommunication extends UserCommunication<Driver, Passenger>
         implements IDriverCommunication {
 
-    public DriverCommunication(ICommunicationRepository communicationRepository) {
+    public DriverCommunication(IUserLocationRepository communicationRepository) {
         super(communicationRepository, communicationRepository.getPassengers());
     }
 
@@ -23,7 +23,7 @@ public class DriverCommunication extends UserCommunication<Driver, Passenger>
     }
 
     @Override
-    public Observable<PassengerRequest> getPassengerRequestObservable() {
+    public Observable<PassengerRequest> getPassengerRequestObservable(String driverId) {
         throw new RuntimeException("Этот метод ещё не реализован");
     }
 
@@ -35,5 +35,10 @@ public class DriverCommunication extends UserCommunication<Driver, Passenger>
     @Override
     protected Passenger createUser() {
         return new Passenger();
+    }
+
+    @Override
+    public Completable postLocation(Driver driver) {
+        return locationRepository.postDriverLocation(driver.getId(), driver.getLocation());
     }
 }

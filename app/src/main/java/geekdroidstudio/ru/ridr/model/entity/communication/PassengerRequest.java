@@ -1,20 +1,15 @@
 package geekdroidstudio.ru.ridr.model.entity.communication;
 
-import geekdroidstudio.ru.ridr.model.entity.users.Coordinate;
-
 public class PassengerRequest {
 
-    private String passengerId;
     private String driverId;
+    private String passengerId;
+    private SimpleRoute simpleRoute;
 
-    private Coordinate start;
-    private Coordinate finish;
-
-    public PassengerRequest(String passengerId, String driverId, Coordinate start, Coordinate finish) {
+    public PassengerRequest(String passengerId, String driverId, SimpleRoute simpleRoute) {
         this.passengerId = passengerId;
         this.driverId = driverId;
-        this.start = start;
-        this.finish = finish;
+        this.simpleRoute = simpleRoute;
     }
 
     public PassengerRequest() {
@@ -36,19 +31,11 @@ public class PassengerRequest {
         this.driverId = driverId;
     }
 
-    public Coordinate getStart() {
-        return start;
+    public SimpleRoute getSimpleRoute() {
+        return simpleRoute;
     }
 
-    public void setStart(Coordinate start) {
-        this.start = start;
-    }
-
-    public Coordinate getFinish() {
-        return finish;
-    }
-
-    public void setFinish(Coordinate finish) {
-        this.finish = finish;
+    public void setSimpleRoute(SimpleRoute simpleRoute) {
+        this.simpleRoute = simpleRoute;
     }
 }

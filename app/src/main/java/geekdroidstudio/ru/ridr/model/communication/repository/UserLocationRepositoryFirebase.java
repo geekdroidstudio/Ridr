@@ -10,17 +10,17 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import geekdroidstudio.ru.ridr.model.communication.entity.UserLocation;
 import geekdroidstudio.ru.ridr.model.entity.users.Coordinate;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
 import timber.log.Timber;
 
-public class CommunicationRepositoryFirebase implements ICommunicationRepository {
+public class UserLocationRepositoryFirebase implements IUserLocationRepository {
 
     private DatabaseReference usersReference;
     private DatabaseReference driversReference;
@@ -32,9 +32,9 @@ public class CommunicationRepositoryFirebase implements ICommunicationRepository
     private ValueEventListener driversListener;
     private ValueEventListener passengersListener;
 
-    public CommunicationRepositoryFirebase(DatabaseReference usersReference,
-                                           DatabaseReference driversReference,
-                                           DatabaseReference passengersReference) {
+    public UserLocationRepositoryFirebase(DatabaseReference usersReference,
+                                          DatabaseReference driversReference,
+                                          DatabaseReference passengersReference) {
         this.usersReference = usersReference;
         this.driversReference = driversReference;
         this.passengersReference = passengersReference;
@@ -47,8 +47,8 @@ public class CommunicationRepositoryFirebase implements ICommunicationRepository
     }
 
     @Override
-    public Observable<User> getUser(String id) {
-        return Observable.create(emitter -> {
+    public Single<User> getUser(String id) {
+        return Single.create(emitter -> {
             DatabaseReference userReference = usersReference.child(id);
 
             userReference.addValueEventListener(getUserListener(emitter, userReference));
@@ -56,13 +56,13 @@ public class CommunicationRepositoryFirebase implements ICommunicationRepository
     }
 
     @Override
-    public Completable postDriverLocation(UserLocation userLocation) {
-        return getCompletableUserLocation(driversReference, userLocation);
+    public Completable postDriverLocation(String id, Coordinate location) {
+        return getCompletableUserLocation(driversReference, id, location);
     }
 
     @Override
-    public Completable postPassengerLocation(UserLocation userLocation) {
-        return getCompletableUserLocation(passengersReference, userLocation);
+    public Completable postPassengerLocation(String id, Coordinate location) {
+        return getCompletableUserLocation(passengersReference, id, location);
     }
 
 
@@ -83,26 +83,24 @@ public class CommunicationRepositoryFirebase implements ICommunicationRepository
     }
 
     @NonNull
-    private Completable getCompletableUserLocation(DatabaseReference usersReference,
-                                                   UserLocation userLocation) {
+    private Completable getCompletableUserLocation(DatabaseReference usersReference, String id,
+                                                   Coordinate location) {
         return Completable.create(emitter -> {
-            usersReference.child(userLocation.getId())
-                    .setValue(userLocation.getCoordinate());
+            usersReference.child(id)
+                    .setValue(location);
             emitter.onComplete();
         });
     }
 
     @NonNull
-    private ValueEventListener getUserListener(ObservableEmitter<User> emitter,
+    private ValueEventListener getUserListener(SingleEmitter<User> emitter,
                                                DatabaseReference userReference) {
         return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userReference.removeEventListener(this);
 
-                User user = dataSnapshot.getValue(User.class);
-                emitter.onNext(user);
-                emitter.onComplete();
+                emitter.onSuccess(dataSnapshot.getValue(User.class));
             }
 
             @Override

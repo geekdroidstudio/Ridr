@@ -2,19 +2,19 @@ package geekdroidstudio.ru.ridr.model.communication.repository;
 
 import java.util.Map;
 
-import geekdroidstudio.ru.ridr.model.communication.entity.UserLocation;
 import geekdroidstudio.ru.ridr.model.entity.users.Coordinate;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
-public interface ICommunicationRepository {
+public interface IUserLocationRepository {
 
-    Observable<User> getUser(String id);
+    Single<User> getUser(String id);
 
-    Completable postDriverLocation(UserLocation userLocation);
+    Completable postDriverLocation(String id, Coordinate location);
 
-    Completable postPassengerLocation(UserLocation userLocation);
+    Completable postPassengerLocation(String id, Coordinate location);
 
     Observable<Map<String, Coordinate>> getDrivers();
 

@@ -9,11 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import geekdroidstudio.ru.ridr.model.communication.entity.UserLocation;
-import geekdroidstudio.ru.ridr.model.communication.repository.ICommunicationRepository;
+import geekdroidstudio.ru.ridr.model.communication.repository.IUserLocationRepository;
 import geekdroidstudio.ru.ridr.model.entity.users.Coordinate;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
-import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
@@ -22,7 +20,7 @@ import io.reactivex.subjects.Subject;
 
 abstract class UserCommunication<U extends User, Other extends User> {
 
-    private ICommunicationRepository communicationRepository;
+    final IUserLocationRepository locationRepository;
 
     private Map<String, Other> userMap = new HashMap<>();
 
@@ -30,11 +28,11 @@ abstract class UserCommunication<U extends User, Other extends User> {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    UserCommunication(ICommunicationRepository communicationRepository,
-                      Observable<Map<String, Coordinate>> userLocationObservable) {
-        this.communicationRepository = communicationRepository;
+    UserCommunication(IUserLocationRepository locationRepository,
+                      Observable<Map<String, Coordinate>> userLocationsObservable) {
+        this.locationRepository = locationRepository;
 
-        compositeDisposable.add(userLocationObservable.subscribe(getUsersConsumer()));
+        compositeDisposable.add(userLocationsObservable.subscribe(getUsersConsumer()));
     }
 
     @NonNull
@@ -71,7 +69,7 @@ abstract class UserCommunication<U extends User, Other extends User> {
                 user.setLocation(location);
                 userUpdated = true;
             } else {
-                compositeDisposable.add(communicationRepository.getUser(id)
+                compositeDisposable.add(locationRepository.getUser(id)
                         .subscribe(getUserConsumer(location)));
             }
         }
@@ -100,11 +98,6 @@ abstract class UserCommunication<U extends User, Other extends User> {
     }
 
     protected abstract Other createUser();
-
-    public Completable postLocation(U user) {
-        UserLocation userLocation = new UserLocation(user.getId(), user.getLocation());
-        return communicationRepository.postDriverLocation(userLocation);
-    }
 
     Observable<List<Other>> getUsersObservable() {
         return usersSubject;

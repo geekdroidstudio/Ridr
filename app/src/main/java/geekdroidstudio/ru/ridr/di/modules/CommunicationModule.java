@@ -12,32 +12,32 @@ import geekdroidstudio.ru.ridr.model.communication.DriverCommunication;
 import geekdroidstudio.ru.ridr.model.communication.IDriverCommunication;
 import geekdroidstudio.ru.ridr.model.communication.IPassengerCommunication;
 import geekdroidstudio.ru.ridr.model.communication.PassengerCommunication;
-import geekdroidstudio.ru.ridr.model.communication.repository.CommunicationRepositoryFirebase;
-import geekdroidstudio.ru.ridr.model.communication.repository.ICommunicationRepository;
+import geekdroidstudio.ru.ridr.model.communication.repository.IUserLocationRepository;
+import geekdroidstudio.ru.ridr.model.communication.repository.UserLocationRepositoryFirebase;
 
 @Module
 public class CommunicationModule {
 
     @Provides
     @Singleton
-    public IDriverCommunication getDriverCommunication(ICommunicationRepository repository) {
+    public IDriverCommunication getDriverCommunication(IUserLocationRepository repository) {
         return new DriverCommunication(repository);
     }
 
     @Provides
     @Singleton
-    public IPassengerCommunication getPassengerCommunication(ICommunicationRepository repository) {
+    public IPassengerCommunication getPassengerCommunication(IUserLocationRepository repository) {
         return new PassengerCommunication(repository);
     }
 
     @Provides
     @Singleton
-    public ICommunicationRepository getCommunicationRepository(
+    public IUserLocationRepository getUserLocationRepository(
             @Named("users") DatabaseReference users,
             @Named("passengers") DatabaseReference passengers,
             @Named("drivers") DatabaseReference drivers) {
 
-        return new CommunicationRepositoryFirebase(users, passengers, drivers);
+        return new UserLocationRepositoryFirebase(users, passengers, drivers);
     }
 
     @Provides
@@ -52,7 +52,7 @@ public class CommunicationModule {
     @Named("userCoordinates")
     public DatabaseReference getUserCoordinatesDatabaseReference(
             @Named("root") DatabaseReference root) {
-        return root.child("user_coordinates");
+        return root.child("usersOnMap");
     }
 
     @Provides
