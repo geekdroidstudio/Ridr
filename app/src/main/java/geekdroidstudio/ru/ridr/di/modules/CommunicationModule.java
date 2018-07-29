@@ -14,20 +14,23 @@ import geekdroidstudio.ru.ridr.model.communication.IPassengerCommunication;
 import geekdroidstudio.ru.ridr.model.communication.PassengerCommunication;
 import geekdroidstudio.ru.ridr.model.communication.repository.IUserLocationRepository;
 import geekdroidstudio.ru.ridr.model.communication.repository.UserLocationRepositoryFirebase;
+import geekdroidstudio.ru.ridr.model.communication.repository.request.IPassengerRequestRepository;
 
 @Module
 public class CommunicationModule {
 
     @Provides
     @Singleton
-    public IDriverCommunication getDriverCommunication(IUserLocationRepository repository) {
-        return new DriverCommunication(repository);
+    public IDriverCommunication getDriverCommunication(IUserLocationRepository repository,
+                                                       IPassengerRequestRepository requestRepository) {
+        return new DriverCommunication(repository, requestRepository);
     }
 
     @Provides
     @Singleton
-    public IPassengerCommunication getPassengerCommunication(IUserLocationRepository repository) {
-        return new PassengerCommunication(repository);
+    public IPassengerCommunication getPassengerCommunication(IUserLocationRepository repository,
+                                                             IPassengerRequestRepository requestRepository) {
+        return new PassengerCommunication(repository, requestRepository);
     }
 
     @Provides

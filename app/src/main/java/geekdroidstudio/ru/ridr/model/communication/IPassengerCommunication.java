@@ -3,11 +3,13 @@ package geekdroidstudio.ru.ridr.model.communication;
 
 import java.util.List;
 
-import geekdroidstudio.ru.ridr.model.entity.communication.SimpleRoute;
+import geekdroidstudio.ru.ridr.model.entity.communication.DriverResponse;
+import geekdroidstudio.ru.ridr.model.entity.communication.PassengerRequest;
 import geekdroidstudio.ru.ridr.model.entity.users.Driver;
 import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 public interface IPassengerCommunication {
     /*
@@ -23,6 +25,5 @@ public interface IPassengerCommunication {
     /*
      * Отправляет запрос водителю на добавление своего маршрута
      */
-    Observable<Boolean> postPassengerRouteForDriver(String passengerId, String driverId,
-                                                    SimpleRoute simpleRoute);
+    Single<DriverResponse> postPassengerRequest(PassengerRequest passengerRequest);
 }

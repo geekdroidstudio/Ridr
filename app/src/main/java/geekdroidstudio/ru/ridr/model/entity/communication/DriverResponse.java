@@ -1,23 +1,34 @@
 package geekdroidstudio.ru.ridr.model.entity.communication;
 
 public class DriverResponse {
-    private PassengerRequest passengerRequest;
+
+    private String driverId;
+    private String passengerId;
     private Boolean accept;
 
-    public DriverResponse(PassengerRequest passengerRequest, Boolean accept) {
-        this.passengerRequest = passengerRequest;
+    public DriverResponse(String driverId, String passengerId, Boolean accept) {
+        this.driverId = driverId;
+        this.passengerId = passengerId;
         this.accept = accept;
     }
 
     public DriverResponse() {
     }
 
-    public PassengerRequest getPassengerRequest() {
-        return passengerRequest;
+    public String getDriverId() {
+        return driverId;
     }
 
-    public void setPassengerRequest(PassengerRequest passengerRequest) {
-        this.passengerRequest = passengerRequest;
+    public void setDriverId(String driverId) {
+        this.driverId = driverId;
+    }
+
+    public String getPassengerId() {
+        return passengerId;
+    }
+
+    public void setPassengerId(String passengerId) {
+        this.passengerId = passengerId;
     }
 
     public Boolean getAccept() {

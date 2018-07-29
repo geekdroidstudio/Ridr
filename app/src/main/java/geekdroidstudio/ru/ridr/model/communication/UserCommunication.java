@@ -28,10 +28,12 @@ abstract class UserCommunication<U extends User, Other extends User> {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    UserCommunication(IUserLocationRepository locationRepository,
-                      Observable<Map<String, Coordinate>> userLocationsObservable) {
+    UserCommunication(IUserLocationRepository locationRepository) {
         this.locationRepository = locationRepository;
 
+    }
+
+    public void setLocationsObservable(Observable<Map<String, Coordinate>> userLocationsObservable) {
         compositeDisposable.add(userLocationsObservable.subscribe(getUsersConsumer()));
     }
 
