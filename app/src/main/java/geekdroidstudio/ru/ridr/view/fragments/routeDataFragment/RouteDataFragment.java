@@ -41,9 +41,9 @@ public class RouteDataFragment extends MvpAppCompatFragment implements RouteData
 
     @BindView(R.id.lly_fr_route_data_root_view)
     LinearLayout rootView;
-    @BindView(R.id.atv_fr_route_data_start_point)
+    @BindView(R.id.atv_act_pass_main_start_point)
     AutoCompleteTextView startPointAutoText;
-    @BindView(R.id.atv_fr_route_data_end_point)
+    @BindView(R.id.atv_act_pass_main_end_point)
     AutoCompleteTextView endPointAutoText;
 
     @InjectPresenter
@@ -66,7 +66,7 @@ public class RouteDataFragment extends MvpAppCompatFragment implements RouteData
     public RouteDataPresenter provideRoutePresenter() {
         RouteDataPresenter presenter =
                 new RouteDataPresenter(AndroidSchedulers.mainThread());
-        App.getInstance().getAppComponent().inject(presenter);
+        App.getInstance().getComponent().inject(presenter);
         return presenter;
     }
 
@@ -138,12 +138,12 @@ public class RouteDataFragment extends MvpAppCompatFragment implements RouteData
             onFragmentInteractionListener.hideKeyboard(view.getApplicationWindowToken());
 
             switch (viewId) {
-                case R.id.atv_fr_route_data_start_point: {
+                case R.id.atv_act_pass_main_start_point: {
                     AutocompletePrediction item = startPointAdapter.getItem(position);
                     routeDataPresenter.onStartPointSelected(item);
                     break;
                 }
-                case R.id.atv_fr_route_data_end_point: {
+                case R.id.atv_act_pass_main_end_point: {
                     AutocompletePrediction item = endPointAdapter.getItem(position);
                     routeDataPresenter.onEndPointSelected(item);
                     break;

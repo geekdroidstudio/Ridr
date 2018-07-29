@@ -73,7 +73,7 @@ public class MapFragment extends MvpAppCompatFragment implements MapView {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-        App.getInstance().getAppComponent().inject(this);
+        App.getInstance().getComponent().inject(this);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }

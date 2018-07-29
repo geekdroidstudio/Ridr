@@ -1,11 +1,15 @@
 package geekdroidstudio.ru.ridr.view.passengerMainScreen;
 
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.List;
 
 import geekdroidstudio.ru.ridr.R;
 import geekdroidstudio.ru.ridr.presenter.PassengerMainPresenter;
@@ -25,10 +29,6 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
         setContentView(R.layout.activity_passenger_main);
     }
 
-
-
-
-
     @Override
     public void showFindDriversFragment() {
         getSupportFragmentManager()
@@ -41,6 +41,16 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     @Override
     public void openDriverRouteData(int id) {
         Toast.makeText(this,"Вы выбрали маршрут " + id, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void routeCreated(List<LatLng> routePoints) {
+
+    }
+
+    @Override
+    public void hideKeyboard(IBinder windowToken) {
+
     }
 
     /*@Override
