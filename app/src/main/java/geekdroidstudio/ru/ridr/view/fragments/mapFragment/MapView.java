@@ -6,15 +6,12 @@ import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.List;
-
 @StateStrategyType(AddToEndSingleStrategy.class)
 public interface MapView extends MvpView {
 
     void showDummyData();
 
     void showLoading();
-
     @StateStrategyType(OneExecutionStateStrategy.class)
     void loadMap();
 
@@ -24,6 +21,4 @@ public interface MapView extends MvpView {
     void setupMap();
 
     void showMarker(LatLng latLng);
-
-    void showRoute(List<LatLng> routePoints);
 }
