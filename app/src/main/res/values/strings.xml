@@ -39,4 +39,13 @@
     <string name="driver_success_text">Вы вошли как водитель</string>
     <string name="passenger_success_text">Вы вошли как пассажир</string>
     <string name="text_around_you">Сейчас рядом с Вами</string>
+    <string name="inf_trip_label">Информация о поездке</string>
+    <string name="point_start_label">Точка старт</string>
+    <string name="point_finish_label">Точка финиш</string>
+    <string name="time_example">00:00</string>
+    <string name="price_label">200 руб.</string>
+    <string name="price_trip_label">Цена поездки</string>
+    <string name="age_label">Возраст</string>
+    <string name="trip_quantity_label">Поездок</string>
+    <string name="request_trip_text_btn">ЗАПРОСИТЬ ПОЕЗДКУ</string>
 </resources>
