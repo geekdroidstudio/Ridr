@@ -10,31 +10,43 @@ import android.widget.ProgressBar;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
+import butterknife.BindColor;
+import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
+import geekdroidstudio.ru.ridr.model.mapHelper.IMapHelper;
 import geekdroidstudio.ru.ridr.presenter.MapPresenter;
 
-public class MapFragment extends MvpAppCompatFragment implements MapView, OnMapReadyCallback,
-        GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
+
+public class MapFragment extends MvpAppCompatFragment implements MapView {
+    public static final String TAG = MapFragment.class.getSimpleName();
     @BindView(R.id.pb_fragment_map_loading)
     ProgressBar loadingProgress;
+    @BindColor(R.color.colorPrimary)
+    int routeLineColor;
+    @BindDimen(R.dimen.routeLineWidth)
+    float routeLineWidth;
 
     @InjectPresenter
     MapPresenter mapPresenter;
 
-    private GoogleMap map;
-    private Marker marker;
+    @Inject
+    IMapHelper<GoogleMap, BitmapDescriptor, LatLng> mapHelper;
+
     private Unbinder unbinder;
     private OnFragmentInteractionListener onFragmentInteractionListener;
 
@@ -46,7 +58,6 @@ public class MapFragment extends MvpAppCompatFragment implements MapView, OnMapR
         return new MapFragment();
     }
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -54,7 +65,7 @@ public class MapFragment extends MvpAppCompatFragment implements MapView, OnMapR
             onFragmentInteractionListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + getString(R.string.error_implement_fragment_interaction_listener));
+                    + getString(R.string.error_implement_frag_interact_list));
         }
     }
 
@@ -62,65 +73,34 @@ public class MapFragment extends MvpAppCompatFragment implements MapView, OnMapR
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
+        App.getInstance().getAppComponent().inject(this);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
-    public void loadMap() {
+    public void initMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.gm_fragment_map_map);
-        mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(createOnMapReadyCallback());
     }
 
     @Override
-    public void setupMap() {
-        map.setOnMapClickListener(this);
-        map.setOnMarkerClickListener(this);
-
-        UiSettings uiSettings = map.getUiSettings();
-        uiSettings.setZoomControlsEnabled(true);
+    public void showMap(GoogleMap map) {
+        mapHelper.init(map);
     }
 
     @Override
-    public void showMarker(LatLng latLng) {
-        if (marker == null) {
-           marker=  map.addMarker(new MarkerOptions()
-                    .position(latLng)
-                   .alpha(Float.parseFloat(getString(R.string.map_fragment_map_marker_alpha))));
-            //наверное лучше не в стрингах хранить
-        } else {
-            marker.setPosition(latLng);
-        }
-    }
-
-    //onMapReadyCallback
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        map = googleMap;
-        mapPresenter.onMapReady();
-    }
-
-    //onMapClickCallback
-    @Override
-    public void onMapClick(LatLng latLng) {
-        mapPresenter.onMapClick(latLng);
-    }
-
-    //onMarkerClickCallback
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        mapPresenter.onMarkerClick(marker);
-        return true;
+    public void showRoute(List<LatLng> routePoints) {
+        mapPresenter.showRoute(routePoints);
     }
 
     @Override
-    public void showDummyData() {
-        LatLng sydney = new LatLng(-34, 151);
-        marker = map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    public void drawRoute(List<LatLng> routePoints) {
+        mapHelper.drawRoute(getResources().getDisplayMetrics().widthPixels, routeLineColor,
+                routeLineWidth, BitmapDescriptorFactory.fromResource(R.drawable.ic_start_route),
+                BitmapDescriptorFactory.fromResource(R.drawable.ic_end_route), routePoints);
     }
-
 
     @Override
     public void showLoading() {
@@ -133,18 +113,21 @@ public class MapFragment extends MvpAppCompatFragment implements MapView, OnMapR
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        onFragmentInteractionListener = null;
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
 
-    public interface OnFragmentInteractionListener {
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        onFragmentInteractionListener = null;
+    }
 
+    private OnMapReadyCallback createOnMapReadyCallback() {
+        return googleMap -> mapPresenter.onMapReady(googleMap);
+    }
+
+    public interface OnFragmentInteractionListener {
     }
 }

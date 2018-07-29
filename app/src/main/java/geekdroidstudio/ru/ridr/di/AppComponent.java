@@ -5,14 +5,17 @@ import javax.inject.Singleton;
 import dagger.Component;
 import geekdroidstudio.ru.ridr.di.modules.AuthenticationModule;
 import geekdroidstudio.ru.ridr.di.modules.CommunicationModule;
+import geekdroidstudio.ru.ridr.di.modules.MapHelperModule;
 import geekdroidstudio.ru.ridr.di.modules.RepositoryModule;
-import geekdroidstudio.ru.ridr.presenter.RouteDataFragmentPresenter;
+import geekdroidstudio.ru.ridr.presenter.RouteDataPresenter;
+import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 
 
 @Singleton
-@Component(modules = {RepositoryModule.class, CommunicationModule.class,AuthenticationModule.class})
+@Component(modules = {RepositoryModule.class, CommunicationModule.class,AuthenticationModule.class, MapHelperModule.class})
 public interface AppComponent {
 
-    void inject(RouteDataFragmentPresenter routeDataFragmentPresenter);
+    void inject(RouteDataPresenter routeDataFragmentPresenter);
 
+    void inject(MapFragment mapFragment);
 }

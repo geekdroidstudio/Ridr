@@ -7,3 +7,4 @@ google-services.json
 /build
 /captures
 .externalNativeBuild
+/local.properties

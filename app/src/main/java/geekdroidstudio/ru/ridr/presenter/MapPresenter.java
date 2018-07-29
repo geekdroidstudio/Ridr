@@ -2,8 +2,10 @@ package geekdroidstudio.ru.ridr.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
+
+import java.util.List;
 
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapView;
 
@@ -14,20 +16,16 @@ public class MapPresenter extends MvpPresenter<MapView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         getViewState().showLoading();
-        getViewState().loadMap();
+        getViewState().initMap();
     }
 
-    public void onMapReady() {
+    public void onMapReady(GoogleMap googleMap) {
         getViewState().hideLoading();
-        getViewState().setupMap();
-
+        getViewState().showMap(googleMap);
     }
 
-    public void onMapClick(LatLng latLng) {
-        getViewState().showMarker(latLng);
+    public void showRoute(List<LatLng> routePoints) {
+        getViewState().drawRoute(routePoints);
     }
 
-    public void onMarkerClick(Marker marker) {
-
-    }
 }
