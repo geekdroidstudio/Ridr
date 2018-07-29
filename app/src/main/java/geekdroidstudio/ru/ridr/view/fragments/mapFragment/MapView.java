@@ -7,7 +7,7 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.google.android.gms.maps.model.LatLng;
 
 @StateStrategyType(AddToEndSingleStrategy.class)
-public interface MapView extends MvpView{
+public interface MapView extends MvpView {
 
     void showDummyData();
 

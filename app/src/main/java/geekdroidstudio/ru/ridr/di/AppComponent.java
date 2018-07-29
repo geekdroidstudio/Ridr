@@ -4,9 +4,15 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import geekdroidstudio.ru.ridr.di.modules.AuthenticationModule;
+import geekdroidstudio.ru.ridr.di.modules.CommunicationModule;
+import geekdroidstudio.ru.ridr.di.modules.RepositoryModule;
+import geekdroidstudio.ru.ridr.presenter.RouteDataFragmentPresenter;
 
-@Component(modules = {AuthenticationModule.class})
+
 @Singleton
+@Component(modules = {RepositoryModule.class, CommunicationModule.class,AuthenticationModule.class})
 public interface AppComponent {
+
+    void inject(RouteDataFragmentPresenter routeDataFragmentPresenter);
 
 }
