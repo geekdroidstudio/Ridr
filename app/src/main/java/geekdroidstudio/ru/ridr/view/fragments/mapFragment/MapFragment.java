@@ -16,7 +16,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -29,7 +28,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.model.entity.directionApiResponse.Route;
 import geekdroidstudio.ru.ridr.presenter.MapFragmentPresenter;
 
 
@@ -95,7 +93,7 @@ public class MapFragment extends MvpAppCompatFragment implements MapView, OnMapR
     @Override
     public void showMarker(LatLng latLng) {
         if (marker == null) {
-           marker=  map.addMarker(new MarkerOptions()
+            marker = map.addMarker(new MarkerOptions()
                     .position(latLng)
                     .alpha(Float.parseFloat(getString(R.string.map_fragment_map_marker_alpha))));/*наверное лучше не в стрингах хранить*/
         } else {
@@ -184,5 +182,6 @@ public class MapFragment extends MvpAppCompatFragment implements MapView, OnMapR
         unbinder.unbind();
     }
 
-    public interface OnFragmentInteractionListener { }
+    public interface OnFragmentInteractionListener {
+    }
 }

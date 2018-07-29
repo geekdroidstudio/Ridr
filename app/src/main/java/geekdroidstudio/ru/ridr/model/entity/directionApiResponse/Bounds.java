@@ -1,6 +1,5 @@
 package geekdroidstudio.ru.ridr.model.entity.directionApiResponse;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
