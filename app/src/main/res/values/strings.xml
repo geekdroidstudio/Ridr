@@ -10,7 +10,7 @@
     <string name="retry">ПОВТОР</string>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyA4yMoJ0qPEn09zeBvjijevu0if79MnZ_k</string>
 
-    <string name="authorization_text">Вход</string>
+    <string name="authentication_text">Вход</string>
     <string name="email_field">Email</string>
     <string name="pass_field">Пароль</string>
     <string name="registration_link">ЗАРЕГИСТРИРОВАТЬСЯ</string>

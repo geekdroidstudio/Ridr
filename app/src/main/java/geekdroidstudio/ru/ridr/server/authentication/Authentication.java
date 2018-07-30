@@ -1,11 +1,6 @@
 package geekdroidstudio.ru.ridr.server.authentication;
 
-import android.support.annotation.NonNull;
-
 import com.arellomobile.mvp.MvpAppCompatFragment;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import javax.inject.Inject;
@@ -15,7 +10,6 @@ import timber.log.Timber;
 public class Authentication {
 
 	private FirebaseAuth firebaseAuth;
-	private FirebaseAuth.AuthStateListener authStateListener;
 	@Inject
 	AuthDatabase authDatabase;
 	private IAuthenticationSignIn iAuthenticationSignIn;
@@ -25,7 +19,6 @@ public class Authentication {
 	public Authentication(AuthDatabase authDatabase) {
 		firebaseAuth = FirebaseAuth.getInstance();
 		this.authDatabase = authDatabase;
-		//authDatabase = new AuthDatabase();
 	}
 
 	public interface IAuthenticationSignIn {
@@ -59,17 +52,14 @@ public class Authentication {
 
 
 		firebaseAuth.signInWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(
-				new OnCompleteListener<AuthResult>() {
-					@Override
-					public void onComplete(@NonNull Task<AuthResult> task) {
-						if (task.isSuccessful()) {
-							Timber.d("onComplete: wasSignIn()");
-							AuthDatabase.setUserId(firebaseAuth.getUid());
-							iAuthenticationSignIn.wasSignIn();
-						} else {
-							Timber.d("onComplete: wasSignIn()");
-							//iAuthenticationSignIn.wasNotSignIn();
-						}
+				task -> {
+					if (task.isSuccessful()) {
+						Timber.d("onComplete: wasSignIn()");
+						AuthDatabase.setUserId(firebaseAuth.getUid());
+						iAuthenticationSignIn.wasSignIn();
+					} else {
+						Timber.d("onComplete: wasNotSignIn()");
+						iAuthenticationSignIn.wasNotSignIn();
 					}
 				});
 
@@ -77,35 +67,22 @@ public class Authentication {
 	}
 
 	//регистрация пользователя
-	public void signUp(final String userName, final String userEmail, String userPassword) {
+	public void signUp(String userName, String userEmail, String userPassword, String userStatus) {
 
 		Timber.d("signUp");
 
-
 		firebaseAuth.createUserWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(
-				new OnCompleteListener<AuthResult>() {
-					@Override
-					public void onComplete(@NonNull Task<AuthResult> task) {
-						if (task.isSuccessful()) {
-							authDatabase.addUser(firebaseAuth.getUid(), userName, userEmail);
-							Timber.d("onComplete: wasSignUp()");
-							iAuthenticationSignUp.wasSignUp();
-						} else {
-							Timber.d("onComplete: wasNotSignUp()");
-							iAuthenticationSignUp.wasNotSignUp();
-						}
+				task -> {
+					if (task.isSuccessful()) {
+						authDatabase.addUser(firebaseAuth.getUid(), userName, userEmail, userStatus);
+						Timber.d("onComplete: wasSignUp()");
+						iAuthenticationSignUp.wasSignUp();
+					} else {
+						Timber.d("onComplete: wasNotSignUp()");
+						iAuthenticationSignUp.wasNotSignUp();
 					}
 				});
 
 
-	}
-
-	public boolean validateString(String... strings) {
-		for (String str : strings) {
-			if (str.isEmpty()) {
-				return false;
-			}
-		}
-		return true;
 	}
 }

@@ -31,11 +31,11 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
 
     @Override
     public void showFindDriversFragment() {
-        getSupportFragmentManager()
+        /*getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fl_activity_passenger_main_frame, PassengerFindDriversFragment.newInstance())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit();
+                .commit();*/
     }
 
     @Override

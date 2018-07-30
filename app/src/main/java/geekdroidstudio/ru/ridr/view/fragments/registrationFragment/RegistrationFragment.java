@@ -31,7 +31,8 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
     AppCompatButton buttonChooseDriver;
     @BindView(R.id.button_choose_passenger)
     AppCompatButton buttonChoosePassenger;
-    @BindView(R.id.edit_text_registration_password) EditText editTextRegistrationPassword;
+    @BindView(R.id.edit_text_registration_password)
+    TextInputEditText editTextRegistrationPassword;
 
     @Inject Authentication authentication;
 
@@ -87,12 +88,15 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
     @Override
     public void chooseRoleDriver() {
         String phoneEmail = editTextPhoneEmail.getText().toString();
-        if(phoneEmail.isEmpty()){
+        String registrationPassword = editTextRegistrationPassword.getText().toString();
+        Timber.d("chooseRoleDriver()");
+
+        if(phoneEmail.isEmpty() || registrationPassword.isEmpty()){
             Toast.makeText(getContext(),R.string.registration_error_text, Toast.LENGTH_SHORT).show();
+
         }else {
-            Toast.makeText(getContext(),R.string.driver_success_text, Toast.LENGTH_SHORT).show();
-            //presenter.loginDriver();
-            onFragmentInteractionListener.startDriverActivity();
+            authentication.signUp("noName", phoneEmail, registrationPassword, "driver");
+
         }
     }
 
@@ -104,20 +108,18 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
         String registrationPassword = editTextRegistrationPassword.getText().toString();
         Timber.d("chooseRolePassenger()");
 
-
         if(phoneEmail.isEmpty() || registrationPassword.isEmpty()){
             Toast.makeText(getContext(),R.string.registration_error_text, Toast.LENGTH_SHORT).show();
 
         }else {
-            //Toast.makeText(getContext(),R.string.passenger_success_text, Toast.LENGTH_SHORT).show();
-            //presenter.loginPassenger();
-            authentication.signUp("noName", phoneEmail, registrationPassword);
+            authentication.signUp("noName", phoneEmail, registrationPassword, "passenger");
 
         }
     }
 
     @Override
     public void wasSignUp() {
+        Timber.d("wasSignUp()");
         onFragmentInteractionListener.startPassengerActivity();
     }
 

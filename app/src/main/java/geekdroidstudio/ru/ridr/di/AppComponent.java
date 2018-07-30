@@ -10,7 +10,7 @@ import geekdroidstudio.ru.ridr.di.modules.RepositoryModule;
 import geekdroidstudio.ru.ridr.presenter.RouteDataPresenter;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.registrationFragment.RegistrationFragment;
-import geekdroidstudio.ru.ridr.view.fragments.startAuthorisationFragment.StartAuthorisationFragment;
+import geekdroidstudio.ru.ridr.view.fragments.startAuthorisationFragment.StartAuthenticationFragment;
 
 
 @Singleton
@@ -19,6 +19,6 @@ public interface AppComponent {
 
     void inject(RouteDataPresenter routeDataFragmentPresenter);
     void inject(MapFragment mapFragment);
-    void inject(StartAuthorisationFragment startAuthorisationFragment);
+    void inject(StartAuthenticationFragment startAuthenticationFragment);
     void inject(RegistrationFragment registrationFragment);
 }

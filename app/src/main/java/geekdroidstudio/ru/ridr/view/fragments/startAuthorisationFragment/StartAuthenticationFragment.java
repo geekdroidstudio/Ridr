@@ -24,7 +24,7 @@ import geekdroidstudio.ru.ridr.server.authentication.Authentication;
 import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity;
 import timber.log.Timber;
 
-public class StartAuthorisationFragment extends MvpAppCompatFragment implements StartAuthorisationView, Authentication.IAuthenticationSignIn {
+public class StartAuthenticationFragment extends MvpAppCompatFragment implements StartAuthenticationView, Authentication.IAuthenticationSignIn {
 
     @Inject Authentication authentication;
 
@@ -32,23 +32,23 @@ public class StartAuthorisationFragment extends MvpAppCompatFragment implements 
     TextInputEditText editTextEmail;
     @BindView(R.id.edit_text_password)
     TextInputEditText editTextPassword;
-    @BindView(R.id.button_enter)
+    @BindView(R.id.button_sign_in)
     AppCompatButton buttonEnter;
 
     private Unbinder unbinder;
-    private StartAuthorisationFragment.OnFragmentInteractionListener onFragmentInteractionListener;
+    private StartAuthenticationFragment.OnFragmentInteractionListener onFragmentInteractionListener;
 
-    public StartAuthorisationFragment(){}
+    public StartAuthenticationFragment(){}
 
-    public static StartAuthorisationFragment newInstance() {
-        return new StartAuthorisationFragment();
+    public static StartAuthenticationFragment newInstance() {
+        return new StartAuthenticationFragment();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof StartAuthorisationFragment.OnFragmentInteractionListener) {
-            onFragmentInteractionListener = (StartAuthorisationFragment.OnFragmentInteractionListener) context;
+        if (context instanceof StartAuthenticationFragment.OnFragmentInteractionListener) {
+            onFragmentInteractionListener = (StartAuthenticationFragment.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + getString(R.string.error_implement_fragment_interaction_listener));
@@ -58,7 +58,7 @@ public class StartAuthorisationFragment extends MvpAppCompatFragment implements 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_authorisation_start, container, false);
+        View view = inflater.inflate(R.layout.fragment_authentication_start, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         App.getComponent().inject(this);
@@ -81,20 +81,20 @@ public class StartAuthorisationFragment extends MvpAppCompatFragment implements 
 
     public interface OnFragmentInteractionListener {
         void changeFragmentToRegistration();
+        void startDriverActivity();
     }
 
-    @OnClick(R.id.button_enter)
+    @OnClick(R.id.button_sign_in)
 	@Override
-	public void enterApp(){
-		String email = editTextEmail.getText().toString();
-		String password =  editTextPassword.getText().toString();
+	public void onClickSignIn(){
+		String userEmail = editTextEmail.getText().toString();
+		String userPassword =  editTextPassword.getText().toString();
 
-		if(email.isEmpty() || password.isEmpty()){
+		if(userEmail.isEmpty() || userPassword.isEmpty()){
 			Toast.makeText(getContext(),R.string.authorisation_error_text, Toast.LENGTH_SHORT).show();
 		}else {
-			Toast.makeText(getContext(),R.string.authorisation_success_text, Toast.LENGTH_SHORT).show();
 			//presenter.loginUser(login,password);
-			authentication.signIn(email, password);
+			authentication.signIn(userEmail, userPassword);
 
 		}
 	}
@@ -102,7 +102,7 @@ public class StartAuthorisationFragment extends MvpAppCompatFragment implements 
 	@OnClick(R.id.button_sign_up)
 	@Override
 	public void onClickSignUp(){
-    	Timber.d("onClickSignUp(");
+    	Timber.d("onClickSignUp()");
 		onFragmentInteractionListener.changeFragmentToRegistration();
 	}
 
