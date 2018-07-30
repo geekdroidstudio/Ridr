@@ -7,4 +7,5 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 @StateStrategyType(AddToEndSingleStrategy.class)
 public interface StartAuthorisationView extends MvpView {
     void enterApp();
+    void onClickSignUp();
 }

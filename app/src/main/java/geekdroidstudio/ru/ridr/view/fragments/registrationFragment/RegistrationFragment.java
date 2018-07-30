@@ -8,23 +8,32 @@ import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
+import geekdroidstudio.ru.ridr.server.authentication.Authentication;
+import timber.log.Timber;
 
-public class RegistrationFragment extends MvpAppCompatFragment implements RegistrationView {
+public class RegistrationFragment extends MvpAppCompatFragment implements RegistrationView, Authentication.IAuthenticationSignUp {
     @BindView(R.id.edit_text_phone_email)
     TextInputEditText editTextPhoneEmail;
     @BindView(R.id.button_choose_driver)
     AppCompatButton buttonChooseDriver;
     @BindView(R.id.button_choose_passenger)
     AppCompatButton buttonChoosePassenger;
+    @BindView(R.id.edit_text_registration_password) EditText editTextRegistrationPassword;
+
+    @Inject Authentication authentication;
 
     private Unbinder unbinder;
     private RegistrationFragment.OnFragmentInteractionListener onFragmentInteractionListener;
@@ -51,6 +60,9 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_registration, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        App.getComponent().inject(this);
+        authentication.setContextSignUp(this);
         return view;
     }
 
@@ -87,13 +99,31 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
     @OnClick(R.id.button_choose_passenger)
     @Override
     public void chooseRolePassenger() {
+
         String phoneEmail = editTextPhoneEmail.getText().toString();
-        if(phoneEmail.isEmpty()){
+        String registrationPassword = editTextRegistrationPassword.getText().toString();
+        Timber.d("chooseRolePassenger()");
+
+
+        if(phoneEmail.isEmpty() || registrationPassword.isEmpty()){
             Toast.makeText(getContext(),R.string.registration_error_text, Toast.LENGTH_SHORT).show();
+
         }else {
-            Toast.makeText(getContext(),R.string.passenger_success_text, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(),R.string.passenger_success_text, Toast.LENGTH_SHORT).show();
             //presenter.loginPassenger();
-            onFragmentInteractionListener.startPassengerActivity();
+            authentication.signUp("noName", phoneEmail, registrationPassword);
+
         }
     }
+
+    @Override
+    public void wasSignUp() {
+        onFragmentInteractionListener.startPassengerActivity();
+    }
+
+    @Override
+    public void wasNotSignUp() {
+
+    }
+
 }

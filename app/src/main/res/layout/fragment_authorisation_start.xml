@@ -22,14 +22,14 @@
 
 
     <android.support.design.widget.TextInputEditText
-        android:id="@+id/edit_text_login"
+        android:id="@+id/edit_text_email"
         android:layout_width="150dp"
         android:layout_height="40dp"
         android:layout_marginBottom="280dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="debug_login"
-        android:hint="@string/login_field"
+        android:text="qw@qw.qw"
+        android:hint="@string/email_field"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -44,7 +44,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:hint="@string/pass_field"
-        android:text="debug_password"
+        android:text="123456"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

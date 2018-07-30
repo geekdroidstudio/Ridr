@@ -12,15 +12,24 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
+import geekdroidstudio.ru.ridr.server.authentication.Authentication;
+import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity;
+import timber.log.Timber;
 
-public class StartAuthorisationFragment extends MvpAppCompatFragment implements StartAuthorisationView {
-    @BindView(R.id.edit_text_login)
-    TextInputEditText editTextLogin;
+public class StartAuthorisationFragment extends MvpAppCompatFragment implements StartAuthorisationView, Authentication.IAuthenticationSignIn {
+
+    @Inject Authentication authentication;
+
+    @BindView(R.id.edit_text_email)
+    TextInputEditText editTextEmail;
     @BindView(R.id.edit_text_password)
     TextInputEditText editTextPassword;
     @BindView(R.id.button_enter)
@@ -51,6 +60,10 @@ public class StartAuthorisationFragment extends MvpAppCompatFragment implements 
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_authorisation_start, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        App.getComponent().inject(this);
+        authentication.setContextSignIn(this);
+
         return view;
     }
 
@@ -71,16 +84,38 @@ public class StartAuthorisationFragment extends MvpAppCompatFragment implements 
     }
 
     @OnClick(R.id.button_enter)
+	@Override
+	public void enterApp(){
+		String email = editTextEmail.getText().toString();
+		String password =  editTextPassword.getText().toString();
+
+		if(email.isEmpty() || password.isEmpty()){
+			Toast.makeText(getContext(),R.string.authorisation_error_text, Toast.LENGTH_SHORT).show();
+		}else {
+			Toast.makeText(getContext(),R.string.authorisation_success_text, Toast.LENGTH_SHORT).show();
+			//presenter.loginUser(login,password);
+			authentication.signIn(email, password);
+
+		}
+	}
+
+	@OnClick(R.id.button_sign_up)
+	@Override
+	public void onClickSignUp(){
+    	Timber.d("onClickSignUp(");
+		onFragmentInteractionListener.changeFragmentToRegistration();
+	}
+
     @Override
-    public void enterApp(){
-        String login = editTextLogin.getText().toString();
-        String password =  editTextPassword.getText().toString();
-        if(login.isEmpty() || password.isEmpty()){
-            Toast.makeText(getContext(),R.string.authorisation_error_text, Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(getContext(),R.string.authorisation_success_text, Toast.LENGTH_SHORT).show();
-            //presenter.loginUser(login,password);
-            onFragmentInteractionListener.changeFragmentToRegistration();
-        }
+    public void wasSignIn() {
+        Timber.d("wasSignIn()");
+		((UserMainActivity)getActivity()).launchPassengerActivity();
     }
+
+    @Override
+    public void wasNotSignIn() {
+        Toast.makeText(getContext(),R.string.invalid_email_or_password, Toast.LENGTH_SHORT).show();
+    }
+
+
 }
