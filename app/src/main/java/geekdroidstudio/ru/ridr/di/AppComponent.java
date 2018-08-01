@@ -10,7 +10,7 @@ import geekdroidstudio.ru.ridr.di.modules.RepositoryModule;
 import geekdroidstudio.ru.ridr.presenter.RouteDataPresenter;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.registrationFragment.RegistrationFragment;
-import geekdroidstudio.ru.ridr.view.fragments.startAuthorisationFragment.StartAuthenticationFragment;
+import geekdroidstudio.ru.ridr.view.fragments.startAuthenticationFragment.StartAuthenticationFragment;
 
 
 @Singleton

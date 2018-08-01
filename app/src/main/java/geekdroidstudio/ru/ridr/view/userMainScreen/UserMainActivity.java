@@ -11,9 +11,8 @@ import geekdroidstudio.ru.ridr.R;
 import geekdroidstudio.ru.ridr.presenter.UserMainPresenter;
 import geekdroidstudio.ru.ridr.view.driverMainScreen.DriverMainActivity;
 import geekdroidstudio.ru.ridr.view.fragments.registrationFragment.RegistrationFragment;
-import geekdroidstudio.ru.ridr.view.fragments.startAuthorisationFragment.StartAuthenticationFragment;
+import geekdroidstudio.ru.ridr.view.fragments.startAuthenticationFragment.StartAuthenticationFragment;
 import geekdroidstudio.ru.ridr.view.passengerMainScreen.PassengerMainActivity;
-import timber.log.Timber;
 
 public class UserMainActivity extends MvpAppCompatActivity implements UserMainView,
         StartAuthenticationFragment.OnFragmentInteractionListener,

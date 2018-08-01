@@ -1,4 +1,4 @@
-package geekdroidstudio.ru.ridr.view.fragments.startAuthorisationFragment;
+package geekdroidstudio.ru.ridr.view.fragments.startAuthenticationFragment;
 
 import android.content.Context;
 import android.os.Bundle;
