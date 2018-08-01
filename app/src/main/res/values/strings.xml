@@ -10,8 +10,8 @@
     <string name="retry">ПОВТОР</string>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyA4yMoJ0qPEn09zeBvjijevu0if79MnZ_k</string>
 
-    <string name="authorization_text">Вход</string>
-    <string name="login_field">Логин</string>
+    <string name="authentication_text">Вход</string>
+    <string name="email_field">Email</string>
     <string name="pass_field">Пароль</string>
     <string name="registration_link">ЗАРЕГИСТРИРОВАТЬСЯ</string>
 
@@ -39,7 +39,7 @@
     <string name="authorisation_error_text">Пожалуйста заполните все поля</string>
     <string name="authorisation_success_text">Вход успешно выполнен</string>
     <string name="edit_text_email_phone_hint">+X XXX XXX XX XX или xxx@xxx.xx</string>
-    <string name="registration_error_text">Введите телефон или почту</string>
+    <string name="registration_error_text">Введите телефон или почту и пароль</string>
     <string name="driver_success_text">Вы вошли как водитель</string>
     <string name="passenger_success_text">Вы вошли как пассажир</string>
     <string name="text_around_you">Сейчас рядом с Вами</string>
@@ -52,8 +52,10 @@
     <string name="age_label">Возраст</string>
     <string name="trip_quantity_label">Поездок</string>
     <string name="request_trip_text_btn">ЗАПРОСИТЬ ПОЕЗДКУ</string>
+    <string name="invalid_email_or_password">Неправильный email или пароль</string>
 
 
     <string name="attantion">Логин в виде xx@xx.xx. Пароль минимум 6 символов. Для регистрации ещё и имя </string>
+    <string name="hint_enter_password">Введите пароль</string>
 
 </resources>

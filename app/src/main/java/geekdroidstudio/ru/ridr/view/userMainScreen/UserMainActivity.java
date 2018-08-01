@@ -11,11 +11,11 @@ import geekdroidstudio.ru.ridr.R;
 import geekdroidstudio.ru.ridr.presenter.UserMainPresenter;
 import geekdroidstudio.ru.ridr.view.driverMainScreen.DriverMainActivity;
 import geekdroidstudio.ru.ridr.view.fragments.registrationFragment.RegistrationFragment;
-import geekdroidstudio.ru.ridr.view.fragments.startAuthorisationFragment.StartAuthorisationFragment;
+import geekdroidstudio.ru.ridr.view.fragments.startAuthenticationFragment.StartAuthenticationFragment;
 import geekdroidstudio.ru.ridr.view.passengerMainScreen.PassengerMainActivity;
 
 public class UserMainActivity extends MvpAppCompatActivity implements UserMainView,
-        StartAuthorisationFragment.OnFragmentInteractionListener,
+        StartAuthenticationFragment.OnFragmentInteractionListener,
         RegistrationFragment.OnFragmentInteractionListener {
     @InjectPresenter
     UserMainPresenter userMainPresenter;
@@ -32,7 +32,7 @@ public class UserMainActivity extends MvpAppCompatActivity implements UserMainVi
     public void showStartAuthorisationFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fl_activity_user_main_frame, StartAuthorisationFragment.newInstance())
+                .replace(R.id.fl_activity_user_main_frame, StartAuthenticationFragment.newInstance())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }
@@ -56,7 +56,7 @@ public class UserMainActivity extends MvpAppCompatActivity implements UserMainVi
         startActivity(new Intent(getApplicationContext(), PassengerMainActivity.class));
     }
 
-    //StartAuthorisationFragment method implementations
+    //StartAuthenticationFragment method implementations
     @Override
     public void changeFragmentToRegistration() {
         showRegistrationFragment();

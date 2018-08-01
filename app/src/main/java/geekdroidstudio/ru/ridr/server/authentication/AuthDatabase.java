@@ -14,8 +14,9 @@ import timber.log.Timber;
 public class AuthDatabase {
 
 	public static final String AUTH_BOOK = "authentication";
-	public static final String AUTH_USER_NAME = "name";
-	public static final String AUTH_USER_EMAIL = "email";
+	public static final String AUTH_USER_NAME = "userName";
+	public static final String AUTH_USER_EMAIL = "userEmail";
+	public static final String AUTH_USER_STATUS = "userStatus";
 
 	private static String userId;
 
@@ -29,11 +30,11 @@ public class AuthDatabase {
 		databaseReference = firebaseDatabase.getReference();
 	}
 
-	public interface IAuthDatabase{
+	public interface IAuthDatabase {
 		void getUserName(String userName);
 	}
 
-	public void setContext(Context context){
+	public void setContext(Context context) {
 		iAuthDatabase = (IAuthDatabase) context;
 	}
 
@@ -42,31 +43,30 @@ public class AuthDatabase {
 	}
 
 	//добавление пользователя в базу
-	public void addUser(String userId, String userName, String userEmail) {
-		if (userName != null) {
-			Timber.d("addUser: " + userId + " " + userName);
-			databaseReference.child(AUTH_BOOK).child(userId).child(AUTH_USER_NAME).setValue(userName);
-			databaseReference.child(AUTH_BOOK).child(userId).child(AUTH_USER_EMAIL).setValue(userEmail);
-		}
+	public void addUser(String userId, String userName, String userEmail, String userStatus) {
+		Timber.d("addUser: " + userId + " " + userName + " " + userEmail + " " + userStatus);
+		databaseReference.child(AUTH_BOOK).child(userId).child(AUTH_USER_NAME).setValue(userName);
+		databaseReference.child(AUTH_BOOK).child(userId).child(AUTH_USER_EMAIL).setValue(userEmail);
+		databaseReference.child(AUTH_BOOK).child(userId).child(AUTH_USER_STATUS).setValue(userStatus);
 	}
 
-	public void getUserName(){
+	public void getUserName() {
 
 		databaseReference
 				.child(AUTH_BOOK)
 				.child(userId)
 				.child(AUTH_USER_NAME)
 				.addListenerForSingleValueEvent(new ValueEventListener() {
-			@Override
-			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-				iAuthDatabase.getUserName(dataSnapshot.getValue().toString());
-			}
+					@Override
+					public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+						iAuthDatabase.getUserName(dataSnapshot.getValue().toString());
+					}
 
-			@Override
-			public void onCancelled(@NonNull DatabaseError databaseError) {
-				Timber.e("getUserName: onCancelled");
-			}
-		});
+					@Override
+					public void onCancelled(@NonNull DatabaseError databaseError) {
+						Timber.e("getUserName: onCancelled");
+					}
+				});
 
 	}
 

@@ -9,7 +9,7 @@ import timber.log.Timber;
 public class App extends Application {
     private static App instance;
 
-	private AppComponent component;
+	private static AppComponent component;
 
     @Override
     public void onCreate() {
@@ -24,7 +24,7 @@ public class App extends Application {
         return instance;
     }
 
-    public AppComponent getComponent()
+    public static AppComponent getComponent()
     {
         return component;
     }

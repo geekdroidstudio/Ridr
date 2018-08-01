@@ -24,6 +24,8 @@ android {
         buildConfigField "String", "GOOGLE_API_KEY", localProperties['GOOGLE_API_KEY']
         buildConfigField "String", "DIRECTIONS_API_KEY", localProperties['DIRECTIONS_API_KEY']
 
+
+
         manifestPlaceholders = [google_api_key: localProperties['GOOGLE_API_KEY']]
     }
 
