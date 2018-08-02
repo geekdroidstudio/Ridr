@@ -12,7 +12,7 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
-public class PassengerCommunication extends UserCommunication<Passenger, Driver>
+public class PassengerCommunication extends UserCommunication<Driver>
         implements IPassengerCommunication {
 
     private IPassengerRequestRepository passengerRequestRepository;
@@ -23,7 +23,7 @@ public class PassengerCommunication extends UserCommunication<Passenger, Driver>
 
         this.passengerRequestRepository = passengerRequestRepository;
 
-        setLocationsObservable(locationRepository.getPassengers());
+        setLocationsObservable(locationRepository.getDrivers());
     }
 
     @Override

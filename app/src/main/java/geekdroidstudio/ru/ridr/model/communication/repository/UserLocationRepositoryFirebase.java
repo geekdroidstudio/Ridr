@@ -69,7 +69,7 @@ public class UserLocationRepositoryFirebase implements IUserLocationRepository {
     @Override
     public Observable<Map<String, Coordinate>> getDrivers() {
         return driversSubject.doOnSubscribe(disposable -> {
-            passengersReference.removeEventListener(passengersListener);
+            //passengersReference.removeEventListener(passengersListener);//TODO:после отладки раскомментить
             driversReference.addValueEventListener(driversListener);
         });
     }
@@ -77,7 +77,7 @@ public class UserLocationRepositoryFirebase implements IUserLocationRepository {
     @Override
     public Observable<Map<String, Coordinate>> getPassengers() {
         return passengersSubject.doOnSubscribe(disposable -> {
-            driversReference.removeEventListener(driversListener);
+            //driversReference.removeEventListener(driversListener);//TODO:после отладки раскомментить
             passengersReference.addValueEventListener(passengersListener);
         });
     }

@@ -40,10 +40,10 @@ public class CommunicationModule {
     @Singleton
     public IUserLocationRepository getUserLocationRepository(
             @Named("users") DatabaseReference users,
-            @Named("passengers") DatabaseReference passengers,
-            @Named("drivers") DatabaseReference drivers) {
+            @Named("drivers") DatabaseReference drivers,
+            @Named("passengers") DatabaseReference passengers) {
 
-        return new UserLocationRepositoryFirebase(users, passengers, drivers);
+        return new UserLocationRepositoryFirebase(users, drivers, passengers);
     }
 
     @Provides

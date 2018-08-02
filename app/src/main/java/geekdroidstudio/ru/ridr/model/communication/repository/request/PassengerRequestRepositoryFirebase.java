@@ -35,14 +35,17 @@ public class PassengerRequestRepositoryFirebase implements IPassengerRequestRepo
             DatabaseReference requestReference = reference.child("request");
             DatabaseReference responseReference = reference.child("response");
 
-            responseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            requestReference.setValue(request.getSimpleRoute());
+
+            responseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Boolean accept = dataSnapshot.getValue(Boolean.class);
 
-                    //reference.setValue(null);
-
-                    emitter.onSuccess(new DriverResponse(driverId, passengerId, accept));
+                    if (accept != null) {
+                        responseReference.removeEventListener(this);
+                        emitter.onSuccess(new DriverResponse(driverId, passengerId, accept));
+                    }
                 }
 
                 @Override
@@ -51,8 +54,6 @@ public class PassengerRequestRepositoryFirebase implements IPassengerRequestRepo
                     emitter.onError(databaseError.toException());
                 }
             });
-
-            requestReference.setValue(request.getSimpleRoute());
         });
     }
 
@@ -60,8 +61,7 @@ public class PassengerRequestRepositoryFirebase implements IPassengerRequestRepo
     public Observable<PassengerRequest> getRequestObservable(String driverId) {
         return BehaviorSubject.create(emitter -> {
                     DatabaseReference requestReference = mainReference.child(driverId);
-                    requestReference.child(driverId)
-                            .addChildEventListener(getRequestsListener(driverId, emitter));
+            requestReference.addChildEventListener(getRequestsListener(driverId, emitter));
                 }
         );
     }
@@ -82,10 +82,12 @@ public class PassengerRequestRepositoryFirebase implements IPassengerRequestRepo
                                                            ObservableEmitter<PassengerRequest> emitter) {
         return new FirebaseChildEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot,
-                                     @Nullable String passengerId) {
-                SimpleRoute simpleRoute = dataSnapshot.getValue(SimpleRoute.class);
-                emitter.onNext(new PassengerRequest(passengerId, driverId, simpleRoute));
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                DataSnapshot request = dataSnapshot.child("request");
+                SimpleRoute simpleRoute = request.getValue(SimpleRoute.class);
+                if (simpleRoute != null) {
+                    emitter.onNext(new PassengerRequest(dataSnapshot.getKey(), driverId, simpleRoute));
+                }
             }
 
             @Override
