@@ -21,17 +21,15 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="${google_api_key}" />
 
-
-        <activity android:name=".view.userMainScreen.UserMainActivity">
-
+        <activity android:name=".view.userMainScreen.UserMainActivity"></activity>
+        <activity android:name=".view.passengerMainScreen.PassengerMainActivity" />
+        <activity android:name=".TestTempActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".view.passengerMainScreen.PassengerMainActivity"/>
     </application>
 
 </manifest>

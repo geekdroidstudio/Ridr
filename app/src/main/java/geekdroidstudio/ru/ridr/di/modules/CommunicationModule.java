@@ -15,22 +15,25 @@ import geekdroidstudio.ru.ridr.model.communication.PassengerCommunication;
 import geekdroidstudio.ru.ridr.model.communication.repository.IUserLocationRepository;
 import geekdroidstudio.ru.ridr.model.communication.repository.UserLocationRepositoryFirebase;
 import geekdroidstudio.ru.ridr.model.communication.repository.request.IPassengerRequestRepository;
+import geekdroidstudio.ru.ridr.model.communication.repository.request.PassengerRequestRepositoryFirebase;
 
 @Module
 public class CommunicationModule {
 
     @Provides
     @Singleton
-    public IDriverCommunication getDriverCommunication(IUserLocationRepository repository,
-                                                       IPassengerRequestRepository requestRepository) {
-        return new DriverCommunication(repository, requestRepository);
+    public IDriverCommunication getDriverCommunication(
+            IUserLocationRepository locationRepository,
+            IPassengerRequestRepository requestRepository) {
+        return new DriverCommunication(locationRepository, requestRepository);
     }
 
     @Provides
     @Singleton
-    public IPassengerCommunication getPassengerCommunication(IUserLocationRepository repository,
-                                                             IPassengerRequestRepository requestRepository) {
-        return new PassengerCommunication(repository, requestRepository);
+    public IPassengerCommunication getPassengerCommunication(
+            IUserLocationRepository locationRepository,
+            IPassengerRequestRepository requestRepository) {
+        return new PassengerCommunication(locationRepository, requestRepository);
     }
 
     @Provides
@@ -41,6 +44,13 @@ public class CommunicationModule {
             @Named("drivers") DatabaseReference drivers) {
 
         return new UserLocationRepositoryFirebase(users, passengers, drivers);
+    }
+
+    @Provides
+    @Singleton
+    public IPassengerRequestRepository getPassengerRequestRepository(
+            @Named("requests") DatabaseReference requests) {
+        return new PassengerRequestRepositoryFirebase(requests);
     }
 
     @Provides
@@ -80,5 +90,13 @@ public class CommunicationModule {
     public DatabaseReference getDriversDatabaseReference(
             @Named("userCoordinates") DatabaseReference userCoordinates) {
         return userCoordinates.child("drivers");
+    }
+
+    @Provides
+    @Singleton
+    @Named("requests")
+    public DatabaseReference getRequestsDatabaseReference(
+            @Named("root") DatabaseReference root) {
+        return root.child("requests");
     }
 }

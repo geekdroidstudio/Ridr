@@ -1,6 +1,8 @@
 package geekdroidstudio.ru.ridr.model.entity.users;
 
-public abstract class User {
+import com.google.firebase.database.PropertyName;
+
+public class User {
 
     private String id;
 
@@ -25,10 +27,12 @@ public abstract class User {
         this.id = id;
     }
 
+    @PropertyName("userName")
     public String getName() {
         return name;
     }
 
+    @PropertyName("userName")
     public void setName(String name) {
         this.name = name;
     }
@@ -39,5 +43,10 @@ public abstract class User {
 
     public void setLocation(Coordinate location) {
         this.location = location;
+    }
+
+    @Override
+    public String toString() {
+        return "{id:" + getId() + ", name:" + getName() + ", loc:\n" + getLocation() + "}";
     }
 }

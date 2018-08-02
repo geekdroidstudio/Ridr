@@ -18,7 +18,7 @@ import io.reactivex.Single;
 import io.reactivex.subjects.BehaviorSubject;
 import timber.log.Timber;
 
-public abstract class PassengerRequestRepositoryFirebase implements IPassengerRequestRepository {
+public class PassengerRequestRepositoryFirebase implements IPassengerRequestRepository {
     private DatabaseReference mainReference;
 
     public PassengerRequestRepositoryFirebase(DatabaseReference mainReference) {

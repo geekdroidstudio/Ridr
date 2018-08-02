@@ -51,7 +51,7 @@ public class UserLocationRepositoryFirebase implements IUserLocationRepository {
         return Single.create(emitter -> {
             DatabaseReference userReference = usersReference.child(id);
 
-            userReference.addValueEventListener(getUserListener(emitter, userReference));
+            userReference.addListenerForSingleValueEvent(getUserListener(emitter));
         });
     }
 
@@ -93,20 +93,22 @@ public class UserLocationRepositoryFirebase implements IUserLocationRepository {
     }
 
     @NonNull
-    private ValueEventListener getUserListener(SingleEmitter<User> emitter,
-                                               DatabaseReference userReference) {
+    private ValueEventListener getUserListener(SingleEmitter<User> emitter) {
         return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userReference.removeEventListener(this);
-
-                emitter.onSuccess(dataSnapshot.getValue(User.class));
+                User user = dataSnapshot.getValue(User.class);
+                if (user == null) {
+                    Timber.e("User is null");
+                    emitter.onError(new RuntimeException("User is null"));
+                } else {
+                    user.setId(dataSnapshot.getKey());
+                    emitter.onSuccess(user);
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                userReference.removeEventListener(this);
-
                 Timber.e(databaseError.getMessage());
                 emitter.onError(new RuntimeException(databaseError.getMessage()));
             }

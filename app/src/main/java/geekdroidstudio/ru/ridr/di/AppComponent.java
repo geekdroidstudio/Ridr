@@ -3,6 +3,7 @@ package geekdroidstudio.ru.ridr.di;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import geekdroidstudio.ru.ridr.TestTempActivity;
 import geekdroidstudio.ru.ridr.di.modules.AuthenticationModule;
 import geekdroidstudio.ru.ridr.di.modules.CommunicationModule;
 import geekdroidstudio.ru.ridr.di.modules.MapHelperModule;
@@ -21,4 +22,6 @@ public interface AppComponent {
     void inject(MapFragment mapFragment);
     void inject(StartAuthenticationFragment startAuthenticationFragment);
     void inject(RegistrationFragment registrationFragment);
+
+    void inject(TestTempActivity testTempActivity);
 }
