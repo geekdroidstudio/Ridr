@@ -20,6 +20,19 @@ import geekdroidstudio.ru.ridr.model.communication.repository.request.PassengerR
 @Module
 public class CommunicationModule {
 
+    private static final String USERS_ON_MAP = "usersOnMap";
+    private static final String AUTHENTICATION = "authentication";
+    private static final String PASSENGERS = "passengers";
+    private static final String DRIVERS = "drivers";
+    private static final String REQUESTS = "requests";
+
+    private static final String NAMED_USERS = "users";
+    private static final String NAMED_DRIVERS = "drivers";
+    private static final String NAMED_PASSENGERS = "passengers";
+    private static final String NAMED_REQUEST = "requests";
+    private static final String NAMED_ROOT = "root";
+    private static final String NAMED_USER_COORDINATES = "userCoordinates";
+
     @Provides
     @Singleton
     public IDriverCommunication getDriverCommunication(
@@ -39,9 +52,9 @@ public class CommunicationModule {
     @Provides
     @Singleton
     public IUserLocationRepository getUserLocationRepository(
-            @Named("users") DatabaseReference users,
-            @Named("drivers") DatabaseReference drivers,
-            @Named("passengers") DatabaseReference passengers) {
+            @Named(NAMED_USERS) DatabaseReference users,
+            @Named(NAMED_DRIVERS) DatabaseReference drivers,
+            @Named(NAMED_PASSENGERS) DatabaseReference passengers) {
 
         return new UserLocationRepositoryFirebase(users, drivers, passengers);
     }
@@ -49,7 +62,7 @@ public class CommunicationModule {
     @Provides
     @Singleton
     public IPassengerRequestRepository getPassengerRequestRepository(
-            @Named("requests") DatabaseReference requests) {
+            @Named(NAMED_REQUEST) DatabaseReference requests) {
         return new PassengerRequestRepositoryFirebase(requests);
     }
 
@@ -62,41 +75,41 @@ public class CommunicationModule {
 
     @Provides
     @Singleton
-    @Named("userCoordinates")
+    @Named(NAMED_USER_COORDINATES)
     public DatabaseReference getUserCoordinatesDatabaseReference(
-            @Named("root") DatabaseReference root) {
-        return root.child("usersOnMap");
+            @Named(NAMED_ROOT) DatabaseReference root) {
+        return root.child(USERS_ON_MAP);
     }
 
     @Provides
     @Singleton
-    @Named("users")
+    @Named(NAMED_USERS)
     public DatabaseReference getUsersDatabaseReference(
-            @Named("root") DatabaseReference root) {
-        return root.child("authentication");
+            @Named(NAMED_ROOT) DatabaseReference root) {
+        return root.child(AUTHENTICATION);
     }
 
     @Provides
     @Singleton
-    @Named("passengers")
+    @Named(NAMED_PASSENGERS)
     public DatabaseReference getPassengersDatabaseReference(
-            @Named("userCoordinates") DatabaseReference userCoordinates) {
-        return userCoordinates.child("passengers");
+            @Named(NAMED_USER_COORDINATES) DatabaseReference userCoordinates) {
+        return userCoordinates.child(PASSENGERS);
     }
 
     @Provides
     @Singleton
-    @Named("drivers")
+    @Named(NAMED_DRIVERS)
     public DatabaseReference getDriversDatabaseReference(
-            @Named("userCoordinates") DatabaseReference userCoordinates) {
-        return userCoordinates.child("drivers");
+            @Named(NAMED_USER_COORDINATES) DatabaseReference userCoordinates) {
+        return userCoordinates.child(DRIVERS);
     }
 
     @Provides
     @Singleton
-    @Named("requests")
+    @Named(NAMED_REQUEST)
     public DatabaseReference getRequestsDatabaseReference(
-            @Named("root") DatabaseReference root) {
-        return root.child("requests");
+            @Named(NAMED_ROOT) DatabaseReference root) {
+        return root.child(REQUESTS);
     }
 }

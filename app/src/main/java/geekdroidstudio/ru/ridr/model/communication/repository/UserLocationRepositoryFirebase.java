@@ -22,6 +22,8 @@ import timber.log.Timber;
 
 public class UserLocationRepositoryFirebase implements IUserLocationRepository {
 
+    private static final String USER_IS_NULL_ERROR = "User is null";
+
     private DatabaseReference usersReference;
     private DatabaseReference driversReference;
     private DatabaseReference passengersReference;
@@ -99,8 +101,8 @@ public class UserLocationRepositoryFirebase implements IUserLocationRepository {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 if (user == null) {
-                    Timber.e("User is null");
-                    emitter.onError(new RuntimeException("User is null"));
+                    Timber.e(USER_IS_NULL_ERROR);
+                    emitter.onError(new RuntimeException(USER_IS_NULL_ERROR));
                 } else {
                     user.setId(dataSnapshot.getKey());
                     emitter.onSuccess(user);

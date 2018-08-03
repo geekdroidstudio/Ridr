@@ -19,6 +19,10 @@ import io.reactivex.subjects.BehaviorSubject;
 import timber.log.Timber;
 
 public class PassengerRequestRepositoryFirebase implements IPassengerRequestRepository {
+
+    private static final String REQUEST = "request";
+    private static final String RESPONSE = "response";
+
     private DatabaseReference mainReference;
 
     public PassengerRequestRepositoryFirebase(DatabaseReference mainReference) {
@@ -32,8 +36,8 @@ public class PassengerRequestRepositoryFirebase implements IPassengerRequestRepo
             String passengerId = request.getPassengerId();
 
             DatabaseReference reference = mainReference.child(driverId).child(passengerId);
-            DatabaseReference requestReference = reference.child("request");
-            DatabaseReference responseReference = reference.child("response");
+            DatabaseReference requestReference = reference.child(REQUEST);
+            DatabaseReference responseReference = reference.child(RESPONSE);
 
             requestReference.setValue(request.getSimpleRoute());
 
@@ -71,7 +75,7 @@ public class PassengerRequestRepositoryFirebase implements IPassengerRequestRepo
         return Completable.create(emitter -> {
             DatabaseReference responseReference = mainReference.child(response.getDriverId())
                     .child(response.getPassengerId())
-                    .child("response");
+                    .child(RESPONSE);
 
             responseReference.setValue(response.getAccept());
         });
@@ -83,7 +87,7 @@ public class PassengerRequestRepositoryFirebase implements IPassengerRequestRepo
         return new FirebaseChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                DataSnapshot request = dataSnapshot.child("request");
+                DataSnapshot request = dataSnapshot.child(REQUEST);
                 SimpleRoute simpleRoute = request.getValue(SimpleRoute.class);
                 if (simpleRoute != null) {
                     emitter.onNext(new PassengerRequest(dataSnapshot.getKey(), driverId, simpleRoute));
