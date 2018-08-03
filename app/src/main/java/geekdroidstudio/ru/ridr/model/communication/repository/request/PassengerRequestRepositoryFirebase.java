@@ -18,7 +18,11 @@ import io.reactivex.Single;
 import io.reactivex.subjects.BehaviorSubject;
 import timber.log.Timber;
 
-public abstract class PassengerRequestRepositoryFirebase implements IPassengerRequestRepository {
+public class PassengerRequestRepositoryFirebase implements IPassengerRequestRepository {
+
+    private static final String REQUEST = "request";
+    private static final String RESPONSE = "response";
+
     private DatabaseReference mainReference;
 
     public PassengerRequestRepositoryFirebase(DatabaseReference mainReference) {
@@ -32,17 +36,20 @@ public abstract class PassengerRequestRepositoryFirebase implements IPassengerRe
             String passengerId = request.getPassengerId();
 
             DatabaseReference reference = mainReference.child(driverId).child(passengerId);
-            DatabaseReference requestReference = reference.child("request");
-            DatabaseReference responseReference = reference.child("response");
+            DatabaseReference requestReference = reference.child(REQUEST);
+            DatabaseReference responseReference = reference.child(RESPONSE);
 
-            responseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            requestReference.setValue(request.getSimpleRoute());
+
+            responseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Boolean accept = dataSnapshot.getValue(Boolean.class);
 
-                    //reference.setValue(null);
-
-                    emitter.onSuccess(new DriverResponse(driverId, passengerId, accept));
+                    if (accept != null) {
+                        responseReference.removeEventListener(this);
+                        emitter.onSuccess(new DriverResponse(driverId, passengerId, accept));
+                    }
                 }
 
                 @Override
@@ -51,8 +58,6 @@ public abstract class PassengerRequestRepositoryFirebase implements IPassengerRe
                     emitter.onError(databaseError.toException());
                 }
             });
-
-            requestReference.setValue(request.getSimpleRoute());
         });
     }
 
@@ -60,8 +65,7 @@ public abstract class PassengerRequestRepositoryFirebase implements IPassengerRe
     public Observable<PassengerRequest> getRequestObservable(String driverId) {
         return BehaviorSubject.create(emitter -> {
                     DatabaseReference requestReference = mainReference.child(driverId);
-                    requestReference.child(driverId)
-                            .addChildEventListener(getRequestsListener(driverId, emitter));
+            requestReference.addChildEventListener(getRequestsListener(driverId, emitter));
                 }
         );
     }
@@ -71,7 +75,7 @@ public abstract class PassengerRequestRepositoryFirebase implements IPassengerRe
         return Completable.create(emitter -> {
             DatabaseReference responseReference = mainReference.child(response.getDriverId())
                     .child(response.getPassengerId())
-                    .child("response");
+                    .child(RESPONSE);
 
             responseReference.setValue(response.getAccept());
         });
@@ -82,10 +86,12 @@ public abstract class PassengerRequestRepositoryFirebase implements IPassengerRe
                                                            ObservableEmitter<PassengerRequest> emitter) {
         return new FirebaseChildEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot,
-                                     @Nullable String passengerId) {
-                SimpleRoute simpleRoute = dataSnapshot.getValue(SimpleRoute.class);
-                emitter.onNext(new PassengerRequest(passengerId, driverId, simpleRoute));
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                DataSnapshot request = dataSnapshot.child(REQUEST);
+                SimpleRoute simpleRoute = request.getValue(SimpleRoute.class);
+                if (simpleRoute != null) {
+                    emitter.onNext(new PassengerRequest(dataSnapshot.getKey(), driverId, simpleRoute));
+                }
             }
 
             @Override

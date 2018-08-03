@@ -18,7 +18,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
 
-abstract class UserCommunication<U extends User, Other extends User> {
+abstract class UserCommunication<Other extends User> {
 
     final IUserLocationRepository locationRepository;
 

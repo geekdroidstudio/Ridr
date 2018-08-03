@@ -11,7 +11,7 @@ import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 
-public class DriverCommunication extends UserCommunication<Driver, Passenger>
+public class DriverCommunication extends UserCommunication<Passenger>
         implements IDriverCommunication {
 
     private IPassengerRequestRepository passengerRequestRepository;
