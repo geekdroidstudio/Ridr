@@ -4,6 +4,8 @@ import com.google.firebase.database.PropertyName;
 
 public class User {
 
+    private static final String USER_NAME_FIELD = "userName";
+    
     private String id;
 
     private String name;
@@ -27,12 +29,12 @@ public class User {
         this.id = id;
     }
 
-    @PropertyName("userName")
+    @PropertyName(USER_NAME_FIELD)
     public String getName() {
         return name;
     }
 
-    @PropertyName("userName")
+    @PropertyName(USER_NAME_FIELD)
     public void setName(String name) {
         this.name = name;
     }
