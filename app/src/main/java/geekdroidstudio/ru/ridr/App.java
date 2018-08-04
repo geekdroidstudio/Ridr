@@ -4,6 +4,7 @@ import android.app.Application;
 
 import geekdroidstudio.ru.ridr.di.AppComponent;
 import geekdroidstudio.ru.ridr.di.DaggerAppComponent;
+import geekdroidstudio.ru.ridr.di.modules.AppModule;
 import timber.log.Timber;
 
 public class App extends Application {
@@ -16,7 +17,9 @@ public class App extends Application {
         super.onCreate();
         instance = this;
         Timber.plant(new Timber.DebugTree());
-        component = DaggerAppComponent.create();
+        component = DaggerAppComponent.builder()
+                .appModule(new AppModule(this))
+                .build();
     }
 
     public static App getInstance()
@@ -24,8 +27,7 @@ public class App extends Application {
         return instance;
     }
 
-    public static AppComponent getComponent()
-    {
+    public AppComponent getComponent() {
         return component;
     }
 }

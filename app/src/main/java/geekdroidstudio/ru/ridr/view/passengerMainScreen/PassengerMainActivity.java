@@ -10,22 +10,32 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
+import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
 import geekdroidstudio.ru.ridr.presenter.PassengerMainPresenter;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapView;
 import geekdroidstudio.ru.ridr.view.fragments.passengerFindDriversFragment.PassengerFindDriversFragment;
 import geekdroidstudio.ru.ridr.view.fragments.routeDataFragment.RouteDataFragment;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class PassengerMainActivity extends MvpAppCompatActivity implements PassengerMainView,
         MapFragment.OnFragmentInteractionListener, RouteDataFragment.OnFragmentInteractionListener,
         PassengerFindDriversFragment.OnFragmentInteractionListener {
     @InjectPresenter
     PassengerMainPresenter passengerMainPresenter;
+
+    @ProvidePresenter
+    public PassengerMainPresenter providePresenter() {
+        PassengerMainPresenter presenter = new PassengerMainPresenter(AndroidSchedulers.mainThread());
+        App.getInstance().getComponent().inject(presenter);
+        return presenter;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -8,7 +8,6 @@ import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -62,7 +61,7 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
         View view = inflater.inflate(R.layout.fragment_registration, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        App.getComponent().inject(this);
+        App.getInstance().getComponent().inject(this);
         authentication.setContextSignUp(this);
         return view;
     }
