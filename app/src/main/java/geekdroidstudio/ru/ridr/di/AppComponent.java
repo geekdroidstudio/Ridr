@@ -21,5 +21,6 @@ public interface AppComponent {
     void inject(MapFragment mapFragment);
     void inject(StartAuthenticationFragment startAuthenticationFragment);
     void inject(RegistrationFragment registrationFragment);
+    
     void inject(PassengerMainPresenter presenter);
 }
