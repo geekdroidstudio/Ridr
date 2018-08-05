@@ -18,7 +18,7 @@ import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
 
 @InjectViewState
-public class RouteDataFragmentPresenter extends MvpPresenter<RouteDataView> {
+public class RouteDataPresenter extends MvpPresenter<RouteDataView> {
     @Inject
     Repository repository;
 
@@ -26,7 +26,7 @@ public class RouteDataFragmentPresenter extends MvpPresenter<RouteDataView> {
     private String routeStartPoint;
     private String routeEndPoint;
 
-    public RouteDataFragmentPresenter(Scheduler scheduler) {
+    public RouteDataPresenter(Scheduler scheduler) {
         this.scheduler = scheduler;
     }
 
@@ -65,12 +65,12 @@ public class RouteDataFragmentPresenter extends MvpPresenter<RouteDataView> {
                                 .getPoints();
 
                         /*Выполнив запрос и получив объект Route мы можем получить из
-                        * него строку overViewPolyLine.В своем исходном состоянии она нам мало
-                        * что дает.Для того, чтобы добыть из нее какую -то информацию,
-                        * нам нужно расшифровать ее.Здесь нам придет на помощь класс PolyUtil
-                        * из библиотеки Google Maps Android API utility library.
-                        * PolyUtil содержит метод decode (), принимающий строку overViewPolyLine
-                        * и возвращающий набор объектов LatLng, узлов нашего маршрута*/
+                         * него строку overViewPolyLine.В своем исходном состоянии она нам мало
+                         * что дает.Для того, чтобы добыть из нее какую -то информацию,
+                         * нам нужно расшифровать ее.Здесь нам придет на помощь класс PolyUtil
+                         * из библиотеки Google Maps Android API utility library.
+                         * PolyUtil содержит метод decode (), принимающий строку overViewPolyLine
+                         * и возвращающий набор объектов LatLng, узлов нашего маршрута*/
                         List<LatLng> latLngsList = PolyUtil.decode(overViewPolyLine);
 
                         getViewState().routeLoadCompleted(latLngsList);

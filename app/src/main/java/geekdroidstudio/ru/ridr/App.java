@@ -4,17 +4,21 @@ import android.app.Application;
 
 import geekdroidstudio.ru.ridr.di.AppComponent;
 import geekdroidstudio.ru.ridr.di.DaggerAppComponent;
+import geekdroidstudio.ru.ridr.di.modules.AppModule;
+import timber.log.Timber;
 
 public class App extends Application {
     private static App instance;
 
-    private AppComponent appComponent;
+	private static AppComponent component;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        instance= this;
-        appComponent = DaggerAppComponent.builder()
+        instance = this;
+        Timber.plant(new Timber.DebugTree());
+        component = DaggerAppComponent.builder()
+                .appModule(new AppModule(this))
                 .build();
     }
 
@@ -23,8 +27,7 @@ public class App extends Application {
         return instance;
     }
 
-    public AppComponent getAppComponent()
-    {
-        return appComponent;
+    public AppComponent getComponent() {
+        return component;
     }
 }

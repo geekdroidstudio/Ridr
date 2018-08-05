@@ -12,7 +12,7 @@ public interface RouteDataView extends MvpView {
 
     void init();
 
-    void routeLoadCompleted(List<LatLng> routePoints);
+    void routeLoadCompleted(List<LatLng> latLngsList);
 
     void showErrorLoadRoute();
 }

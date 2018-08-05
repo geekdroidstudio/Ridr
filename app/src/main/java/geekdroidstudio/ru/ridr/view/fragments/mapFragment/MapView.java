@@ -2,28 +2,23 @@ package geekdroidstudio.ru.ridr.view.fragments.mapFragment;
 
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
-import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
 @StateStrategyType(AddToEndSingleStrategy.class)
-public interface MapView extends MvpView{
+public interface MapView extends MvpView {
+    void initMap();
 
-    void showDummyData();
+    void showRoute(List<LatLng> routePoints);
 
     void showLoading();
 
-    @StateStrategyType(OneExecutionStateStrategy.class)
-    void loadMap();
-
     void hideLoading();
 
-    @StateStrategyType(OneExecutionStateStrategy.class)
-    void setupMap();
+    void showMap(GoogleMap map);
 
-    void showMarker(LatLng latLng);
-
-    void showRoute(List<LatLng> routePoints);
+    void drawRoute(List<LatLng> routePoints);
 }

@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.presenter.RouteDataFragmentPresenter;
+import geekdroidstudio.ru.ridr.presenter.RouteDataPresenter;
 import geekdroidstudio.ru.ridr.view.adapters.AutocompleteAdapter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -41,32 +41,32 @@ public class RouteDataFragment extends MvpAppCompatFragment implements RouteData
 
     @BindView(R.id.lly_fr_route_data_root_view)
     LinearLayout rootView;
-    @BindView(R.id.atv_fr_route_data_start_point)
+    @BindView(R.id.atv_act_pass_main_start_point)
     AutoCompleteTextView startPointAutoText;
-    @BindView(R.id.atv_fr_route_data_end_point)
+    @BindView(R.id.atv_act_pass_main_end_point)
     AutoCompleteTextView endPointAutoText;
 
     @InjectPresenter
-    RouteDataFragmentPresenter routeDataPresenter;
+    RouteDataPresenter routeDataPresenter;
 
     private AutocompleteAdapter startPointAdapter;
     private AutocompleteAdapter endPointAdapter;
     private OnFragmentInteractionListener onFragmentInteractionListener;
     private Unbinder unbinder;
 
-    public static RouteDataFragment newInstance() {
-        return new RouteDataFragment();
-    }
-
     public RouteDataFragment() {
 
     }
 
+    public static RouteDataFragment newInstance() {
+        return new RouteDataFragment();
+    }
+
     @ProvidePresenter
-    public RouteDataFragmentPresenter provideRoutePresenter() {
-        RouteDataFragmentPresenter presenter =
-                new RouteDataFragmentPresenter(AndroidSchedulers.mainThread());
-        App.getInstance().getAppComponent().inject(presenter);
+    public RouteDataPresenter provideRoutePresenter() {
+        RouteDataPresenter presenter =
+                new RouteDataPresenter(AndroidSchedulers.mainThread());
+        App.getInstance().getComponent().inject(presenter);
         return presenter;
     }
 
@@ -91,8 +91,6 @@ public class RouteDataFragment extends MvpAppCompatFragment implements RouteData
 
     @Override
     public void init() {
-
-
         Context context = getContext();
         assert context != null;
 
@@ -140,16 +138,23 @@ public class RouteDataFragment extends MvpAppCompatFragment implements RouteData
             onFragmentInteractionListener.hideKeyboard(view.getApplicationWindowToken());
 
             switch (viewId) {
-                case R.id.atv_fr_route_data_start_point: {
+                case R.id.atv_act_pass_main_start_point: {
                     AutocompletePrediction item = startPointAdapter.getItem(position);
                     routeDataPresenter.onStartPointSelected(item);
                     break;
                 }
-                case R.id.atv_fr_route_data_end_point: {
+                case R.id.atv_act_pass_main_end_point: {
                     AutocompletePrediction item = endPointAdapter.getItem(position);
                     routeDataPresenter.onEndPointSelected(item);
                     break;
                 }
+                /*в этом кейсе мы можем обрабатывать промежуточные точки маршрута
+                 *
+                 *   default:{
+                 *      doSomething()
+                 *      break;
+                 *   }
+                 */
             }
         };
     }
