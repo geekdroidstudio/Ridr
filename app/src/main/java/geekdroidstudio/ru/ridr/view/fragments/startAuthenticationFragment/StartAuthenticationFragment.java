@@ -61,7 +61,7 @@ public class StartAuthenticationFragment extends MvpAppCompatFragment implements
         View view = inflater.inflate(R.layout.fragment_authentication_start, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        App.getComponent().inject(this);
+        App.getInstance().getComponent().inject(this);
         authentication.setContextSignIn(this);
 
         return view;
