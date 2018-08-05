@@ -19,8 +19,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${google_api_key}" />
-
+            android:value="@string/google_maps_key" />
 
         <activity android:name=".view.userMainScreen.UserMainActivity">
 
@@ -31,7 +30,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.passengerMainScreen.PassengerMainActivity"/>
+        <activity android:name=".view.passengerMainScreen.PassengerMainActivity" />
     </application>
 
 </manifest>

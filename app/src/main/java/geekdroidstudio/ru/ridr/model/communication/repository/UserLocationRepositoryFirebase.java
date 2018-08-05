@@ -22,6 +22,8 @@ import timber.log.Timber;
 
 public class UserLocationRepositoryFirebase implements IUserLocationRepository {
 
+    private static final String USER_IS_NULL_ERROR = "User is null";
+
     private DatabaseReference usersReference;
     private DatabaseReference driversReference;
     private DatabaseReference passengersReference;
@@ -51,7 +53,7 @@ public class UserLocationRepositoryFirebase implements IUserLocationRepository {
         return Single.create(emitter -> {
             DatabaseReference userReference = usersReference.child(id);
 
-            userReference.addValueEventListener(getUserListener(emitter, userReference));
+            userReference.addListenerForSingleValueEvent(getUserListener(emitter));
         });
     }
 
@@ -69,7 +71,7 @@ public class UserLocationRepositoryFirebase implements IUserLocationRepository {
     @Override
     public Observable<Map<String, Coordinate>> getDrivers() {
         return driversSubject.doOnSubscribe(disposable -> {
-            passengersReference.removeEventListener(passengersListener);
+            //passengersReference.removeEventListener(passengersListener);//TODO:после отладки раскомментить
             driversReference.addValueEventListener(driversListener);
         });
     }
@@ -77,7 +79,7 @@ public class UserLocationRepositoryFirebase implements IUserLocationRepository {
     @Override
     public Observable<Map<String, Coordinate>> getPassengers() {
         return passengersSubject.doOnSubscribe(disposable -> {
-            driversReference.removeEventListener(driversListener);
+            //driversReference.removeEventListener(driversListener);//TODO:после отладки раскомментить
             passengersReference.addValueEventListener(passengersListener);
         });
     }
@@ -93,20 +95,22 @@ public class UserLocationRepositoryFirebase implements IUserLocationRepository {
     }
 
     @NonNull
-    private ValueEventListener getUserListener(SingleEmitter<User> emitter,
-                                               DatabaseReference userReference) {
+    private ValueEventListener getUserListener(SingleEmitter<User> emitter) {
         return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userReference.removeEventListener(this);
-
-                emitter.onSuccess(dataSnapshot.getValue(User.class));
+                User user = dataSnapshot.getValue(User.class);
+                if (user == null) {
+                    Timber.e(USER_IS_NULL_ERROR);
+                    emitter.onError(new RuntimeException(USER_IS_NULL_ERROR));
+                } else {
+                    user.setId(dataSnapshot.getKey());
+                    emitter.onSuccess(user);
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                userReference.removeEventListener(this);
-
                 Timber.e(databaseError.getMessage());
                 emitter.onError(new RuntimeException(databaseError.getMessage()));
             }

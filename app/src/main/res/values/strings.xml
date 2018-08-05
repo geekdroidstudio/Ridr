@@ -8,7 +8,6 @@
 
     <string name="error_load_route">Ошибка загрузки маршрута</string>
     <string name="retry">ПОВТОР</string>
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyA4yMoJ0qPEn09zeBvjijevu0if79MnZ_k</string>
 
     <string name="authentication_text">Вход</string>
     <string name="email_field">Email</string>
