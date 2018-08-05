@@ -35,8 +35,6 @@ public class PassengerMainPresenter extends MvpPresenter<PassengerMainView> {
         getViewState().showMapFragment();
         getViewState().showRouteDataFragment();
 
-
-        getViewState().requestPermissions();
         startListenGeo();
     }
 
