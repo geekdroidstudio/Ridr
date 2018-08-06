@@ -8,6 +8,7 @@ import geekdroidstudio.ru.ridr.di.modules.AuthenticationModule;
 import geekdroidstudio.ru.ridr.di.modules.CommunicationModule;
 import geekdroidstudio.ru.ridr.di.modules.MapHelperModule;
 import geekdroidstudio.ru.ridr.di.modules.RepositoryModule;
+import geekdroidstudio.ru.ridr.presenter.DriverMainPresenter;
 import geekdroidstudio.ru.ridr.presenter.PassengerMainPresenter;
 import geekdroidstudio.ru.ridr.presenter.RouteDataPresenter;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
@@ -28,4 +29,6 @@ public interface AppComponent {
     void inject(RegistrationFragment registrationFragment);
 
     void inject(PassengerMainPresenter presenter);
+
+    void inject(DriverMainPresenter presenter);
 }

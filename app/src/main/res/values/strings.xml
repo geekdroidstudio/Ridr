@@ -32,7 +32,7 @@
     <string name="gender_female">Женский</string>
     <string name="gender_male">Мужской</string>
     <string name="finish_registration_text_btn">Зарегистрироваться</string>
-    <string name="enter_email_phone_label">ВОЙТИ ЧЕРЕЗ ТЕЛЕФОН ИЛИ ПОЧТУ</string>
+    <string name="enter_email_phone_label">Зарегистрировать указанную почту</string>
     <string name="date_new_trip">Дата поездки</string>
     <string name="start_from_hint">Откуда</string>
     <string name="authorisation_error_text">Пожалуйста заполните все поля</string>

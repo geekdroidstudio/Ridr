@@ -32,8 +32,10 @@ public class StartAuthenticationFragment extends MvpAppCompatFragment implements
     TextInputEditText editTextEmail;
     @BindView(R.id.edit_text_password)
     TextInputEditText editTextPassword;
-    @BindView(R.id.button_sign_in)
-    AppCompatButton buttonEnter;
+    @BindView(R.id.button_choose_driver)
+    AppCompatButton buttonChooseDriver;
+    @BindView(R.id.button_choose_passenger)
+    AppCompatButton buttonChoosePassenger;
 
     private Unbinder unbinder;
     private StartAuthenticationFragment.OnFragmentInteractionListener onFragmentInteractionListener;
@@ -79,37 +81,45 @@ public class StartAuthenticationFragment extends MvpAppCompatFragment implements
         unbinder.unbind();
     }
 
-    public interface OnFragmentInteractionListener {
-        void changeFragmentToRegistration();
-        void startDriverActivity();
+    @OnClick(R.id.button_choose_passenger)
+    @Override
+    public void onClickSignInPassenger() {
+        doSignIn();
+        ((UserMainActivity) getActivity()).launchPassengerActivity();
     }
 
-    @OnClick(R.id.button_sign_in)
-	@Override
-	public void onClickSignIn(){
-		String userEmail = editTextEmail.getText().toString();
-		String userPassword =  editTextPassword.getText().toString();
+    @OnClick(R.id.button_choose_driver)
+    @Override
+    public void onClickSignInDriver() {
+        doSignIn();
+        ((UserMainActivity) getActivity()).launchDriverActivity();
+    }
 
-		if(userEmail.isEmpty() || userPassword.isEmpty()){
-			Toast.makeText(getContext(),R.string.authorisation_error_text, Toast.LENGTH_SHORT).show();
-		}else {
-			//presenter.loginUser(login,password);
-			authentication.signIn(userEmail, userPassword);
+    private void doSignIn() {
+        String userEmail = editTextEmail.getText().toString();
+        String userPassword = editTextPassword.getText().toString();
 
-		}
-	}
+        if (userEmail.isEmpty() || userPassword.isEmpty()) {
+            Toast.makeText(getContext(), R.string.authorisation_error_text, Toast.LENGTH_SHORT).show();
+        } else {
+            authentication.signIn(userEmail, userPassword);
+        }
+    }
 
-	@OnClick(R.id.button_sign_up)
+    @OnClick(R.id.text_view_sign_up)
 	@Override
 	public void onClickSignUp(){
     	Timber.d("onClickSignUp()");
 		onFragmentInteractionListener.changeFragmentToRegistration();
 	}
 
+    public interface OnFragmentInteractionListener {
+        void changeFragmentToRegistration();
+    }
+
     @Override
     public void wasSignIn() {
         Timber.d("wasSignIn()");
-		((UserMainActivity)getActivity()).launchPassengerActivity();
     }
 
     @Override
