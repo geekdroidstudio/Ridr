@@ -56,5 +56,10 @@
 
     <string name="attantion">Логин в виде xx@xx.xx. Пароль минимум 6 символов. Для регистрации ещё и имя </string>
     <string name="hint_enter_password">Введите пароль</string>
+    <string name="change">CHANGE</string>
+    <string name="route_is_not_selected">Route is not selected</string>
+    <string name="map_fragment_tag">mapTag</string>
+    <string name="route_status_fragment_tag">routeStatusTag</string>
+    <string name="route_data_fragment_tag">routeSelectTag</string>
 
 </resources>

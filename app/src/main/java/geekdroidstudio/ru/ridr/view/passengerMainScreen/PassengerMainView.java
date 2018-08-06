@@ -12,12 +12,6 @@ import geekdroidstudio.ru.ridr.model.entity.users.User;
 @StateStrategyType(OneExecutionStateStrategy.class)
 public interface PassengerMainView extends MvpView {
 
-    void showFindDriversFragment();
-
-    void showMapFragment();
-
-    void showRouteDataFragment();
-
     //LatLang - временное решение - вместо них, лучше использовать свои класс координат
     void showRouteInMapFragment(List<LatLng> routePoints);
 

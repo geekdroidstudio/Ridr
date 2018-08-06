@@ -8,8 +8,8 @@ import geekdroidstudio.ru.ridr.server.authentication.Authentication;
 @Module(includes = {AuthDatabaseModule.class})
 public class AuthenticationModule {
 
-	@Provides
-	Authentication provideAuthentication(AuthDatabase authDatabase) {
-		return new Authentication(authDatabase);
-	}
+    @Provides
+    Authentication provideAuthentication(AuthDatabase authDatabase) {
+        return new Authentication(authDatabase);
+    }
 }

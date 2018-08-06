@@ -1,13 +1,8 @@
 package geekdroidstudio.ru.ridr.view.passengerMainScreen;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -16,20 +11,38 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
+import butterknife.BindString;
+import butterknife.ButterKnife;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.presenter.PassengerMainPresenter;
+import geekdroidstudio.ru.ridr.view.RouteSelectActivity;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
-import geekdroidstudio.ru.ridr.view.fragments.passengerFindDriversFragment.PassengerFindDriversFragment;
-import geekdroidstudio.ru.ridr.view.fragments.routeDataFragment.RouteDataFragment;
+import geekdroidstudio.ru.ridr.view.fragments.route_status.RouteStatusFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
+import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.FINISH_KEY;
+import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.START_KEY;
+
+
 public class PassengerMainActivity extends MvpAppCompatActivity implements PassengerMainView,
-        MapFragment.OnFragmentInteractionListener, RouteDataFragment.OnFragmentInteractionListener,
-        PassengerFindDriversFragment.OnFragmentInteractionListener {
+        MapFragment.OnFragmentInteractionListener,
+        RouteStatusFragment.OnFragmentInteractionListener {
+
+    public static final int REQUEST_CODE_ROUTE = 1;
+
     @InjectPresenter
     PassengerMainPresenter passengerMainPresenter;
+
+    @BindString(R.string.map_fragment_tag)
+    String mapFragmentTag;
+
+    @BindString(R.string.route_status_fragment_tag)
+    String routeStatusFragmentTag;
+
+    MapFragment mapFragment;
+    RouteStatusFragment routeStatusFragment;
 
     @ProvidePresenter
     public PassengerMainPresenter providePresenter() {
@@ -42,39 +55,11 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passenger_main);
-    }
 
-    @Override
-    public void showFindDriversFragment() {
-        /*getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fl_activity_passenger_main_frame, PassengerFindDriversFragment.newInstance())
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit();*/
-    }
+        ButterKnife.bind(this);
 
-    @Override
-    public void showMapFragment() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fl_activity_passenger_map_frame, MapFragment.newInstance(),
-                        MapFragment.TAG)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit();
-    }
-
-    @Override
-    public void showRouteDataFragment() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fl_activity_passenger_route_frame, RouteDataFragment.newInstance())
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit();
-    }
-
-    @Override
-    public void openDriverRouteData(int id) {
-        Toast.makeText(this, "Вы выбрали маршрут " + id, Toast.LENGTH_SHORT).show();
+        mapFragment = (MapFragment) getFragment(mapFragmentTag);
+        routeStatusFragment = (RouteStatusFragment) getFragment(routeStatusFragmentTag);
     }
 
 
@@ -103,21 +88,37 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
         }
     }
 
-    @Override
-    public void routeCreated(List<LatLng> routePoints) {
-        passengerMainPresenter.routeCreated(routePoints);
+    private Fragment getFragment(String tag) {
+        return getSupportFragmentManager().findFragmentByTag(tag);
     }
 
     @Override
-    public void hideKeyboard(IBinder windowToken) {
-        InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (in != null) {
-            in.hideSoftInputFromWindow(windowToken, 0);
+    public void goRouteChange(String start, String finish) {
+        Intent intent = new Intent(this, RouteSelectActivity.class);
+
+        intent.putExtra(START_KEY, start);
+        intent.putExtra(FINISH_KEY, finish);
+
+        startActivityForResult(intent, REQUEST_CODE_ROUTE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_CODE_ROUTE:
+                    String start = data.getStringExtra(START_KEY);
+                    String finish = data.getStringExtra(FINISH_KEY);
+                    routeStatusFragment.onRouteSelected(start, finish);
+                    break;
+            }
         }
     }
 
-    @Nullable
-    private Fragment getMapFragment() {
-        return getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

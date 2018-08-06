@@ -12,7 +12,7 @@ public interface RouteDataView extends MvpView {
 
     void init();
 
-    void routeLoadCompleted(List<LatLng> latLngsList);
+    void routeLoadCompleted(String start, String finish, List<LatLng> latLngsList);
 
     void showErrorLoadRoute();
 }
