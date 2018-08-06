@@ -3,6 +3,7 @@ package geekdroidstudio.ru.ridr.view.passengerMainScreen;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.inputmethod.InputMethodManager;
@@ -17,9 +18,9 @@ import java.util.List;
 
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
+import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.presenter.PassengerMainPresenter;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
-import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapView;
 import geekdroidstudio.ru.ridr.view.fragments.passengerFindDriversFragment.PassengerFindDriversFragment;
 import geekdroidstudio.ru.ridr.view.fragments.routeDataFragment.RouteDataFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -81,8 +82,24 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     @Override
     public void showRouteInMapFragment(List<LatLng> routePoints) {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
-        if (fragment != null && fragment instanceof MapView) {
-            ((MapView) fragment).showRoute(routePoints);
+        if (fragment != null) {
+            ((MapFragment) fragment).showRoute(routePoints);
+        }
+    }
+
+    @Override
+    public void showUserInMapFragment(User user) {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        if (fragment != null) {
+            ((MapFragment) fragment).showUser(user);
+        }
+    }
+
+    @Override
+    public void showMapObjectsInMapFragment(List<User> users) {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        if (fragment != null) {
+            ((MapFragment) fragment).showMapObjects(users);
         }
     }
 
@@ -97,5 +114,10 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
         if (in != null) {
             in.hideSoftInputFromWindow(windowToken, 0);
         }
+    }
+
+    @Nullable
+    private Fragment getMapFragment() {
+        return getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
     }
 }

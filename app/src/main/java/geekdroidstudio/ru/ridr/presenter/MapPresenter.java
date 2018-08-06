@@ -5,8 +5,11 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import geekdroidstudio.ru.ridr.model.entity.users.Coordinate;
+import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapView;
 
 @InjectViewState
@@ -28,4 +31,19 @@ public class MapPresenter extends MvpPresenter<MapView> {
         getViewState().drawRoute(routePoints);
     }
 
+    public void showUser(User user) {
+        getViewState().drawUser(mapCoordsToLatLang(user.getLocation()));
+    }
+
+    public void showMapObjects(List<User> mapObjects) {
+        List<LatLng> latLngList = new ArrayList<>();
+        for (User mapObject : mapObjects) {
+            latLngList.add(mapCoordsToLatLang(mapObject.getLocation()));
+        }
+        getViewState().drawMapObjects(latLngList);
+    }
+
+    private LatLng mapCoordsToLatLang(Coordinate coordinate) {
+        return new LatLng(coordinate.getLatitude(), coordinate.getLongitude());
+    }
 }
