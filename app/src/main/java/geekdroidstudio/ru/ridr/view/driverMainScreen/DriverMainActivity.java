@@ -83,8 +83,7 @@ public class DriverMainActivity extends MvpAppCompatActivity implements DriverMa
     public void showDriverRecycler() {
         RecyclerView.Adapter<DriverRecyclerItemViewHolder> adapter;
         RecyclerView rvPassengerList = findViewById(R.id.holder_recycler_view_objects_around);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(VERTICAL);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, VERTICAL, false);
         rvPassengerList.setLayoutManager(layoutManager);
         adapter = new DriverRecyclerViewAdapter();
         rvPassengerList.setAdapter(adapter);
