@@ -12,8 +12,6 @@ import java.util.List;
 public interface MapView extends MvpView {
     void initMap();
 
-    void showRoute(List<LatLng> routePoints);
-
     void showLoading();
 
     void hideLoading();
@@ -21,4 +19,8 @@ public interface MapView extends MvpView {
     void showMap(GoogleMap map);
 
     void drawRoute(List<LatLng> routePoints);
+
+    void drawMapObjects(List<LatLng> mapObjects);
+
+    void drawUser(LatLng user);
 }

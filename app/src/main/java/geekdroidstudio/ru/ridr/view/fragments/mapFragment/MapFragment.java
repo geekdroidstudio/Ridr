@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
+import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.model.mapHelper.IMapHelper;
 import geekdroidstudio.ru.ridr.presenter.MapPresenter;
 
@@ -91,15 +92,25 @@ public class MapFragment extends MvpAppCompatFragment implements MapView {
     }
 
     @Override
-    public void showRoute(List<LatLng> routePoints) {
-        mapPresenter.showRoute(routePoints);
-    }
-
-    @Override
     public void drawRoute(List<LatLng> routePoints) {
         mapHelper.drawRoute(getResources().getDisplayMetrics().widthPixels, routeLineColor,
                 routeLineWidth, BitmapDescriptorFactory.fromResource(R.drawable.ic_start_route),
                 BitmapDescriptorFactory.fromResource(R.drawable.ic_end_route), routePoints);
+    }
+
+    //надо как-то различать кого рисовать(т.е пассажира или водителя, пока настроено что объекты -
+    // это водители
+    @Override
+    public void drawMapObjects(List<LatLng> mapObjects) {
+        mapHelper.drawMapObjects(mapObjects, BitmapDescriptorFactory.fromResource(
+                R.drawable.ic_passenger));
+    }
+
+    //надо как-то различать кого рисовать(т.е пассажира или водителя, пока настроено что объекты -
+    // это водители
+    @Override
+    public void drawUser(LatLng user) {
+        mapHelper.drawUser(user, BitmapDescriptorFactory.fromResource(R.drawable.ic_driver));
     }
 
     @Override
@@ -122,6 +133,18 @@ public class MapFragment extends MvpAppCompatFragment implements MapView {
     public void onDetach() {
         super.onDetach();
         onFragmentInteractionListener = null;
+    }
+
+    public void showRoute(List<LatLng> routePoints) {
+        mapPresenter.showRoute(routePoints);
+    }
+
+    public void showUser(User user) {
+        mapPresenter.showUser(user);
+    }
+
+    public void showMapObjects(List<User> users) {
+        mapPresenter.showMapObjects(users);
     }
 
     private OnMapReadyCallback createOnMapReadyCallback() {
