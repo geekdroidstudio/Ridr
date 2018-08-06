@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindString;
@@ -23,9 +24,12 @@ public class RouteSelectActivity extends AppCompatActivity implements
     public static final String START_KEY = "startKey";
     public static final String FINISH_KEY = "finishKey";
     public static final String ROUTE_KEY = "routeKey";
+
     @BindString(R.string.route_data_fragment_tag)
     String routeDataFragmentTag;
+
     private RouteDataFragment routeDataFragment;
+
     private String start;
     private String finish;
 
@@ -49,7 +53,7 @@ public class RouteSelectActivity extends AppCompatActivity implements
 
         data.putExtra(START_KEY, start);
         data.putExtra(START_KEY, finish);
-        data.putExtra(ROUTE_KEY, routePoints.toArray());
+        data.putParcelableArrayListExtra(ROUTE_KEY, new ArrayList<>(routePoints));
 
         setResult(RESULT_OK, data);
         finish();

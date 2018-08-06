@@ -15,8 +15,7 @@ public interface PassengerMainView extends MvpView {
     //LatLang - временное решение - вместо них, лучше использовать свои класс координат
     void showRouteInMapFragment(List<LatLng> routePoints);
 
-    void showUserInMapFragment(User user);
+    void showPassengerOnMap(User user);
 
-    void showMapObjectsInMapFragment(List<User> users);
-
+    void showDriversOnMap(List<? extends User> users);
 }

@@ -15,6 +15,7 @@ import butterknife.BindString;
 import butterknife.ButterKnife;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
+import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.presenter.PassengerMainPresenter;
 import geekdroidstudio.ru.ridr.view.RouteSelectActivity;
@@ -23,12 +24,16 @@ import geekdroidstudio.ru.ridr.view.fragments.route_status.RouteStatusFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.FINISH_KEY;
+import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.ROUTE_KEY;
 import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.START_KEY;
 
 
 public class PassengerMainActivity extends MvpAppCompatActivity implements PassengerMainView,
         MapFragment.OnFragmentInteractionListener,
         RouteStatusFragment.OnFragmentInteractionListener {
+
+    public static final String PASSENGER_ID_KEY = "passengerIdKey";
+    public static final String PASSENGER_NAME_KEY = "passengerNameKey";
 
     public static final int REQUEST_CODE_ROUTE = 1;
 
@@ -58,38 +63,33 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
 
         ButterKnife.bind(this);
 
+        String passengerId = getIntent().getStringExtra(PASSENGER_ID_KEY);
+        String passengerName = getIntent().getStringExtra(PASSENGER_NAME_KEY);
+
+        //TODO: убрать при передаче настоящих значений
+        passengerId = "test1id";
+        passengerName = "test1name";
+
+        passengerMainPresenter.setPassenger(new Passenger(passengerId, passengerName));
+
         mapFragment = (MapFragment) getFragment(mapFragmentTag);
         routeStatusFragment = (RouteStatusFragment) getFragment(routeStatusFragmentTag);
     }
 
-
     //LatLang - временное решение - вместо них, лучше использовать свои класс координат
     @Override
     public void showRouteInMapFragment(List<LatLng> routePoints) {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
-        if (fragment != null) {
-            ((MapFragment) fragment).showRoute(routePoints);
-        }
+        mapFragment.showRoute(routePoints);
     }
 
     @Override
-    public void showUserInMapFragment(User user) {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
-        if (fragment != null) {
-            ((MapFragment) fragment).showUser(user);
-        }
+    public void showPassengerOnMap(User user) {
+        mapFragment.showUser(user);
     }
 
     @Override
-    public void showMapObjectsInMapFragment(List<User> users) {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
-        if (fragment != null) {
-            ((MapFragment) fragment).showMapObjects(users);
-        }
-    }
-
-    private Fragment getFragment(String tag) {
-        return getSupportFragmentManager().findFragmentByTag(tag);
+    public void showDriversOnMap(List<? extends User> users) {
+        mapFragment.showMapObjects(users);
     }
 
     @Override
@@ -111,14 +111,16 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
                 case REQUEST_CODE_ROUTE:
                     String start = data.getStringExtra(START_KEY);
                     String finish = data.getStringExtra(FINISH_KEY);
+                    List<LatLng> latLngArray = data.getParcelableArrayListExtra(ROUTE_KEY);
+
                     routeStatusFragment.onRouteSelected(start, finish);
+                    mapFragment.showRoute(latLngArray);
                     break;
             }
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    private Fragment getFragment(String tag) {
+        return getSupportFragmentManager().findFragmentByTag(tag);
     }
 }
