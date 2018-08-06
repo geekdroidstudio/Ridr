@@ -31,6 +31,7 @@
         </activity>
 
         <activity android:name=".view.passengerMainScreen.PassengerMainActivity" />
+        <activity android:name=".view.driverMainScreen.DriverMainActivity" />
     </application>
 
 </manifest>

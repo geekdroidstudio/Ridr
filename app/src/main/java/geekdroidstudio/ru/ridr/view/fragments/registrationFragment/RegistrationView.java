@@ -6,6 +6,5 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 
 @StateStrategyType(AddToEndSingleStrategy.class)
 public interface RegistrationView extends MvpView{
-    void chooseRoleDriver();
-    void chooseRolePassenger();
+    void doSignUp();
 }
