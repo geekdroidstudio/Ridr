@@ -13,6 +13,7 @@ import geekdroidstudio.ru.ridr.presenter.RouteDataPresenter;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.registrationFragment.RegistrationFragment;
 import geekdroidstudio.ru.ridr.view.fragments.startAuthenticationFragment.StartAuthenticationFragment;
+import geekdroidstudio.ru.ridr.view.passengerMainScreen.PassengerMainActivity;
 
 
 @Singleton
@@ -28,4 +29,6 @@ public interface AppComponent {
     void inject(RegistrationFragment registrationFragment);
 
     void inject(PassengerMainPresenter presenter);
+
+    void inject(PassengerMainActivity passengerMainActivity);
 }

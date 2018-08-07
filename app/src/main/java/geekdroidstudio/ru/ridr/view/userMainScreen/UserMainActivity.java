@@ -20,6 +20,8 @@ public class UserMainActivity extends MvpAppCompatActivity implements UserMainVi
     @InjectPresenter
     UserMainPresenter userMainPresenter;
 
+    public static final String USER_ID_KEY = "userIdKey";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,13 +49,13 @@ public class UserMainActivity extends MvpAppCompatActivity implements UserMainVi
     }
 
     @Override
-    public void launchDriverActivity() {
-        startActivity(new Intent(getApplicationContext(), DriverMainActivity.class));
+    public void launchDriverActivity(String userId) {
+        startActivity(new Intent(getApplicationContext(), DriverMainActivity.class).putExtra(USER_ID_KEY, userId));
     }
 
     @Override
-    public void launchPassengerActivity() {
-        startActivity(new Intent(getApplicationContext(), PassengerMainActivity.class));
+    public void launchPassengerActivity(String userId) {
+        startActivity(new Intent(getApplicationContext(), PassengerMainActivity.class).putExtra(USER_ID_KEY, userId));
     }
 
     //StartAuthenticationFragment method implementations
@@ -64,12 +66,12 @@ public class UserMainActivity extends MvpAppCompatActivity implements UserMainVi
 
     //RegistrationFragment method implementations
     @Override
-    public void startDriverActivity() {
-        launchDriverActivity();
+    public void startDriverActivity(String userId) {
+        launchDriverActivity(userId);
     }
 
     @Override
-    public void startPassengerActivity() {
-        launchPassengerActivity();
+    public void startPassengerActivity(String userId) {
+        launchPassengerActivity(userId);
     }
 }

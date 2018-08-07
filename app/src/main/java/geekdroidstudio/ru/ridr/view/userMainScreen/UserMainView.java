@@ -8,6 +8,6 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 public interface UserMainView extends MvpView {
     void showStartAuthorisationFragment();
     void showRegistrationFragment();
-    void launchDriverActivity();
-    void launchPassengerActivity();
+    void launchDriverActivity(String userId);
+    void launchPassengerActivity(String userId);
 }

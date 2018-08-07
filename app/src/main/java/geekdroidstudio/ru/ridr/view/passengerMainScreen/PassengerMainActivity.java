@@ -1,6 +1,7 @@
 package geekdroidstudio.ru.ridr.view.passengerMainScreen;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -16,20 +17,29 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.presenter.PassengerMainPresenter;
+import geekdroidstudio.ru.ridr.server.authentication.AuthDatabase;
+import geekdroidstudio.ru.ridr.server.authentication.Authentication;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.passengerFindDriversFragment.PassengerFindDriversFragment;
 import geekdroidstudio.ru.ridr.view.fragments.routeDataFragment.RouteDataFragment;
+import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
 
 public class PassengerMainActivity extends MvpAppCompatActivity implements PassengerMainView,
         MapFragment.OnFragmentInteractionListener, RouteDataFragment.OnFragmentInteractionListener,
-        PassengerFindDriversFragment.OnFragmentInteractionListener {
+        PassengerFindDriversFragment.OnFragmentInteractionListener, AuthDatabase.IAuthDatabase {
     @InjectPresenter
     PassengerMainPresenter passengerMainPresenter;
+
+    @Inject
+    AuthDatabase authDatabase;
 
     @ProvidePresenter
     public PassengerMainPresenter providePresenter() {
@@ -42,6 +52,16 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passenger_main);
+
+        App.getInstance().getComponent().inject(this);
+
+        String userId = getIntent().getStringExtra(UserMainActivity.USER_ID_KEY);
+
+        //получаем id пользователя
+        Timber.d("PassengerActivity: onCreate: " + userId);
+        authDatabase.setContext(this);
+        authDatabase.getUserName(userId);
+
     }
 
     @Override
@@ -119,5 +139,11 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     @Nullable
     private Fragment getMapFragment() {
         return getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+    }
+
+    @Override
+    public void getUserName(String userName) {
+        //получаем имя пользователя
+        Timber.d("Passenger: getUserName: " + userName);
     }
 }
