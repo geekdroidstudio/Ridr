@@ -1,14 +1,19 @@
 package geekdroidstudio.ru.ridr.view.driverMainScreen;
 
-import android.app.AlertDialog;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
@@ -29,6 +34,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class DriverMainActivity extends MvpAppCompatActivity implements DriverMainView,
         MapFragment.OnFragmentInteractionListener, UserListFragment.OnFragmentInteractionListener {
 
+    private static final int REQUEST_CHECK_SETTINGS = 333;
     public static final String USER_ID_KEY = "userIdKey";
     public static final String USER_NAME_KEY = "userNameKey";
     //TODO: объединить где-нибудь вместе с PassengerMainActivity ключами(в AuthActivity)
@@ -128,6 +134,42 @@ public class DriverMainActivity extends MvpAppCompatActivity implements DriverMa
         Toast.makeText(this, "onClick " + userAndRoute.getUser().getName(), Toast.LENGTH_SHORT).show();
     }
 
+
+    @Override
+    public void resolveLocationException(ApiException exception) {
+        try {
+            ResolvableApiException resolvable = (ResolvableApiException) exception;
+            // Show the dialog by calling startResolutionForResult(),
+            // and check the result in onActivityResult().
+            resolvable.startResolutionForResult(this, REQUEST_CHECK_SETTINGS);
+        } catch (IntentSender.SendIntentException e) {
+            // Ignore the error.
+        } catch (ClassCastException e) {
+            // Ignore, should be an impossible error.
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CHECK_SETTINGS: {
+                if (resultCode == Activity.RESULT_OK) {
+                    driverMainPresenter.locationErrorResolve();
+                } else {
+                    driverMainPresenter.locationErrorNotResolve();
+                }
+                break;
+            }
+            default: {
+                super.onActivityResult(requestCode, resultCode, data);
+            }
+        }
+    }
+
+    @Override
+    public void showLocationSettingsError() {
+
+    }
 
     @Nullable
     private Fragment getMapFragment(String tag) {

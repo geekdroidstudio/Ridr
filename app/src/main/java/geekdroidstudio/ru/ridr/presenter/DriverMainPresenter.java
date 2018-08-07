@@ -1,9 +1,12 @@
 package geekdroidstudio.ru.ridr.presenter;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +20,6 @@ import geekdroidstudio.ru.ridr.model.Repository;
 import geekdroidstudio.ru.ridr.model.communication.IDriverCommunication;
 import geekdroidstudio.ru.ridr.model.entity.communication.DriverResponse;
 import geekdroidstudio.ru.ridr.model.entity.communication.PassengerRequest;
-import geekdroidstudio.ru.ridr.model.entity.routes.Coordinate;
 import geekdroidstudio.ru.ridr.model.entity.routes.DualRoute;
 import geekdroidstudio.ru.ridr.model.entity.users.Driver;
 import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
@@ -90,6 +92,13 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
                 .subscribe(getPassengerRequestConsumer(), Timber::e);
     }
 
+    private Disposable startListenGeo() {
+        return repository.startListenLocation()
+                .subscribeOn(Schedulers.io())
+                .observeOn(scheduler)
+                .subscribe(location -> Timber.d(String.valueOf(location.getLatitude())), Timber::e);
+    }
+
     @NonNull
     private Consumer<PassengerRequest> getPassengerRequestConsumer() {
         return passengerRequest -> {
@@ -108,23 +117,6 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
             Passenger passenger = new Passenger(passengerRequest.getPassengerId(), "");
             sendDriverResponse(passenger, false);
         };
-    }
-
-    private Disposable startListenGeo() {
-        //return repository.startListenLocation()
-        return emulateGeo.getSubject()//TODO debug
-                .subscribeOn(Schedulers.io())
-                .observeOn(scheduler)
-                .subscribe(location -> {
-                    Timber.d(location.toString());
-
-                    driver.setLocation(new Coordinate(location.getLatitude(),
-                            location.getLongitude()));
-                    driverCommunication.postLocation(driver)
-                            .subscribe();
-
-                    getViewState().showDriverOnMap(driver);
-                }, Timber::e);
     }
 
     public void onDriverResponse(Passenger passenger, boolean response) {
@@ -148,5 +140,34 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
 
         driverCommunication.postPassengerResponse(driverResponse)
                 .subscribe();
+    }
+
+    @SuppressLint("CheckResult")
+    private void checkLocationServices() {
+        repository.checkLocationResponse()
+                .subscribe(this::startListenGeo
+                        , throwable -> {
+                            if (!(throwable instanceof ApiException)) {
+                                getViewState().showLocationSettingsError();
+                                Timber.e(throwable);
+                                return;
+                            }
+                            ApiException apiException = (ApiException) throwable;
+                            if (apiException.getStatusCode() != LocationSettingsStatusCodes
+                                    .RESOLUTION_REQUIRED) {
+                                getViewState().showLocationSettingsError();
+                                Timber.e(throwable);
+                                return;
+                            }
+                            getViewState().resolveLocationException(apiException);
+                        });
+    }
+
+    public void locationErrorResolve() {
+        startListenGeo();
+    }
+
+    public void locationErrorNotResolve() {
+        getViewState().showLocationSettingsError();
     }
 }

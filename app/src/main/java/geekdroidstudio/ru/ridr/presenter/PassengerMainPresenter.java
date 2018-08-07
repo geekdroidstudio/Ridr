@@ -1,9 +1,11 @@
 package geekdroidstudio.ru.ridr.presenter;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -57,6 +59,29 @@ public class PassengerMainPresenter extends MvpPresenter<PassengerMainView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
+        checkLocationServices();
+    }
+
+    @SuppressLint("CheckResult")
+    private void checkLocationServices() {
+        repository
+                .checkLocationResponse()
+                .subscribe(this::startListenGeo
+                        , throwable -> {
+                            if (!(throwable instanceof ApiException)) {
+                                getViewState().showLocationSettingsError();
+                                Timber.e(throwable);
+                                return;
+                            }
+                            ApiException apiException = (ApiException) throwable;
+                            if (apiException.getStatusCode() != LocationSettingsStatusCodes
+                                    .RESOLUTION_REQUIRED) {
+                                getViewState().showLocationSettingsError();
+                                Timber.e(throwable);
+                                return;
+                            }
+                            getViewState().resolveLocationException(apiException);
+                        });
     }
 
     public void setPassenger(Passenger passenger) {
@@ -87,8 +112,7 @@ public class PassengerMainPresenter extends MvpPresenter<PassengerMainView> {
     }
 
     private Disposable startListenGeo() {
-        //return repository.startListenLocation()
-        return emulateGeo.getSubject()
+        return repository.startListenLocation()
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
                 .subscribe(location -> {
@@ -108,6 +132,14 @@ public class PassengerMainPresenter extends MvpPresenter<PassengerMainView> {
         super.onDestroy();
 
         compositeDisposable.dispose();
+    }
+
+    public void locationErrorResolve() {
+        startListenGeo();
+    }
+
+    public void locationErrorNotResolve() {
+        getViewState().showLocationSettingsError();
     }
 
     public void onRouteSelected(DualTextRoute dualTextRoute, List<LatLng> latLngArray) {

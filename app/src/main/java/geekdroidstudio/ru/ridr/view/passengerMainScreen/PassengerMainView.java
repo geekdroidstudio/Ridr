@@ -3,6 +3,7 @@ package geekdroidstudio.ru.ridr.view.passengerMainScreen;
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
@@ -20,6 +21,10 @@ public interface PassengerMainView extends MvpView {
     void showPassengerOnMap(User user);
 
     void showDriversOnMap(List<? extends User> users);
+
+    void showLocationSettingsError();
+
+    void resolveLocationException(ApiException apiException);
 
     void showNeedRouteMessage();
 

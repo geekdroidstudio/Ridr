@@ -11,7 +11,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
 
 import geekdroidstudio.ru.ridr.model.location.ILocationProvider;
@@ -32,6 +32,7 @@ public class GoogleLocation implements ILocationProvider {
 
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
+    private int REQUEST_CHECK_SETTINGS = 15;
 
     public GoogleLocation(LocationManager locationManager,
                           FusedLocationProviderClient fusedLocationProviderClient,
@@ -41,7 +42,7 @@ public class GoogleLocation implements ILocationProvider {
         this.settingsClient = settingsClient;
     }
 
-    @SuppressLint("MissingPermission")
+/*    @SuppressLint("MissingPermission")
     public Completable checkLocationResponse() {
         return Completable.create(emitter -> {
             LocationSettingsRequest locationSettingsRequest = new LocationSettingsRequest.Builder()
@@ -63,39 +64,56 @@ public class GoogleLocation implements ILocationProvider {
                         }
                     });
         });
+    }*/
+
+    public Completable checkLocationResponse() {
+        return Completable.create(emitter -> {
+            LocationSettingsRequest locationSettingsRequest = new LocationSettingsRequest.Builder()
+                    .addLocationRequest(getLocationRequest())
+                    .build();
+
+            settingsClient
+                    .checkLocationSettings(locationSettingsRequest)
+                    .addOnCompleteListener(task -> {
+                        try {
+                            LocationSettingsResponse response = task.getResult(ApiException.class);
+                            emitter.onComplete();
+                        } catch (ApiException exception) {
+                            emitter.onError(exception);
+                        }
+                    });
+        });
     }
 
 
     @SuppressLint("MissingPermission")
     public Observable<Location> listenLocation() {
         return Observable.create((ObservableEmitter<Location> emitter) -> {
-            checkLocationResponse().subscribe(() -> {
-                fusedLocationProviderClient
-                        .getLastLocation()
-                        .addOnSuccessListener(lastLocation -> {
-                            if (lastLocation != null) {
-                                emitter.onNext(lastLocation);
-                            }
-                        });
-                locationRequest = getLocationRequest();
-                locationCallback = new LocationCallback() {
-                    @Override
-                    public void onLocationResult(LocationResult locationResult) {
-                        super.onLocationResult(locationResult);
-                        emitter.onNext(locationResult.getLastLocation());
-                    }
-
-                    @Override
-                    public void onLocationAvailability(LocationAvailability locationAvailability) {
-                        super.onLocationAvailability(locationAvailability);
-                        if (!locationAvailability.isLocationAvailable()) {
-                            emitter.onError(new RuntimeException(ERROR_NOT_AVAILABILITY_LOCATION));
+            fusedLocationProviderClient
+                    .getLastLocation()
+                    .addOnSuccessListener(lastLocation -> {
+                        if (lastLocation != null) {
+                            emitter.onNext(lastLocation);
                         }
-                    }
-                };
-                fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
-            }, throwable -> emitter.onError(new RuntimeException()));
+                    });
 
+            locationRequest = getLocationRequest();
+            locationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    super.onLocationResult(locationResult);
+                    emitter.onNext(locationResult.getLastLocation());
+                }
+
+                @Override
+                public void onLocationAvailability(LocationAvailability locationAvailability) {
+                    super.onLocationAvailability(locationAvailability);
+                    if (!locationAvailability.isLocationAvailable()) {
+                        emitter.onError(new RuntimeException(ERROR_NOT_AVAILABILITY_LOCATION));
+                    }
+                }
+            };
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
         }).doOnTerminate(() -> { //нормально ли так делать с другого потока - doOnTerminate() -принимает Action
             if (locationCallback != null) {
                 fusedLocationProviderClient.removeLocationUpdates(locationCallback);

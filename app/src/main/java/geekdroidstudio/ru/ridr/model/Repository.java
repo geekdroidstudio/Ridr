@@ -6,6 +6,7 @@ import geekdroidstudio.ru.ridr.BuildConfig;
 import geekdroidstudio.ru.ridr.model.api.IApiService;
 import geekdroidstudio.ru.ridr.model.entity.RouteDrivingModelResponse;
 import geekdroidstudio.ru.ridr.model.location.ILocationProvider;
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -29,6 +30,12 @@ public class Repository {
     }
 
     public Observable<Location> startListenLocation() {
-        return locationProvider.listenLocation();
+        return locationProvider
+                .listenLocation();
+    }
+
+    public Completable checkLocationResponse() {
+        return locationProvider
+                .checkLocationResponse();
     }
 }
