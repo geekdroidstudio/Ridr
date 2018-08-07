@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="routeLineWidth">6.0dp</dimen>
+    <dimen name="material_vertical_padding">16dp</dimen>
+    <dimen name="edit_text_email_min_width">80dp</dimen>
 </resources>
