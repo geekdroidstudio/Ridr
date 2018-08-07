@@ -27,4 +27,10 @@ public class DualTextRoute {
     public void setFinish(String finish) {
         this.finish = finish;
     }
+
+    @Override
+    public String toString() {
+        return "{start=" + start + '\'' +
+                ", finish='" + finish + "\'}";
+    }
 }

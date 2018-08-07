@@ -1,5 +1,6 @@
 package geekdroidstudio.ru.ridr.view.driverMainScreen;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,7 +17,6 @@ import butterknife.BindString;
 import butterknife.ButterKnife;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.model.entity.routes.DualCoordinateRoute;
 import geekdroidstudio.ru.ridr.model.entity.users.Driver;
 import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
@@ -44,6 +44,7 @@ public class DriverMainActivity extends MvpAppCompatActivity implements DriverMa
 
     private MapFragment mapFragment;
     private UserListFragment userListFragment;
+    private AlertDialog alertDialog;
 
     @ProvidePresenter
     public DriverMainPresenter providePresenter() {
@@ -75,6 +76,14 @@ public class DriverMainActivity extends MvpAppCompatActivity implements DriverMa
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (alertDialog != null) {
+            alertDialog.hide();
+        }
+    }
+
+    @Override
     public void showRouteOnMap(List<LatLng> routePoints) {
         mapFragment.showRoute(routePoints);
     }
@@ -90,20 +99,35 @@ public class DriverMainActivity extends MvpAppCompatActivity implements DriverMa
     }
 
     @Override
-    public void showPassengerRequest(Passenger passenger, DualCoordinateRoute dualCoordinateRoute) {
-        String msg = passenger.getName() + " request " + dualCoordinateRoute.toString();
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    public void showPassengersOnList(List<UserAndRoute<? extends User>> passengersAndRoutes) {
+        userListFragment.setUsersAndRoutes(passengersAndRoutes);
     }
 
     @Override
-    public void addPassenger(UserAndRoute<Passenger> userAndRoute) {
-        userListFragment.addUserAndRoute(userAndRoute);
+    public void showPassengerRequest(UserAndRoute<Passenger> passengerAndRoute) {
+        final String message = passengerAndRoute.getUser().getName()
+                + " request: " + passengerAndRoute.getDualRoute().getCoordinateRoute();
+        alertDialog = new AlertDialog.Builder(this)
+                .setMessage(message)
+                .setNegativeButton("Reject",
+                        (dialog, which) -> postDriverResponse(passengerAndRoute, false))
+                .setPositiveButton("Accept",
+                        (dialog, which) -> postDriverResponse(passengerAndRoute, true))
+                .setCancelable(false)
+                .create();
+
+        alertDialog.show();
+    }
+
+    private void postDriverResponse(UserAndRoute<Passenger> passengerAndRoute, boolean response) {
+        driverMainPresenter.onDriverResponse(passengerAndRoute.getUser(), response);
     }
 
     @Override
     public void onItemClick(UserAndRoute<? extends User> userAndRoute) {
         Toast.makeText(this, "onClick " + userAndRoute.getUser().getName(), Toast.LENGTH_SHORT).show();
     }
+
 
     @Nullable
     private Fragment getMapFragment(String tag) {

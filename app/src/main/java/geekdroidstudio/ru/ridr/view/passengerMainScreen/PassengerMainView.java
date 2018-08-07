@@ -8,7 +8,6 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 
 import geekdroidstudio.ru.ridr.model.entity.communication.DriverResponse;
-import geekdroidstudio.ru.ridr.model.entity.users.Driver;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
 
@@ -22,11 +21,11 @@ public interface PassengerMainView extends MvpView {
 
     void showDriversOnMap(List<? extends User> users);
 
-    void addDriver(UserAndRoute<Driver> userAndRoute);
-
     void showNeedRouteMessage();
 
     void showSendRequestDialog(UserAndRoute<? extends User> userAndRoute);
 
     void showResponse(DriverResponse driverResponse);
+
+    void showDriversOnList(List<UserAndRoute<? extends User>> driversAndRoutes);
 }

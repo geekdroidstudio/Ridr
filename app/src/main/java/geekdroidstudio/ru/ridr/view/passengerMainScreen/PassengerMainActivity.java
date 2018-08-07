@@ -20,7 +20,6 @@ import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
 import geekdroidstudio.ru.ridr.model.entity.communication.DriverResponse;
 import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
-import geekdroidstudio.ru.ridr.model.entity.users.Driver;
 import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
@@ -85,13 +84,13 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
             String passengerId = getIntent().getStringExtra(USER_ID_KEY);
             String passengerName = getIntent().getStringExtra(USER_NAME_KEY);
 
-            //TODO: убрать при передаче настоящих значений
+            //TODO: debug: убрать при передаче настоящих значений
             passengerId = "test1id";
             passengerName = "test1name";
 
             passengerMainPresenter.setPassenger(new Passenger(passengerId, passengerName));
 
-            //TODO:debug
+            //TODO: debug: тестовый маршрут
             ArrayList<LatLng> list = new ArrayList<>();
 
             for (int i = 1; i < 10; i++) {
@@ -110,7 +109,9 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        alertDialog.hide();
+        if (alertDialog != null) {
+            alertDialog.hide();
+        }
     }
 
     //LatLang - временное решение - вместо них, лучше использовать свои класс координат
@@ -130,6 +131,12 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     }
 
     @Override
+    public void showDriversOnList(List<UserAndRoute<? extends User>> driversAndRoutes) {
+
+        userListFragment.setUsersAndRoutes(driversAndRoutes);
+    }
+
+    @Override
     public void goRouteChange(DualTextRoute dualTextRoute) {
         Intent intent = new Intent(this, RouteSelectActivity.class);
 
@@ -137,11 +144,6 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
         intent.putExtra(FINISH_KEY, dualTextRoute.getFinish());
 
         startActivityForResult(intent, REQUEST_CODE_ROUTE);
-    }
-
-    @Override
-    public void addDriver(UserAndRoute<Driver> userAndRoute) {
-        userListFragment.addUserAndRoute(userAndRoute);
     }
 
     @Override

@@ -5,15 +5,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import geekdroidstudio.ru.ridr.model.entity.routes.DualRoute;
+import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
 import geekdroidstudio.ru.ridr.view.fragments.user_list.UserListFragment;
 
 public class DriverRecyclerViewAdapter extends RecyclerView.Adapter<DriverRecyclerItemViewHolder> {
 
-    private List<UserAndRoute<? extends User>> userAndRouteList;
+    private List<UserAndRoute<? extends User>> userAndRouteList = new ArrayList<>();
     private UserListFragment.OnFragmentInteractionListener onItemClickListener;
 
     public DriverRecyclerViewAdapter(UserListFragment.OnFragmentInteractionListener onItemClickListener) {
@@ -36,8 +39,18 @@ public class DriverRecyclerViewAdapter extends RecyclerView.Adapter<DriverRecycl
         UserAndRoute userAndRoute = userAndRouteList.get(position);
 
         holder.nameTextView.setText(userAndRoute.getUser().getName());
-        holder.startTextView.setText(userAndRoute.getDualRoute().getTextRoute().getStart());
-        holder.finishTextView.setText(userAndRoute.getDualRoute().getTextRoute().getFinish());
+        DualRoute dualRoute = userAndRoute.getDualRoute();
+        String start = "";
+        String finish = "";
+        if (dualRoute != null) {
+            DualTextRoute dualTextRoute = dualRoute.getTextRoute();
+            if (dualTextRoute != null) {
+                start = userAndRoute.getDualRoute().getTextRoute().getStart();
+                finish = userAndRoute.getDualRoute().getTextRoute().getFinish();
+            }
+        }
+        holder.startTextView.setText(start);
+        holder.finishTextView.setText(finish);
         holder.mainView.setOnClickListener(
                 v -> onItemClickListener.onItemClick(userAndRouteList.get(position)));
     }

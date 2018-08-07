@@ -6,6 +6,7 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -61,8 +62,8 @@ public class PassengerMainPresenter extends MvpPresenter<PassengerMainView> {
         compositeDisposable.add(startListenDrivers());
 
         //TODO: debug
-        getViewState().addDriver(createDriverAndRoute(2));
-        getViewState().addDriver(createDriverAndRoute(4));
+        //getViewState().addDriver(createDriverAndRoute(2));
+        //getViewState().addDriver(createDriverAndRoute(4));
     }
 
     @NonNull
@@ -86,7 +87,15 @@ public class PassengerMainPresenter extends MvpPresenter<PassengerMainView> {
                 .subscribe(drivers -> {
                     Timber.d(drivers.toString());
 
+                    List<UserAndRoute<? extends User>> driversAndRoutes = new ArrayList<>(drivers.size());
+                    for (Driver driver : drivers) {
+                        UserAndRoute<Driver> driverAndRoute = new UserAndRoute<>();
+                        driverAndRoute.setUser(driver);
+                        driversAndRoutes.add(driverAndRoute);
+                    }
+
                     getViewState().showDriversOnMap(drivers);
+                    getViewState().showDriversOnList(driversAndRoutes);
                 }, Timber::e);
     }
 

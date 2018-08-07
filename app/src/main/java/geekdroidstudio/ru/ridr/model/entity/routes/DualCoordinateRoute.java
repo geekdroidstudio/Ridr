@@ -45,4 +45,10 @@ public class DualCoordinateRoute {
     public void setFinish(Coordinate finish) {
         this.finish = finish;
     }
+
+    @Override
+    public String toString() {
+        return "{start=" + start +
+                ", finish=" + finish + '}';
+    }
 }

@@ -10,9 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +30,6 @@ public class UserListFragment extends Fragment {
     private OnFragmentInteractionListener listener;
     private Unbinder unbinder;
 
-    private Map<String, UserAndRoute<? extends User>> userAndRouteMap = new HashMap<>();
     private DriverRecyclerViewAdapter adapter;
 
     public UserListFragment() {
@@ -47,7 +44,6 @@ public class UserListFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
 
         adapter = new DriverRecyclerViewAdapter(listener);
-        adapter.setUserAndRouteList(new ArrayList<>(userAndRouteMap.values()));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), VERTICAL, false));
         recyclerView.setAdapter(adapter);
@@ -80,9 +76,8 @@ public class UserListFragment extends Fragment {
         listener = null;
     }
 
-    public void addUserAndRoute(UserAndRoute<? extends User> userAndRoute) {
-        userAndRouteMap.put(userAndRoute.getUser().getId(), userAndRoute);
-        adapter.setUserAndRouteList(new ArrayList<>(userAndRouteMap.values()));
+    public void setUsersAndRoutes(List<UserAndRoute<? extends User>> usersAndRoutes) {
+        adapter.setUserAndRouteList(usersAndRoutes);
         recyclerView.getAdapter().notifyDataSetChanged();
     }
 

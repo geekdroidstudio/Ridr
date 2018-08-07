@@ -27,4 +27,9 @@ public class DualRoute {
     public void setCoordinateRoute(DualCoordinateRoute coordinateRoute) {
         this.coordinateRoute = coordinateRoute;
     }
+
+    @Override
+    public String toString() {
+        return "{" + textRoute + ", " + coordinateRoute + "}";
+    }
 }
