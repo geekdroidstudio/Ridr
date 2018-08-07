@@ -119,8 +119,9 @@ public class GoogleLocation implements ILocationProvider {
         return new LocationRequest()
                 .setInterval(UPDATE_INTERVAL)
                 .setFastestInterval(FASTEST_INTERVAL)
-                .setPriority((providerType.equalsIgnoreCase(LocationManager.GPS_PROVIDER))
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                /*setPriority((providerType.equalsIgnoreCase(LocationManager.GPS_PROVIDER))
                         ? LocationRequest.PRIORITY_HIGH_ACCURACY
-                        : LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+                        : LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);*/
     }
 }

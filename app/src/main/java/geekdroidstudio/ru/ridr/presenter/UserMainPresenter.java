@@ -11,6 +11,22 @@ public class UserMainPresenter extends MvpPresenter<UserMainView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
+        getViewState().checkPermissions();
+    }
+
+    public void locationPermissionsGranted() {
         getViewState().showStartAuthorisationFragment();
+    }
+
+    public void locationPermissionsNotGranted() {
+        getViewState().requestPermissions();
+    }
+
+    public void onLocationPermissionsResult(boolean permissLocationGranted) {
+        if (permissLocationGranted) {
+            locationPermissionsGranted();
+            return;
+        }
+        getViewState().showErrorPermissionsMsg();
     }
 }
