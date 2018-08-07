@@ -8,7 +8,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.List;
 
-import geekdroidstudio.ru.ridr.model.entity.users.Coordinate;
+import geekdroidstudio.ru.ridr.model.entity.routes.Coordinate;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapView;
 

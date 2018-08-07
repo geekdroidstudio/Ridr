@@ -7,7 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
-import geekdroidstudio.ru.ridr.model.entity.communication.SimpleRoute;
+import geekdroidstudio.ru.ridr.model.entity.routes.DualCoordinateRoute;
 import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
@@ -21,7 +21,7 @@ public interface DriverMainView extends MvpView {
 
     void showPassengersOnMap(List<? extends User> users);
 
-    void showPassengerRequest(Passenger passenger, SimpleRoute simpleRoute);
+    void showPassengerRequest(Passenger passenger, DualCoordinateRoute dualCoordinateRoute);
 
     void addPassenger(UserAndRoute<Passenger> userAndRoute);
 }

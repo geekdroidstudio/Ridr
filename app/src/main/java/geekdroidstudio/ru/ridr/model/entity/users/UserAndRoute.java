@@ -1,18 +1,18 @@
 package geekdroidstudio.ru.ridr.model.entity.users;
 
-import geekdroidstudio.ru.ridr.model.entity.communication.SimpleRoute;
+import geekdroidstudio.ru.ridr.model.entity.routes.DualRoute;
 
 public class UserAndRoute<T extends User> {
 
     private T user;
-    private SimpleRoute simpleRoute;
+    private DualRoute dualRoute;
 
     public UserAndRoute() {
     }
 
-    public UserAndRoute(T user, SimpleRoute simpleRoute) {
+    public UserAndRoute(T user, DualRoute dualRoute) {
         this.user = user;
-        this.simpleRoute = simpleRoute;
+        this.dualRoute = dualRoute;
     }
 
     public T getUser() {
@@ -23,11 +23,11 @@ public class UserAndRoute<T extends User> {
         this.user = user;
     }
 
-    public SimpleRoute getSimpleRoute() {
-        return simpleRoute;
+    public DualRoute getDualRoute() {
+        return dualRoute;
     }
 
-    public void setSimpleRoute(SimpleRoute simpleRoute) {
-        this.simpleRoute = simpleRoute;
+    public void setDualRoute(DualRoute dualRoute) {
+        this.dualRoute = dualRoute;
     }
 }

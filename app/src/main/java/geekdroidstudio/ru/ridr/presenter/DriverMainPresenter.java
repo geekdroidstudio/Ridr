@@ -10,8 +10,10 @@ import javax.inject.Inject;
 
 import geekdroidstudio.ru.ridr.model.Repository;
 import geekdroidstudio.ru.ridr.model.communication.IDriverCommunication;
-import geekdroidstudio.ru.ridr.model.entity.communication.SimpleRoute;
-import geekdroidstudio.ru.ridr.model.entity.users.Coordinate;
+import geekdroidstudio.ru.ridr.model.entity.routes.Coordinate;
+import geekdroidstudio.ru.ridr.model.entity.routes.DualCoordinateRoute;
+import geekdroidstudio.ru.ridr.model.entity.routes.DualRoute;
+import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
 import geekdroidstudio.ru.ridr.model.entity.users.Driver;
 import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
 import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
@@ -56,11 +58,21 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
 
 
         //TODO: debug
+        getViewState().addPassenger(createPassengerAndRoute(1));
+        getViewState().addPassenger(createPassengerAndRoute(3));
+    }
+
+    @NonNull
+    private UserAndRoute<Passenger> createPassengerAndRoute(int id) {
         UserAndRoute<Passenger> passengerAndRoute = new UserAndRoute<>();
-        passengerAndRoute.setUser(new Passenger("test1id", "test1name"));
-        passengerAndRoute.setSimpleRoute(new SimpleRoute(new Coordinate(1.5, 2.6),
-                new Coordinate(0.5, 1.6)));
-        getViewState().addPassenger(passengerAndRoute);
+        passengerAndRoute.setUser(new Passenger("test" + id + "id", "test" + id + "name"));
+
+        DualRoute dualRoute = new DualRoute();
+        dualRoute.setCoordinateRoute(new DualCoordinateRoute(new Coordinate(id + 1.5, id + 1.6),
+                new Coordinate(id + 3.5, id + 3.6)));
+        dualRoute.setTextRoute(new DualTextRoute("start by " + id, "finish by " + id));
+        passengerAndRoute.setDualRoute(dualRoute);
+        return passengerAndRoute;
     }
 
     @NonNull

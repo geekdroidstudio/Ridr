@@ -2,6 +2,8 @@ package geekdroidstudio.ru.ridr.model.entity.users;
 
 import com.google.firebase.database.PropertyName;
 
+import geekdroidstudio.ru.ridr.model.entity.routes.Coordinate;
+
 public class User {
 
     private static final String USER_NAME_FIELD = "userName";

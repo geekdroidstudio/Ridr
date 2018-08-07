@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
+import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
 import geekdroidstudio.ru.ridr.presenter.RouteDataPresenter;
 import geekdroidstudio.ru.ridr.view.adapters.AutocompleteAdapter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -115,8 +116,8 @@ public class RouteDataFragment extends MvpAppCompatFragment implements RouteData
     }
 
     @Override
-    public void routeLoadCompleted(String start, String finish, List<LatLng> routePoints) {
-        onFragmentInteractionListener.routeCreated(start, finish, routePoints);
+    public void routeLoadCompleted(DualTextRoute dualTextRoute, List<LatLng> routePoints) {
+        onFragmentInteractionListener.routeCreated(dualTextRoute, routePoints);
     }
 
     @Override
@@ -167,7 +168,7 @@ public class RouteDataFragment extends MvpAppCompatFragment implements RouteData
     }
 
     public interface OnFragmentInteractionListener {
-        void routeCreated(String start, String finish, List<LatLng> routePoints);
+        void routeCreated(DualTextRoute dualTextRoute, List<LatLng> routePoints);
 
         void hideKeyboard(IBinder windowToken);
     }

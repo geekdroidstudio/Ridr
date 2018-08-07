@@ -16,7 +16,7 @@ import butterknife.BindString;
 import butterknife.ButterKnife;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.model.entity.communication.SimpleRoute;
+import geekdroidstudio.ru.ridr.model.entity.routes.DualCoordinateRoute;
 import geekdroidstudio.ru.ridr.model.entity.users.Driver;
 import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
@@ -31,8 +31,7 @@ public class DriverMainActivity extends MvpAppCompatActivity implements DriverMa
 
     public static final String USER_ID_KEY = "userIdKey";
     public static final String USER_NAME_KEY = "userNameKey";
-    //TODO: объединить где-нибудь вместе с PassengerMainActivity ключами
-
+    //TODO: объединить где-нибудь вместе с PassengerMainActivity ключами(в AuthActivity)
 
     @InjectPresenter
     DriverMainPresenter driverMainPresenter;
@@ -91,14 +90,19 @@ public class DriverMainActivity extends MvpAppCompatActivity implements DriverMa
     }
 
     @Override
-    public void showPassengerRequest(Passenger passenger, SimpleRoute simpleRoute) {
-        String msg = passenger.getName() + " request " + simpleRoute.toString();
+    public void showPassengerRequest(Passenger passenger, DualCoordinateRoute dualCoordinateRoute) {
+        String msg = passenger.getName() + " request " + dualCoordinateRoute.toString();
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void addPassenger(UserAndRoute<Passenger> userAndRoute) {
         userListFragment.addUserAndRoute(userAndRoute);
+    }
+
+    @Override
+    public void onItemClick(UserAndRoute<? extends User> userAndRoute) {
+        Toast.makeText(this, "onClick " + userAndRoute.getUser().getName(), Toast.LENGTH_SHORT).show();
     }
 
     @Nullable

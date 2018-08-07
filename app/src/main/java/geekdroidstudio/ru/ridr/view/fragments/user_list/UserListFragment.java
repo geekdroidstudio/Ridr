@@ -46,8 +46,8 @@ public class UserListFragment extends Fragment {
 
         unbinder = ButterKnife.bind(this, view);
 
-        adapter = new DriverRecyclerViewAdapter();
-        adapter.setUserAndRouteMap(new ArrayList<>(userAndRouteMap.values()));
+        adapter = new DriverRecyclerViewAdapter(listener);
+        adapter.setUserAndRouteList(new ArrayList<>(userAndRouteMap.values()));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), VERTICAL, false));
         recyclerView.setAdapter(adapter);
@@ -82,11 +82,11 @@ public class UserListFragment extends Fragment {
 
     public void addUserAndRoute(UserAndRoute<? extends User> userAndRoute) {
         userAndRouteMap.put(userAndRoute.getUser().getId(), userAndRoute);
-        adapter.setUserAndRouteMap(new ArrayList<>(userAndRouteMap.values()));
+        adapter.setUserAndRouteList(new ArrayList<>(userAndRouteMap.values()));
         recyclerView.getAdapter().notifyDataSetChanged();
     }
 
     public interface OnFragmentInteractionListener {
-
+        void onItemClick(UserAndRoute<? extends User> userAndRoute);
     }
 }

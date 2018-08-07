@@ -9,16 +9,19 @@ import java.util.List;
 
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
+import geekdroidstudio.ru.ridr.view.fragments.user_list.UserListFragment;
 
 public class DriverRecyclerViewAdapter extends RecyclerView.Adapter<DriverRecyclerItemViewHolder> {
 
-    private List<UserAndRoute<? extends User>> userAndRouteMap;
+    private List<UserAndRoute<? extends User>> userAndRouteList;
+    private UserListFragment.OnFragmentInteractionListener onItemClickListener;
 
-    public DriverRecyclerViewAdapter() {
+    public DriverRecyclerViewAdapter(UserListFragment.OnFragmentInteractionListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
-    public void setUserAndRouteMap(List<UserAndRoute<? extends User>> userAndRouteMap) {
-        this.userAndRouteMap = userAndRouteMap;
+    public void setUserAndRouteList(List<UserAndRoute<? extends User>> userAndRouteList) {
+        this.userAndRouteList = userAndRouteList;
     }
 
     @NonNull
@@ -30,16 +33,18 @@ public class DriverRecyclerViewAdapter extends RecyclerView.Adapter<DriverRecycl
 
     @Override
     public void onBindViewHolder(@NonNull DriverRecyclerItemViewHolder holder, int position) {
-        UserAndRoute userAndRoute = userAndRouteMap.get(position);
+        UserAndRoute userAndRoute = userAndRouteList.get(position);
 
         holder.nameTextView.setText(userAndRoute.getUser().getName());
-        holder.startTextView.setText(userAndRoute.getSimpleRoute().getStart().toString());
-        holder.finishTextView.setText(userAndRoute.getSimpleRoute().getFinish().toString());
+        holder.startTextView.setText(userAndRoute.getDualRoute().getTextRoute().getStart());
+        holder.finishTextView.setText(userAndRoute.getDualRoute().getTextRoute().getFinish());
+        holder.mainView.setOnClickListener(
+                v -> onItemClickListener.onItemClick(userAndRouteList.get(position)));
     }
 
     @Override
     public int getItemCount() {
-        return userAndRouteMap.size();
+        return userAndRouteList.size();
     }
 
 }

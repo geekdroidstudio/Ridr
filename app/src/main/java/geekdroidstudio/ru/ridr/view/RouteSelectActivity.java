@@ -16,6 +16,7 @@ import java.util.List;
 import butterknife.BindString;
 import butterknife.ButterKnife;
 import geekdroidstudio.ru.ridr.R;
+import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
 import geekdroidstudio.ru.ridr.view.fragments.routeDataFragment.RouteDataFragment;
 
 public class RouteSelectActivity extends AppCompatActivity implements
@@ -23,15 +24,12 @@ public class RouteSelectActivity extends AppCompatActivity implements
 
     public static final String START_KEY = "startKey";
     public static final String FINISH_KEY = "finishKey";
-    public static final String ROUTE_KEY = "routeKey";
+    public static final String MULTI_ROUTE_KEY = "routeKey";
 
     @BindString(R.string.route_data_fragment_tag)
     String routeDataFragmentTag;
 
     private RouteDataFragment routeDataFragment;
-
-    private String start;
-    private String finish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,20 +38,22 @@ public class RouteSelectActivity extends AppCompatActivity implements
 
         ButterKnife.bind(this);
 
-        start = getIntent().getStringExtra(START_KEY);
-        finish = getIntent().getStringExtra(FINISH_KEY);
+        if (savedInstanceState == null) {
+            String start = getIntent().getStringExtra(START_KEY);
+            String finish = getIntent().getStringExtra(FINISH_KEY);
 
-        routeDataFragment = (RouteDataFragment) getFragment(routeDataFragmentTag);
-        routeDataFragment.setFields(start, finish);
+            RouteDataFragment routeDataFragment = (RouteDataFragment) getFragment(routeDataFragmentTag);
+            routeDataFragment.setFields(start, finish);
+        }
     }
 
     @Override
-    public void routeCreated(String start, String finish, List<LatLng> routePoints) {
+    public void routeCreated(DualTextRoute dualTextRoute, List<LatLng> routePoints) {
         Intent data = new Intent();
 
-        data.putExtra(START_KEY, start);
-        data.putExtra(START_KEY, finish);
-        data.putParcelableArrayListExtra(ROUTE_KEY, new ArrayList<>(routePoints));
+        data.putExtra(START_KEY, dualTextRoute.getStart());
+        data.putExtra(FINISH_KEY, dualTextRoute.getFinish());
+        data.putParcelableArrayListExtra(MULTI_ROUTE_KEY, new ArrayList<>(routePoints));
 
         setResult(RESULT_OK, data);
         finish();

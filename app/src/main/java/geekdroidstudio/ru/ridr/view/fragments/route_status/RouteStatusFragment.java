@@ -16,25 +16,26 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.R;
+import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
 import geekdroidstudio.ru.ridr.presenter.RouteStatusPresenter;
 
 public class RouteStatusFragment extends Fragment implements RouteStatusView {
 
     @BindView(R.id.tv_info)
     TextView textViewInfo;
+
     @InjectPresenter
     RouteStatusPresenter presenter;
-    private OnFragmentInteractionListener listener;
-    private String start = "";
 
-    private String finish = "";
+    private OnFragmentInteractionListener listener;
+
+    private DualTextRoute dualTextRoute;
 
     private Unbinder unbinder;
 
     public RouteStatusFragment() {
 
     }
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -74,28 +75,27 @@ public class RouteStatusFragment extends Fragment implements RouteStatusView {
     @OnClick(R.id.btn_change)
     public void onClickChange(View view) {
         if (listener != null) {
-            listener.goRouteChange(start, finish);
-
-            if (start.isEmpty() && finish.isEmpty()) {
-                textViewInfo.setText(R.string.route_is_not_selected);
-            } else {
-                String info = "От " + start + " до " + finish;//TODO: в ресурсы
-                textViewInfo.setText(info);
-            }
+            listener.goRouteChange(dualTextRoute);
         }
     }
 
     @Override
-    public void setInfo(String string) {
-
+    public void setInfo() {
+        if (dualTextRoute == null) {
+            textViewInfo.setText(R.string.route_is_not_selected);
+        } else {
+            //TODO: в ресурсы
+            String info = "От " + dualTextRoute.getStart() + " до " + dualTextRoute.getFinish();
+            textViewInfo.setText(info);
+        }
     }
 
-    public void onRouteSelected(String start, String finish) {
-        this.start = start;
-        this.finish = finish;
+    public void onRouteSelected(DualTextRoute dualTextRoute) {
+        this.dualTextRoute = dualTextRoute;
+        setInfo();
     }
 
     public interface OnFragmentInteractionListener {
-        void goRouteChange(String start, String finish);
+        void goRouteChange(DualTextRoute dualTextRoute);
     }
 }
