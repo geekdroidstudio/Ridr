@@ -38,7 +38,8 @@ public class PassengerFindDriversFragment extends MvpAppCompatFragment implement
     private Unbinder unbinder;
     private geekdroidstudio.ru.ridr.view.fragments.passengerFindDriversFragment.PassengerFindDriversFragment.OnFragmentInteractionListener onFragmentInteractionListener;
 
-    public PassengerFindDriversFragment(){}
+    public PassengerFindDriversFragment() {
+    }
 
     public static geekdroidstudio.ru.ridr.view.fragments.passengerFindDriversFragment.PassengerFindDriversFragment newInstance() {
         return new geekdroidstudio.ru.ridr.view.fragments.passengerFindDriversFragment.PassengerFindDriversFragment();

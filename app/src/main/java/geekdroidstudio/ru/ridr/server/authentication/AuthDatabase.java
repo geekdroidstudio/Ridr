@@ -13,62 +13,62 @@ import timber.log.Timber;
 
 public class AuthDatabase {
 
-	public static final String AUTH_BOOK = "authentication";
-	public static final String AUTH_USER_NAME = "userName";
-	public static final String AUTH_USER_EMAIL = "userEmail";
-	public static final String AUTH_USER_STATUS = "userStatus";
+    public static final String AUTH_BOOK = "authentication";
+    public static final String AUTH_USER_NAME = "userName";
+    public static final String AUTH_USER_EMAIL = "userEmail";
+    public static final String AUTH_USER_STATUS = "userStatus";
 
-	private static String userId;
+    private static String userId;
 
-	private FirebaseDatabase firebaseDatabase;
-	private DatabaseReference databaseReference;
-	private IAuthDatabase iAuthDatabase;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+    private IAuthDatabase iAuthDatabase;
 
-	public AuthDatabase() {
+    public AuthDatabase() {
 
-		firebaseDatabase = FirebaseDatabase.getInstance();
-		databaseReference = firebaseDatabase.getReference();
-	}
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+    }
 
-	public interface IAuthDatabase {
-		void getUserName(String userName);
-	}
+    public static void setUserId(String userId) {
+        AuthDatabase.userId = userId;
+    }
 
-	public void setContext(Context context) {
-		iAuthDatabase = (IAuthDatabase) context;
-	}
+    public void setContext(Context context) {
+        iAuthDatabase = (IAuthDatabase) context;
+    }
 
-	public static void setUserId(String userId) {
-		AuthDatabase.userId = userId;
-	}
+    //добавление пользователя в базу
+    public void addUser(String userId, String userName, String userEmail, String userStatus) {
+        Timber.d("addUser: " + userId + " " + userName + " " + userEmail + " " + userStatus);
+        databaseReference.child(AUTH_BOOK).child(userId).child(AUTH_USER_NAME).setValue(userName);
+        databaseReference.child(AUTH_BOOK).child(userId).child(AUTH_USER_EMAIL).setValue(userEmail);
+        databaseReference.child(AUTH_BOOK).child(userId).child(AUTH_USER_STATUS).setValue(userStatus);
+    }
 
-	//добавление пользователя в базу
-	public void addUser(String userId, String userName, String userEmail, String userStatus) {
-		Timber.d("addUser: " + userId + " " + userName + " " + userEmail + " " + userStatus);
-		databaseReference.child(AUTH_BOOK).child(userId).child(AUTH_USER_NAME).setValue(userName);
-		databaseReference.child(AUTH_BOOK).child(userId).child(AUTH_USER_EMAIL).setValue(userEmail);
-		databaseReference.child(AUTH_BOOK).child(userId).child(AUTH_USER_STATUS).setValue(userStatus);
-	}
+    public void getUserName() {
 
-	public void getUserName() {
+        databaseReference
+                .child(AUTH_BOOK)
+                .child(userId)
+                .child(AUTH_USER_NAME)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        iAuthDatabase.getUserName(dataSnapshot.getValue().toString());
+                    }
 
-		databaseReference
-				.child(AUTH_BOOK)
-				.child(userId)
-				.child(AUTH_USER_NAME)
-				.addListenerForSingleValueEvent(new ValueEventListener() {
-					@Override
-					public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-						iAuthDatabase.getUserName(dataSnapshot.getValue().toString());
-					}
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Timber.e("getUserName: onCancelled");
+                    }
+                });
 
-					@Override
-					public void onCancelled(@NonNull DatabaseError databaseError) {
-						Timber.e("getUserName: onCancelled");
-					}
-				});
+    }
 
-	}
+    public interface IAuthDatabase {
+        void getUserName(String userName);
+    }
 
 
 }

@@ -143,7 +143,7 @@ public class MapFragment extends MvpAppCompatFragment implements MapView {
         mapPresenter.showUser(user);
     }
 
-    public void showMapObjects(List<User> users) {
+    public void showMapObjects(List<? extends User> users) {
         mapPresenter.showMapObjects(users);
     }
 

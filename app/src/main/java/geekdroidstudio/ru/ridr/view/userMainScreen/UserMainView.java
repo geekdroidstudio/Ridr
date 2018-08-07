@@ -16,6 +16,7 @@ public interface UserMainView extends MvpView {
     @StateStrategyType(SingleStateStrategy.class)
     void showStartAuthorisationFragment();
 
+
     @StateStrategyType(SingleStateStrategy.class)
     void showRegistrationFragment();
 

@@ -28,7 +28,7 @@ public class RecyclerItemViewHolder extends RecyclerView.ViewHolder {
 
     @OnClick(R.id.list_item_text_view_name)
     public void onClick(View view) {
-        Toast.makeText(itemView.getContext(),"Вы выбрали маршрут " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(itemView.getContext(), "Вы выбрали маршрут " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
     }
 
 }

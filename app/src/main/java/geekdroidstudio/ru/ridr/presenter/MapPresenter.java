@@ -35,7 +35,7 @@ public class MapPresenter extends MvpPresenter<MapView> {
         getViewState().drawUser(mapCoordsToLatLang(user.getLocation()));
     }
 
-    public void showMapObjects(List<User> mapObjects) {
+    public void showMapObjects(List<? extends User> mapObjects) {
         List<LatLng> latLngList = new ArrayList<>();
         for (User mapObject : mapObjects) {
             latLngList.add(mapCoordsToLatLang(mapObject.getLocation()));
