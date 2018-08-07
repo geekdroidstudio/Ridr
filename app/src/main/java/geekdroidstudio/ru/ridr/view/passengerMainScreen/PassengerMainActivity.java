@@ -15,12 +15,15 @@ import butterknife.BindString;
 import butterknife.ButterKnife;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
+import geekdroidstudio.ru.ridr.model.entity.users.Driver;
 import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
+import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
 import geekdroidstudio.ru.ridr.presenter.PassengerMainPresenter;
 import geekdroidstudio.ru.ridr.view.RouteSelectActivity;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.route_status.RouteStatusFragment;
+import geekdroidstudio.ru.ridr.view.fragments.user_list.UserListFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.FINISH_KEY;
@@ -30,10 +33,11 @@ import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.START_KEY;
 
 public class PassengerMainActivity extends MvpAppCompatActivity implements PassengerMainView,
         MapFragment.OnFragmentInteractionListener,
-        RouteStatusFragment.OnFragmentInteractionListener {
+        RouteStatusFragment.OnFragmentInteractionListener,
+        UserListFragment.OnFragmentInteractionListener {
 
-    public static final String PASSENGER_ID_KEY = "passengerIdKey";
-    public static final String PASSENGER_NAME_KEY = "passengerNameKey";
+    public static final String USER_ID_KEY = "userIdKey";
+    public static final String USER_NAME_KEY = "userNameKey";
 
     public static final int REQUEST_CODE_ROUTE = 1;
 
@@ -46,8 +50,12 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     @BindString(R.string.route_status_fragment_tag)
     String routeStatusFragmentTag;
 
-    MapFragment mapFragment;
-    RouteStatusFragment routeStatusFragment;
+    @BindString(R.string.user_list_fragment_tag)
+    String userListFragmentTag;
+
+    private MapFragment mapFragment;
+    private RouteStatusFragment routeStatusFragment;
+    private UserListFragment userListFragment;
 
     @ProvidePresenter
     public PassengerMainPresenter providePresenter() {
@@ -63,22 +71,25 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
 
         ButterKnife.bind(this);
 
-        String passengerId = getIntent().getStringExtra(PASSENGER_ID_KEY);
-        String passengerName = getIntent().getStringExtra(PASSENGER_NAME_KEY);
+        if (savedInstanceState == null) {
+            String passengerId = getIntent().getStringExtra(USER_ID_KEY);
+            String passengerName = getIntent().getStringExtra(USER_NAME_KEY);
 
-        //TODO: убрать при передаче настоящих значений
-        passengerId = "test1id";
-        passengerName = "test1name";
+            //TODO: убрать при передаче настоящих значений
+            passengerId = "test1id";
+            passengerName = "test1name";
 
-        passengerMainPresenter.setPassenger(new Passenger(passengerId, passengerName));
+            passengerMainPresenter.setPassenger(new Passenger(passengerId, passengerName));
+        }
 
         mapFragment = (MapFragment) getFragment(mapFragmentTag);
         routeStatusFragment = (RouteStatusFragment) getFragment(routeStatusFragmentTag);
+        userListFragment = (UserListFragment) getFragment(userListFragmentTag);
     }
 
     //LatLang - временное решение - вместо них, лучше использовать свои класс координат
     @Override
-    public void showRouteInMapFragment(List<LatLng> routePoints) {
+    public void showRouteOnMap(List<LatLng> routePoints) {
         mapFragment.showRoute(routePoints);
     }
 
@@ -89,7 +100,7 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
 
     @Override
     public void showDriversOnMap(List<? extends User> users) {
-        mapFragment.showMapObjects(users);
+        mapFragment.showUsersOnMap(users);
     }
 
     @Override
@@ -100,6 +111,11 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
         intent.putExtra(FINISH_KEY, finish);
 
         startActivityForResult(intent, REQUEST_CODE_ROUTE);
+    }
+
+    @Override
+    public void addDriver(UserAndRoute<Driver> userAndRoute) {
+        userListFragment.addUserAndRoute(userAndRoute);
     }
 
     @Override

@@ -17,13 +17,15 @@ public class DriverRecyclerItemViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.list_item_text_view_name)
     AppCompatTextView nameTextView;
 
+    @BindView(R.id.list_item_text_view_point_start)
+    AppCompatTextView startTextView;
+
+    @BindView(R.id.list_item_text_view_point_finish)
+    AppCompatTextView finishTextView;
+
     DriverRecyclerItemViewHolder(LayoutInflater inflater, ViewGroup parent) {
         super(inflater.inflate(R.layout.recycler_objects_item_around, parent, false));
         ButterKnife.bind(this, itemView);
-    }
-
-    void bind(int position) {
-        nameTextView.setText("Пассажир " + position);
     }
 
     @OnClick(R.id.list_item_text_view_name)

@@ -7,17 +7,21 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
+import geekdroidstudio.ru.ridr.model.entity.communication.SimpleRoute;
+import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
+import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
 
 @StateStrategyType(OneExecutionStateStrategy.class)
 public interface DriverMainView extends MvpView {
-    void showMapFragment();
 
-    void showRouteInMapFragment(List<LatLng> routePoints);
+    void showRouteOnMap(List<LatLng> routePoints);
 
-    void showUserInMapFragment(User user);
+    void showDriverOnMap(User user);
 
-    void showMapObjectsInMapFragment(List<User> users);
+    void showPassengersOnMap(List<? extends User> users);
 
-    void showDriverRecycler();
+    void showPassengerRequest(Passenger passenger, SimpleRoute simpleRoute);
+
+    void addPassenger(UserAndRoute<Passenger> userAndRoute);
 }

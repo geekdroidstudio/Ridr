@@ -11,7 +11,7 @@
         android:name="geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:tag="@string/map_fragment_tag"
         tools:layout="@layout/fragment_map" />
 
@@ -22,10 +22,12 @@
         android:tag="@string/route_status_fragment_tag"
         tools:layout="@layout/fragment_route_status" />
 
-    <FrameLayout
-        android:id="@+id/fl_activity_passenger_route_frame"
+    <fragment
+        android:name="geekdroidstudio.ru.ridr.view.fragments.user_list.UserListFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2" />
+        android:layout_weight="1"
+        android:tag="@string/user_list_fragment_tag"
+        tools:layout="@layout/fragment_user_list" />
 
 </LinearLayout>
