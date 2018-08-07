@@ -48,7 +48,7 @@ public class PassengerRequestRepositoryFirebase implements IPassengerRequestRepo
 
                     if (accept != null) {
                         responseReference.removeEventListener(this);
-                        responseReference.setValue(null);
+                        reference.setValue(null);
 
                         emitter.onSuccess(new DriverResponse(driverId, passengerId, accept));
                     }

@@ -157,7 +157,7 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     @Override
     public void showSendRequestDialog(UserAndRoute<? extends User> userAndRoute) {
         alertDialog = new AlertDialog.Builder(this)
-                .setMessage("Send message to " + userAndRoute.getUser().getName())
+                .setMessage("Send request to " + userAndRoute.getUser().getName())
                 .setNegativeButton("No", (dialog, which) -> {
                 })
                 .setPositiveButton("Yes", (dialog, which) -> passengerMainPresenter.onRouteSend(userAndRoute))
@@ -168,10 +168,13 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
 
     @Override
     public void showResponse(DriverResponse driverResponse) {
+        final String message;
         if (driverResponse.getAccept()) {
-            final String message = driverResponse.getDriverId() + " accepted request";
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            message = driverResponse.getDriverId() + " accepted request";
+        } else {
+            message = driverResponse.getDriverId() + " rejected request";
         }
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
