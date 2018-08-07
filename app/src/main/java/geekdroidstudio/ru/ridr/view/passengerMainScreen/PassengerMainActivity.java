@@ -1,12 +1,16 @@
 package geekdroidstudio.ru.ridr.view.passengerMainScreen;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
@@ -36,6 +40,7 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     public static final String PASSENGER_NAME_KEY = "passengerNameKey";
 
     public static final int REQUEST_CODE_ROUTE = 1;
+    private static final int REQUEST_CHECK_SETTINGS = 333;
 
     @InjectPresenter
     PassengerMainPresenter passengerMainPresenter;
@@ -93,6 +98,26 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     }
 
     @Override
+    public void showLocationSettingsError() {
+
+    }
+
+    @Override
+    public void resolveLocationException(ApiException apiException) {
+        try {
+            ResolvableApiException resolvable = (ResolvableApiException) apiException;
+            // Show the dialog by calling startResolutionForResult(),
+            // and check the result in onActivityResult().
+            resolvable.startResolutionForResult(this, REQUEST_CHECK_SETTINGS);
+        } catch (IntentSender.SendIntentException e) {
+            // Ignore the error.
+        } catch (ClassCastException e) {
+            // Ignore, should be an impossible error.
+        }
+    }
+
+
+    @Override
     public void goRouteChange(String start, String finish) {
         Intent intent = new Intent(this, RouteSelectActivity.class);
 
@@ -105,20 +130,31 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_CODE_ROUTE:
+        switch (requestCode) {
+            case REQUEST_CHECK_SETTINGS: {
+                if (resultCode == Activity.RESULT_OK) {
+                    passengerMainPresenter.locationErrorResolve();
+                } else {
+                    passengerMainPresenter.locationErrorNotResolve();
+                }
+                break;
+            }
+            case REQUEST_CODE_ROUTE: {
+                if (resultCode == Activity.RESULT_OK) {
                     String start = data.getStringExtra(START_KEY);
                     String finish = data.getStringExtra(FINISH_KEY);
                     List<LatLng> latLngArray = data.getParcelableArrayListExtra(ROUTE_KEY);
 
                     routeStatusFragment.onRouteSelected(start, finish);
                     mapFragment.showRoute(latLngArray);
-                    break;
+                } else {
+                    //do handle error result
+                }
+                break;
             }
         }
     }
+
 
     private Fragment getFragment(String tag) {
         return getSupportFragmentManager().findFragmentByTag(tag);
