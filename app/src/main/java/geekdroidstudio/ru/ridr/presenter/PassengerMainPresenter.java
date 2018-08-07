@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import geekdroidstudio.ru.ridr.model.EmulateGeo;
 import geekdroidstudio.ru.ridr.model.Repository;
 import geekdroidstudio.ru.ridr.model.communication.IPassengerCommunication;
 import geekdroidstudio.ru.ridr.model.entity.communication.PassengerRequest;
@@ -38,6 +39,9 @@ public class PassengerMainPresenter extends MvpPresenter<PassengerMainView> {
     @Inject
     IPassengerCommunication passengerCommunication;
 
+    @Inject
+    EmulateGeo emulateGeo;
+
     private Scheduler scheduler;
 
     private Passenger passenger;
@@ -58,26 +62,9 @@ public class PassengerMainPresenter extends MvpPresenter<PassengerMainView> {
     public void setPassenger(Passenger passenger) {
         this.passenger = passenger;
 
-        compositeDisposable.add(startListenGeo());
         compositeDisposable.add(startListenDrivers());
-
-        //TODO: debug
-        //getViewState().addDriver(createDriverAndRoute(2));
-        //getViewState().addDriver(createDriverAndRoute(4));
+        compositeDisposable.add(startListenGeo());
     }
-
-    /*@NonNull
-    private UserAndRoute<Driver> createDriverAndRoute(int id) {
-        UserAndRoute<Driver> driverAndRoute = new UserAndRoute<>();
-        driverAndRoute.setUser(new Driver("test" + id + "id", "test" + id + "name"));
-
-        DualRoute dualRoute = new DualRoute();
-        dualRoute.setCoordinateRoute(new DualCoordinateRoute(new Coordinate(id + 2.5, id + 2.6),
-                new Coordinate(id + 4.5, id + 4.6)));
-        dualRoute.setTextRoute(new DualTextRoute("start by " + id, "finish by " + id));
-        driverAndRoute.setDualRoute(dualRoute);
-        return driverAndRoute;
-    }*/
 
     @NonNull
     private Disposable startListenDrivers() {
@@ -100,7 +87,8 @@ public class PassengerMainPresenter extends MvpPresenter<PassengerMainView> {
     }
 
     private Disposable startListenGeo() {
-        return repository.startListenLocation()
+        //return repository.startListenLocation()
+        return emulateGeo.getSubject()
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
                 .subscribe(location -> {
@@ -108,7 +96,8 @@ public class PassengerMainPresenter extends MvpPresenter<PassengerMainView> {
 
                     passenger.setLocation(new Coordinate(location.getLatitude(),
                             location.getLongitude()));
-                    passengerCommunication.postLocation(passenger);
+                    passengerCommunication.postLocation(passenger)
+                            .subscribe();
 
                     getViewState().showPassengerOnMap(passenger);
                 }, Timber::e);

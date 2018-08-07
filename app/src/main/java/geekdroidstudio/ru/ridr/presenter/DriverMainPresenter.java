@@ -1,6 +1,5 @@
 package geekdroidstudio.ru.ridr.presenter;
 
-import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
 import com.arellomobile.mvp.InjectViewState;
@@ -62,27 +61,8 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
 
         compositeDisposable.add(startListenPassengersLocation());
         compositeDisposable.add(startListenPassengersRequests(driver));
-
-        startListenGeo();
-
-
-        //TODO: debug
-        //getViewState().showPassengersOnList(createPassengerAndRoute(1));
-        //getViewState().showPassengersOnList(createPassengerAndRoute(3));
+        compositeDisposable.add(startListenGeo());
     }
-
-    /*@NonNull
-    private UserAndRoute<Passenger> createPassengerAndRoute(int id) {
-        UserAndRoute<Passenger> passengerAndRoute = new UserAndRoute<>();
-        passengerAndRoute.setUser(new Passenger("test" + id + "id", "test" + id + "name"));
-
-        DualRoute dualRoute = new DualRoute();
-        dualRoute.setCoordinateRoute(new DualCoordinateRoute(new Coordinate(id + 1.5, id + 1.6),
-                new Coordinate(id + 3.5, id + 3.6)));
-        dualRoute.setTextRoute(new DualTextRoute("start by " + id, "finish by " + id));
-        passengerAndRoute.setDualRoute(dualRoute);
-        return passengerAndRoute;
-    }*/
 
     @NonNull
     private Disposable startListenPassengersLocation() {
@@ -118,10 +98,9 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
                 }, Timber::e);
     }
 
-    @SuppressLint("CheckResult")
-    private void startListenGeo() {
-        //repository.startListenLocation()
-        emulateGeo.getSubject()//TODO debug
+    private Disposable startListenGeo() {
+        //return repository.startListenLocation()
+        return emulateGeo.getSubject()//TODO debug
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
                 .subscribe(location -> {
