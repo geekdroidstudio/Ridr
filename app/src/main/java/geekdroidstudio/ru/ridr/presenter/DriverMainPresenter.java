@@ -12,13 +12,12 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import geekdroidstudio.ru.ridr.model.EmulateGeo;
 import geekdroidstudio.ru.ridr.model.Repository;
 import geekdroidstudio.ru.ridr.model.communication.IDriverCommunication;
 import geekdroidstudio.ru.ridr.model.entity.communication.DriverResponse;
 import geekdroidstudio.ru.ridr.model.entity.routes.Coordinate;
-import geekdroidstudio.ru.ridr.model.entity.routes.DualCoordinateRoute;
 import geekdroidstudio.ru.ridr.model.entity.routes.DualRoute;
-import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
 import geekdroidstudio.ru.ridr.model.entity.users.Driver;
 import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
 import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
@@ -37,6 +36,9 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
 
     @Inject
     IDriverCommunication driverCommunication;
+
+    @Inject
+    EmulateGeo emulateGeo;
 
     private Driver driver;
 
@@ -69,7 +71,7 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
         //getViewState().showPassengersOnList(createPassengerAndRoute(3));
     }
 
-    @NonNull
+    /*@NonNull
     private UserAndRoute<Passenger> createPassengerAndRoute(int id) {
         UserAndRoute<Passenger> passengerAndRoute = new UserAndRoute<>();
         passengerAndRoute.setUser(new Passenger("test" + id + "id", "test" + id + "name"));
@@ -80,7 +82,7 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
         dualRoute.setTextRoute(new DualTextRoute("start by " + id, "finish by " + id));
         passengerAndRoute.setDualRoute(dualRoute);
         return passengerAndRoute;
-    }
+    }*/
 
     @NonNull
     private Disposable startListenPassengersLocation() {
@@ -118,7 +120,8 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
 
     @SuppressLint("CheckResult")
     private void startListenGeo() {
-        repository.startListenLocation()
+        //repository.startListenLocation()
+        emulateGeo.getSubject()//TODO debug
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
                 .subscribe(location -> {
@@ -126,7 +129,8 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
 
                     driver.setLocation(new Coordinate(location.getLatitude(),
                             location.getLongitude()));
-                    driverCommunication.postLocation(driver);
+                    driverCommunication.postLocation(driver)
+                            .subscribe();
 
                     getViewState().showDriverOnMap(driver);
                 }, Timber::e);

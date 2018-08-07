@@ -87,6 +87,7 @@ public class RouteDataPresenter extends MvpPresenter<RouteDataView> {
                  * и возвращающий набор объектов LatLng, узлов нашего маршрута*/
                 List<LatLng> latLngsList = PolyUtil.decode(overViewPolyLine);
 
+                //TODO: вот тут нужны человеческие названия
                 DualTextRoute dualTextRoute = new DualTextRoute(routeStartPoint, routeEndPoint);
 
                 getViewState().routeLoadCompleted(dualTextRoute, latLngsList);

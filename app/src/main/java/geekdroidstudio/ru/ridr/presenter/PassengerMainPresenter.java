@@ -66,7 +66,7 @@ public class PassengerMainPresenter extends MvpPresenter<PassengerMainView> {
         //getViewState().addDriver(createDriverAndRoute(4));
     }
 
-    @NonNull
+    /*@NonNull
     private UserAndRoute<Driver> createDriverAndRoute(int id) {
         UserAndRoute<Driver> driverAndRoute = new UserAndRoute<>();
         driverAndRoute.setUser(new Driver("test" + id + "id", "test" + id + "name"));
@@ -77,7 +77,7 @@ public class PassengerMainPresenter extends MvpPresenter<PassengerMainView> {
         dualRoute.setTextRoute(new DualTextRoute("start by " + id, "finish by " + id));
         driverAndRoute.setDualRoute(dualRoute);
         return driverAndRoute;
-    }
+    }*/
 
     @NonNull
     private Disposable startListenDrivers() {

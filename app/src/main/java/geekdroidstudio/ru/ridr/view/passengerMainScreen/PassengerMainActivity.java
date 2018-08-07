@@ -140,8 +140,8 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     public void goRouteChange(DualTextRoute dualTextRoute) {
         Intent intent = new Intent(this, RouteSelectActivity.class);
 
-        intent.putExtra(START_KEY, dualTextRoute.getStart());
-        intent.putExtra(FINISH_KEY, dualTextRoute.getFinish());
+        intent.putExtra(START_KEY, "");//dualTextRoute.getStart());
+        intent.putExtra(FINISH_KEY, "");//dualTextRoute.getFinish());
 
         startActivityForResult(intent, REQUEST_CODE_ROUTE);
     }
