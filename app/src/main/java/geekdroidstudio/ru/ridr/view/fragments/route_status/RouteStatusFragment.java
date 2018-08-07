@@ -14,6 +14,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.R;
 import geekdroidstudio.ru.ridr.presenter.RouteStatusPresenter;
 
@@ -28,6 +29,8 @@ public class RouteStatusFragment extends Fragment implements RouteStatusView {
 
     private String finish = "";
 
+    private Unbinder unbinder;
+
     public RouteStatusFragment() {
 
     }
@@ -38,9 +41,16 @@ public class RouteStatusFragment extends Fragment implements RouteStatusView {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_route_status, container, false);
 
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        unbinder.unbind();
     }
 
     @Override
