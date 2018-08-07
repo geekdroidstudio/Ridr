@@ -7,6 +7,7 @@ import com.arellomobile.mvp.MvpPresenter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -15,6 +16,7 @@ import geekdroidstudio.ru.ridr.model.EmulateGeo;
 import geekdroidstudio.ru.ridr.model.Repository;
 import geekdroidstudio.ru.ridr.model.communication.IDriverCommunication;
 import geekdroidstudio.ru.ridr.model.entity.communication.DriverResponse;
+import geekdroidstudio.ru.ridr.model.entity.communication.PassengerRequest;
 import geekdroidstudio.ru.ridr.model.entity.routes.Coordinate;
 import geekdroidstudio.ru.ridr.model.entity.routes.DualRoute;
 import geekdroidstudio.ru.ridr.model.entity.users.Driver;
@@ -24,6 +26,7 @@ import geekdroidstudio.ru.ridr.view.driverMainScreen.DriverMainView;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -46,6 +49,8 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private Map<String, UserAndRoute<Passenger>> passengersAndRoutes = new HashMap<>();
+
+    private List<Passenger> passengers = new ArrayList<>();
 
     public DriverMainPresenter(Scheduler scheduler) {
         this.scheduler = scheduler;
@@ -72,6 +77,7 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
                 .subscribe(passengers -> {
                     Timber.d(passengers.toString());
 
+                    this.passengers = passengers;
                     getViewState().showPassengersOnMap(passengers);
                 }, Timber::e);
     }
@@ -81,21 +87,27 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
         return driverCommunication.getPassengerRequestObservable(driver.getId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
-                .subscribe(passengerRequest -> {
-                    Timber.d(passengerRequest.toString());
+                .subscribe(getPassengerRequestConsumer(), Timber::e);
+    }
 
-                    //TODO: get passenger from list and go to viewState.showPassengerRequest
+    @NonNull
+    private Consumer<PassengerRequest> getPassengerRequestConsumer() {
+        return passengerRequest -> {
+            Timber.d(passengerRequest.toString());
 
-                    UserAndRoute<Passenger> passengerAndRoute = passengersAndRoutes
-                            .get(passengerRequest.getPassengerId());
-
-                    Passenger passenger = new Passenger(passengerRequest.getPassengerId(), "unknown");
-
+            for (Passenger passenger : passengers) {
+                if (passenger.getId().equals(passengerRequest.getPassengerId())) {
                     DualRoute dualRoute = new DualRoute();
                     dualRoute.setCoordinateRoute(passengerRequest.getDualCoordinateRoute());
 
                     getViewState().showPassengerRequest(new UserAndRoute<>(passenger, dualRoute));
-                }, Timber::e);
+                    return;
+                }
+            }
+
+            Passenger passenger = new Passenger(passengerRequest.getPassengerId(), "");
+            sendDriverResponse(passenger, false);
+        };
     }
 
     private Disposable startListenGeo() {
@@ -116,13 +128,7 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
     }
 
     public void onDriverResponse(Passenger passenger, boolean response) {
-        DriverResponse driverResponse = new DriverResponse();
-        driverResponse.setDriverId(driver.getId());
-        driverResponse.setPassengerId(passenger.getId());
-        driverResponse.setAccept(response);
-
-        driverCommunication.postPassengerResponse(driverResponse)
-                .subscribe();
+        sendDriverResponse(passenger, response);
 
         if (response) {
             UserAndRoute<Passenger> passengerAndRoute = new UserAndRoute<>();
@@ -132,5 +138,15 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
             passengersAndRoutes.put(passengerAndRoute.getUser().getId(), passengerAndRoute);
             getViewState().showPassengersOnList(new ArrayList<>(passengersAndRoutes.values()));
         }
+    }
+
+    private void sendDriverResponse(Passenger passenger, boolean response) {
+        DriverResponse driverResponse = new DriverResponse();
+        driverResponse.setDriverId(driver.getId());
+        driverResponse.setPassengerId(passenger.getId());
+        driverResponse.setAccept(response);
+
+        driverCommunication.postPassengerResponse(driverResponse)
+                .subscribe();
     }
 }
