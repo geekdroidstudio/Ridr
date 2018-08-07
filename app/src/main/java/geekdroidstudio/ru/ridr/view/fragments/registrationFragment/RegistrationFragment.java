@@ -35,12 +35,14 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
     @BindView(R.id.edit_text_user_name)
     TextInputEditText editTextUserName;
 
-    @Inject Authentication authentication;
+    @Inject
+    Authentication authentication;
 
     private Unbinder unbinder;
     private RegistrationFragment.OnFragmentInteractionListener onFragmentInteractionListener;
 
-    public RegistrationFragment(){}
+    public RegistrationFragment() {
+    }
 
     public static RegistrationFragment newInstance() {
         return new RegistrationFragment();
@@ -80,11 +82,6 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
         unbinder.unbind();
     }
 
-    public interface OnFragmentInteractionListener {
-        void startDriverActivity(String userId);
-        void startPassengerActivity(String userId);
-    }
-
     @OnClick(R.id.button_choose_driver)
     @Override
     public void chooseRoleDriver() {
@@ -93,10 +90,10 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
         String userName = editTextUserName.getText().toString();
         Timber.d("chooseRoleDriver()");
 
-        if(phoneEmail.isEmpty() || registrationPassword.isEmpty()){
-            Toast.makeText(getContext(),R.string.registration_error_text, Toast.LENGTH_SHORT).show();
+        if (phoneEmail.isEmpty() || registrationPassword.isEmpty()) {
+            Toast.makeText(getContext(), R.string.registration_error_text, Toast.LENGTH_SHORT).show();
 
-        }else {
+        } else {
             authentication.signUp(userName, phoneEmail, registrationPassword, "driver");
 
         }
@@ -111,13 +108,19 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
         String userName = editTextUserName.getText().toString();
         Timber.d("chooseRolePassenger()");
 
-        if(phoneEmail.isEmpty() || registrationPassword.isEmpty()){
-            Toast.makeText(getContext(),R.string.registration_error_text, Toast.LENGTH_SHORT).show();
+        if (phoneEmail.isEmpty() || registrationPassword.isEmpty()) {
+            Toast.makeText(getContext(), R.string.registration_error_text, Toast.LENGTH_SHORT).show();
 
-        }else {
+        } else {
             authentication.signUp(userName, phoneEmail, registrationPassword, "passenger");
 
         }
+    }
+
+    public interface OnFragmentInteractionListener {
+        void startDriverActivity(String userId);
+
+        void startPassengerActivity(String userId);
     }
 
     @Override

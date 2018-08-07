@@ -7,8 +7,8 @@ import geekdroidstudio.ru.ridr.server.authentication.AuthDatabase;
 @Module
 public class AuthDatabaseModule {
 
-	@Provides
-	AuthDatabase provideAuthDatabase(){
-		return new AuthDatabase();
-	}
+    @Provides
+    AuthDatabase provideAuthDatabase() {
+        return new AuthDatabase();
+    }
 }

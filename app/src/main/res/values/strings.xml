@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Ridr</string>
-    <string name="google_maps_key">AIzaSyDG2mnh2Cdy4F02EA13V7-NnnWNdQVs1Y0</string>
 
     <string name="error_implement_fragment_interaction_listener">must implement OnFragmentInteractionListener</string>
     <string name="error_implement_frag_interact_list">must implement OnFragmentInteractionListener</string>

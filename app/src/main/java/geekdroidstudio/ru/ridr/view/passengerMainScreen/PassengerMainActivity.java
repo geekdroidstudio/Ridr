@@ -1,7 +1,6 @@
 package geekdroidstudio.ru.ridr.view.passengerMainScreen;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -17,14 +16,11 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.presenter.PassengerMainPresenter;
 import geekdroidstudio.ru.ridr.server.authentication.AuthDatabase;
-import geekdroidstudio.ru.ridr.server.authentication.Authentication;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.passengerFindDriversFragment.PassengerFindDriversFragment;
 import geekdroidstudio.ru.ridr.view.fragments.routeDataFragment.RouteDataFragment;
@@ -35,11 +31,9 @@ import timber.log.Timber;
 public class PassengerMainActivity extends MvpAppCompatActivity implements PassengerMainView,
         MapFragment.OnFragmentInteractionListener, RouteDataFragment.OnFragmentInteractionListener,
         PassengerFindDriversFragment.OnFragmentInteractionListener, AuthDatabase.IAuthDatabase {
+
     @InjectPresenter
     PassengerMainPresenter passengerMainPresenter;
-
-    @Inject
-    AuthDatabase authDatabase;
 
     @ProvidePresenter
     public PassengerMainPresenter providePresenter() {
@@ -53,14 +47,9 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passenger_main);
 
-        App.getInstance().getComponent().inject(this);
-
         String userId = getIntent().getStringExtra(UserMainActivity.USER_ID_KEY);
 
-        //получаем id пользователя
-        Timber.d("PassengerActivity: onCreate: " + userId);
-        authDatabase.setContext(this);
-        authDatabase.getUserName(userId);
+        passengerMainPresenter.setPassengerId(this, userId);
 
     }
 

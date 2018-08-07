@@ -1,6 +1,7 @@
 package geekdroidstudio.ru.ridr.presenter;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -11,6 +12,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import geekdroidstudio.ru.ridr.model.Repository;
+import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
+import geekdroidstudio.ru.ridr.server.authentication.AuthDatabase;
 import geekdroidstudio.ru.ridr.view.passengerMainScreen.PassengerMainView;
 import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
@@ -22,7 +25,12 @@ public class PassengerMainPresenter extends MvpPresenter<PassengerMainView> {
     @Inject
     Repository repository;
 
+    @Inject
+    AuthDatabase authDatabase;
+
     private Scheduler scheduler;
+
+    private Passenger passenger;
 
     public PassengerMainPresenter(Scheduler scheduler) {
         this.scheduler = scheduler;
@@ -36,6 +44,14 @@ public class PassengerMainPresenter extends MvpPresenter<PassengerMainView> {
         getViewState().showRouteDataFragment();
 
         startListenGeo();
+    }
+
+    public void setPassengerId(Context context, String id) {
+        authDatabase.setContext(context);
+
+        passenger = new Passenger(id, "need_load_name_from_auth_db");//TODO
+        //String name = authDatabase.getUserName(id);
+
     }
 
     @SuppressLint("CheckResult")
