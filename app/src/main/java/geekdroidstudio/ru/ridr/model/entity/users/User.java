@@ -5,7 +5,7 @@ import com.google.firebase.database.PropertyName;
 public class User {
 
     private static final String USER_NAME_FIELD = "userName";
-    
+
     private String id;
 
     private String name;

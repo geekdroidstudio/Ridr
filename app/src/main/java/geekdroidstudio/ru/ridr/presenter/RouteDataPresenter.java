@@ -73,7 +73,8 @@ public class RouteDataPresenter extends MvpPresenter<RouteDataView> {
                          * и возвращающий набор объектов LatLng, узлов нашего маршрута*/
                         List<LatLng> latLngsList = PolyUtil.decode(overViewPolyLine);
 
-                        getViewState().routeLoadCompleted(latLngsList);
+                        getViewState().routeLoadCompleted(startPointPlaceId, endPointPlaceId,
+                                latLngsList);
                     } else {
                         getViewState().showErrorLoadRoute();
                     }

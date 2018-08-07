@@ -4,25 +4,26 @@
     android:id="@+id/activity_authentication"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     android:orientation="vertical"
     tools:context=".view.passengerMainScreen.PassengerMainActivity">
 
-    <FrameLayout
-        android:id="@+id/fl_activity_passenger_main_frame"
+    <fragment
+        android:name="geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="2"
+        android:tag="@string/map_fragment_tag"
+        tools:layout="@layout/fragment_map" />
+
+    <fragment
+        android:name="geekdroidstudio.ru.ridr.view.fragments.route_status.RouteStatusFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:tag="@string/route_status_fragment_tag"
+        tools:layout="@layout/fragment_route_status" />
 
     <FrameLayout
         android:id="@+id/fl_activity_passenger_route_frame"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2" />
-
-    <FrameLayout
-        android:id="@+id/fl_activity_passenger_map_frame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2" />

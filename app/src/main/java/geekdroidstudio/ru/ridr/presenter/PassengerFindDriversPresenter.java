@@ -8,9 +8,9 @@ import geekdroidstudio.ru.ridr.view.fragments.passengerFindDriversFragment.Passe
 @InjectViewState
 public class PassengerFindDriversPresenter extends MvpPresenter<PassengerFindDriversView> {
 
-        @Override
-        protected void onFirstViewAttach() {
-            super.onFirstViewAttach();
-            getViewState().showMapFragment();
-        }
+    @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
+        getViewState().showMapFragment();
+    }
 }

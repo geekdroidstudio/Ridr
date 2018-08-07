@@ -41,8 +41,10 @@ public class RouteDataFragment extends MvpAppCompatFragment implements RouteData
 
     @BindView(R.id.lly_fr_route_data_root_view)
     LinearLayout rootView;
+
     @BindView(R.id.atv_act_pass_main_start_point)
     AutoCompleteTextView startPointAutoText;
+
     @BindView(R.id.atv_act_pass_main_end_point)
     AutoCompleteTextView endPointAutoText;
 
@@ -107,9 +109,14 @@ public class RouteDataFragment extends MvpAppCompatFragment implements RouteData
         endPointAutoText.setOnItemClickListener(createPlaceClickListener(endPointAutoText.getId()));
     }
 
+    public void setFields(String start, String finish) {
+        startPointAutoText.setText(start);
+        endPointAutoText.setText(finish);
+    }
+
     @Override
-    public void routeLoadCompleted(List<LatLng> routePoints) {
-        onFragmentInteractionListener.routeCreated(routePoints);
+    public void routeLoadCompleted(String start, String finish, List<LatLng> routePoints) {
+        onFragmentInteractionListener.routeCreated(start, finish, routePoints);
     }
 
     @Override
@@ -160,7 +167,7 @@ public class RouteDataFragment extends MvpAppCompatFragment implements RouteData
     }
 
     public interface OnFragmentInteractionListener {
-        void routeCreated(List<LatLng> routePoints);
+        void routeCreated(String start, String finish, List<LatLng> routePoints);
 
         void hideKeyboard(IBinder windowToken);
     }
