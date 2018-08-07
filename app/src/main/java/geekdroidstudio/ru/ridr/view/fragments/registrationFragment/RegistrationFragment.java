@@ -20,7 +20,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.server.authentication.Authentication;
+import geekdroidstudio.ru.ridr.model.authentication.Authentication;
 import timber.log.Timber;
 
 public class RegistrationFragment extends MvpAppCompatFragment implements RegistrationView, Authentication.IAuthenticationSignUp {

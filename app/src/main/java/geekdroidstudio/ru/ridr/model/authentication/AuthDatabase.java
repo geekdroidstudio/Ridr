@@ -1,4 +1,4 @@
-package geekdroidstudio.ru.ridr.server.authentication;
+package geekdroidstudio.ru.ridr.model.authentication;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

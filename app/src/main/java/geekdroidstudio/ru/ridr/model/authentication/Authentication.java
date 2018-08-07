@@ -1,4 +1,4 @@
-package geekdroidstudio.ru.ridr.server.authentication;
+package geekdroidstudio.ru.ridr.model.authentication;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.google.firebase.auth.FirebaseAuth;

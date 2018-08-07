@@ -20,7 +20,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.server.authentication.Authentication;
+import geekdroidstudio.ru.ridr.model.authentication.Authentication;
 import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity;
 import timber.log.Timber;
 
