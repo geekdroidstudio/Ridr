@@ -12,9 +12,11 @@ import geekdroidstudio.ru.ridr.di.modules.RepositoryModule;
 import geekdroidstudio.ru.ridr.presenter.DriverMainPresenter;
 import geekdroidstudio.ru.ridr.presenter.PassengerMainPresenter;
 import geekdroidstudio.ru.ridr.presenter.RouteDataPresenter;
+import geekdroidstudio.ru.ridr.view.driverMainScreen.DriverMainActivity;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.registrationFragment.RegistrationFragment;
 import geekdroidstudio.ru.ridr.view.fragments.startAuthenticationFragment.StartAuthenticationFragment;
+import geekdroidstudio.ru.ridr.view.passengerMainScreen.PassengerMainActivity;
 import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity;
 
 
@@ -35,4 +37,8 @@ public interface AppComponent {
     void inject(DriverMainPresenter presenter);
 
     void inject(UserMainActivity userMainActivity);
+
+    void inject (PassengerMainActivity passengerMainActivity);
+
+    void inject (DriverMainActivity driverMainActivity);
 }

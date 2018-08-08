@@ -11,6 +11,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindString;
 import butterknife.ButterKnife;
 import geekdroidstudio.ru.ridr.App;
@@ -18,10 +20,13 @@ import geekdroidstudio.ru.ridr.R;
 import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.presenter.PassengerMainPresenter;
+import geekdroidstudio.ru.ridr.server.authentication.AuthDatabase;
 import geekdroidstudio.ru.ridr.view.RouteSelectActivity;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.route_status.RouteStatusFragment;
+import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
 
 import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.FINISH_KEY;
 import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.ROUTE_KEY;
@@ -30,7 +35,7 @@ import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.START_KEY;
 
 public class PassengerMainActivity extends MvpAppCompatActivity implements PassengerMainView,
         MapFragment.OnFragmentInteractionListener,
-        RouteStatusFragment.OnFragmentInteractionListener {
+        RouteStatusFragment.OnFragmentInteractionListener, AuthDatabase.IAuthDatabase {
 
     public static final String PASSENGER_ID_KEY = "passengerIdKey";
     public static final String PASSENGER_NAME_KEY = "passengerNameKey";
@@ -46,6 +51,8 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     @BindString(R.string.route_status_fragment_tag)
     String routeStatusFragmentTag;
 
+    @Inject AuthDatabase authDatabase;
+
     MapFragment mapFragment;
     RouteStatusFragment routeStatusFragment;
 
@@ -60,8 +67,13 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passenger_main);
-
         ButterKnife.bind(this);
+
+        App.getInstance().getComponent().inject(this);
+        String userId = getIntent().getStringExtra(UserMainActivity.USER_ID_KEY);
+        Timber.d("onCreate: " + userId);
+        authDatabase.setContext(this);
+        authDatabase.getUserName(userId);
 
         String passengerId = getIntent().getStringExtra(PASSENGER_ID_KEY);
         String passengerName = getIntent().getStringExtra(PASSENGER_NAME_KEY);
@@ -122,5 +134,10 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
 
     private Fragment getFragment(String tag) {
         return getSupportFragmentManager().findFragmentByTag(tag);
+    }
+
+    @Override
+    public void wasGetUserName(String userName) {
+        Timber.d("wasGetUserName: " +userName);
     }
 }
