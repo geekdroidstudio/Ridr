@@ -20,9 +20,9 @@ public interface UserMainView extends MvpView {
     @StateStrategyType(SingleStateStrategy.class)
     void showRegistrationFragment();
 
-    void launchDriverActivity();
+    void launchDriverActivity(String userId);
 
-    void launchPassengerActivity();
+    void launchPassengerActivity(String userId);
 
     void requestPermissions();
 }

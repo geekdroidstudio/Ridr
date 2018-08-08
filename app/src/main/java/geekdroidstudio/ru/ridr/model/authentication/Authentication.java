@@ -37,8 +37,7 @@ public class Authentication {
                 task -> {
                     if (task.isSuccessful()) {
                         Timber.d("onComplete: wasSignIn()");
-                        AuthDatabase.setUserId(firebaseAuth.getUid());
-                        iAuthenticationSignIn.wasSignIn();
+                        iAuthenticationSignIn.wasSignIn(firebaseAuth.getUid());
                     } else {
                         Timber.d("onComplete: wasNotSignIn()");
                         iAuthenticationSignIn.wasNotSignIn();
@@ -58,7 +57,7 @@ public class Authentication {
                     if (task.isSuccessful()) {
                         authDatabase.addUser(firebaseAuth.getUid(), userName, userEmail, userStatus);
                         Timber.d("onComplete: wasSignUp()");
-                        iAuthenticationSignUp.wasSignUp();
+                        iAuthenticationSignUp.wasSignUp(firebaseAuth.getUid(), userStatus);
                     } else {
                         Timber.d("onComplete: wasNotSignUp()");
                         iAuthenticationSignUp.wasNotSignUp();
@@ -70,7 +69,7 @@ public class Authentication {
 
     public interface IAuthenticationSignIn {
         //пользователь вошёл
-        void wasSignIn();
+        void wasSignIn(String userId);
 
         //пользователь не смог войти
         void wasNotSignIn();
@@ -79,7 +78,7 @@ public class Authentication {
 
     public interface IAuthenticationSignUp {
         //пользователь вошёл
-        void wasSignUp();
+        void wasSignUp(String userId, String userStatus);
 
         //пользователь не смог войти
         void wasNotSignUp();

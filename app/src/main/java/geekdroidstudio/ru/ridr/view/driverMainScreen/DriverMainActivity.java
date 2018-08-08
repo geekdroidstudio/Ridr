@@ -18,29 +18,37 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindString;
 import butterknife.ButterKnife;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
 import geekdroidstudio.ru.ridr.model.entity.users.Driver;
 import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
+import geekdroidstudio.ru.ridr.model.authentication.AuthDatabase;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
 import geekdroidstudio.ru.ridr.presenter.DriverMainPresenter;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.user_list.UserListFragment;
+import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
+
+import static geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity.USER_ID_KEY;
 
 public class DriverMainActivity extends MvpAppCompatActivity implements DriverMainView,
         MapFragment.OnFragmentInteractionListener, UserListFragment.OnFragmentInteractionListener {
 
     private static final int REQUEST_CHECK_SETTINGS = 333;
-    public static final String USER_ID_KEY = "userIdKey";
-    public static final String USER_NAME_KEY = "userNameKey";
     //TODO: объединить где-нибудь вместе с PassengerMainActivity ключами(в AuthActivity)
 
     @InjectPresenter
     DriverMainPresenter driverMainPresenter;
+
+    @Inject
+    AuthDatabase authDatabase;
 
     @BindString(R.string.map_fragment_tag)
     String mapFragmentTag;
@@ -65,6 +73,11 @@ public class DriverMainActivity extends MvpAppCompatActivity implements DriverMa
         setContentView(R.layout.activity_driver_main);
 
         ButterKnife.bind(this);
+        String userId = getIntent().getStringExtra(USER_ID_KEY);
+        Timber.d("onCreate: " + userId);
+        App.getInstance().getComponent().inject(this);
+        authDatabase.setContext(this);
+        authDatabase.getUserName(userId);
 
         if (savedInstanceState == null) {
             String driverId = getIntent().getStringExtra(USER_ID_KEY);
@@ -174,5 +187,10 @@ public class DriverMainActivity extends MvpAppCompatActivity implements DriverMa
     @Nullable
     private Fragment getMapFragment(String tag) {
         return getSupportFragmentManager().findFragmentByTag(tag);
+    }
+
+    @Override
+    public void wasGetUserName(String userName) {
+        Timber.d("wasGetUserName: " + userName);
     }
 }

@@ -85,14 +85,13 @@ public class StartAuthenticationFragment extends MvpAppCompatFragment implements
     @Override
     public void onClickSignInPassenger() {
         doSignIn();
-        ((UserMainActivity) getActivity()).launchPassengerActivity();
     }
 
     @OnClick(R.id.button_choose_driver)
     @Override
     public void onClickSignInDriver() {
         doSignIn();
-        ((UserMainActivity) getActivity()).launchDriverActivity();
+        //((UserMainActivity) getActivity()).launchDriverActivity();
     }
 
     private void doSignIn() {
@@ -118,8 +117,10 @@ public class StartAuthenticationFragment extends MvpAppCompatFragment implements
     }
 
     @Override
-    public void wasSignIn() {
+    public void wasSignIn(String userId) {
         Timber.d("wasSignIn()");
+        ((UserMainActivity) getActivity()).launchPassengerActivity(userId);
+
     }
 
     @Override

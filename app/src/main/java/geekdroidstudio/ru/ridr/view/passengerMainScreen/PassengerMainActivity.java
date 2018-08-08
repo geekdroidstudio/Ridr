@@ -15,13 +15,15 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindString;
 import butterknife.ButterKnife;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
+import geekdroidstudio.ru.ridr.model.authentication.AuthDatabase;
 import geekdroidstudio.ru.ridr.model.entity.communication.DriverResponse;
 import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
 import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
@@ -32,20 +34,19 @@ import geekdroidstudio.ru.ridr.view.RouteSelectActivity;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.route_status.RouteStatusFragment;
 import geekdroidstudio.ru.ridr.view.fragments.user_list.UserListFragment;
+import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
 
 import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.FINISH_KEY;
-import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.MULTI_ROUTE_KEY;
 import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.START_KEY;
 
 
 public class PassengerMainActivity extends MvpAppCompatActivity implements PassengerMainView,
         MapFragment.OnFragmentInteractionListener,
         RouteStatusFragment.OnFragmentInteractionListener,
-        UserListFragment.OnFragmentInteractionListener {
-
-    public static final String USER_ID_KEY = "userIdKey";
-    public static final String USER_NAME_KEY = "userNameKey";
+        UserListFragment.OnFragmentInteractionListener,
+        AuthDatabase.IAuthDatabase {
 
     public static final int REQUEST_CODE_ROUTE = 1;
     private static final int REQUEST_CHECK_SETTINGS = 333;
@@ -61,6 +62,9 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
 
     @BindString(R.string.user_list_fragment_tag)
     String userListFragmentTag;
+
+    @Inject
+    AuthDatabase authDatabase;
 
     private MapFragment mapFragment;
     private RouteStatusFragment routeStatusFragment;
@@ -85,30 +89,20 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
         routeStatusFragment = (RouteStatusFragment) getFragment(routeStatusFragmentTag);
         userListFragment = (UserListFragment) getFragment(userListFragmentTag);
 
-        if (savedInstanceState == null) {
-            String passengerId = getIntent().getStringExtra(USER_ID_KEY);
-            String passengerName = getIntent().getStringExtra(USER_NAME_KEY);
+        App.getInstance().getComponent().inject(this);
+        String userId = getIntent().getStringExtra(UserMainActivity.USER_ID_KEY);
+        Timber.d("onCreate: " + userId);
 
-            //TODO: debug: убрать при передаче настоящих значений
-            passengerId = "test1id";
-            passengerName = "test1name";
+        authDatabase.setContext(this);
+        authDatabase.getUserName(userId);
 
-            passengerMainPresenter.setPassenger(new Passenger(passengerId, passengerName));
+        String passengerId = userId;//getIntent().getStringExtra(PASSENGER_ID_KEY);
+        String passengerName = "";//getIntent().getStringExtra(PASSENGER_NAME_KEY);
 
-            //TODO: debug: тестовый маршрут
-            ArrayList<LatLng> list = new ArrayList<>();
+        passengerMainPresenter.setPassenger(new Passenger(passengerId, passengerName));
 
-            for (int i = 1; i < 10; i++) {
-                list.add(new LatLng(i, i));
-            }
-
-            Intent intent = new Intent();
-            intent.putExtra(START_KEY, "startTest");
-            intent.putExtra(FINISH_KEY, "finishTest");
-            intent.putParcelableArrayListExtra(MULTI_ROUTE_KEY, list);
-
-            onRouteSelected(intent);
-        }
+        mapFragment = (MapFragment) getFragment(mapFragmentTag);
+        routeStatusFragment = (RouteStatusFragment) getFragment(routeStatusFragmentTag);
     }
 
     @Override
@@ -236,8 +230,12 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
         mapFragment.showRoute(latLngArray);
     }
 
-
     private Fragment getFragment(String tag) {
         return getSupportFragmentManager().findFragmentByTag(tag);
+    }
+
+    @Override
+    public void wasGetUserName(String userName) {
+        Timber.d("wasGetUserName: " + userName);
     }
 }
