@@ -2,22 +2,15 @@ package geekdroidstudio.ru.ridr.view.passengerMainScreen;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindString;
 import butterknife.ButterKnife;
@@ -31,29 +24,29 @@ import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
 import geekdroidstudio.ru.ridr.presenter.PassengerMainPresenter;
 import geekdroidstudio.ru.ridr.view.RouteSelectActivity;
+import geekdroidstudio.ru.ridr.view.UserBaseActivity;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.route_status.RouteStatusFragment;
 import geekdroidstudio.ru.ridr.view.fragments.user_list.UserListFragment;
 import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import timber.log.Timber;
 
 import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.FINISH_KEY;
 import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.MULTI_ROUTE_KEY;
 import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.START_KEY;
 
 
-public class PassengerMainActivity extends MvpAppCompatActivity implements PassengerMainView,
+public class PassengerMainActivity extends UserBaseActivity<PassengerMainPresenter> implements
+        PassengerMainView,
         MapFragment.OnFragmentInteractionListener,
         RouteStatusFragment.OnFragmentInteractionListener,
         UserListFragment.OnFragmentInteractionListener,
         AuthDatabase.IAuthDatabase {
 
     public static final int REQUEST_CODE_ROUTE = 1;
-    private static final int REQUEST_CHECK_SETTINGS = 333;
 
     @InjectPresenter
-    PassengerMainPresenter passengerMainPresenter;
+    PassengerMainPresenter presenter;
 
     @BindString(R.string.map_fragment_tag)
     String mapFragmentTag;
@@ -64,18 +57,25 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     @BindString(R.string.user_list_fragment_tag)
     String userListFragmentTag;
 
-    @Inject
-    AuthDatabase authDatabase;
 
     private MapFragment mapFragment;
     private RouteStatusFragment routeStatusFragment;
     private UserListFragment userListFragment;
     private AlertDialog alertDialog;
 
+    public PassengerMainActivity() {
+        App.getInstance().getComponent().inject(this);
+    }
+
     @ProvidePresenter
     public PassengerMainPresenter providePresenter() {
         PassengerMainPresenter presenter = new PassengerMainPresenter(AndroidSchedulers.mainThread());
         App.getInstance().getComponent().inject(presenter);
+        return presenter;
+    }
+
+    @Override
+    public PassengerMainPresenter getPresenter() {
         return presenter;
     }
 
@@ -86,24 +86,17 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
 
         ButterKnife.bind(this);
 
+        if (savedInstanceState == null) {
+            String userId = getIntent().getStringExtra(UserMainActivity.USER_ID_KEY);
+
+            loadUserName(userId);
+
+            presenter.setPassenger(new Passenger(userId, ""));
+        }
+
         mapFragment = (MapFragment) getFragment(mapFragmentTag);
         routeStatusFragment = (RouteStatusFragment) getFragment(routeStatusFragmentTag);
         userListFragment = (UserListFragment) getFragment(userListFragmentTag);
-
-        App.getInstance().getComponent().inject(this);
-        String userId = getIntent().getStringExtra(UserMainActivity.USER_ID_KEY);
-        Timber.d("onCreate: " + userId);
-
-        authDatabase.setContext(this);
-        authDatabase.getUserName(userId);
-
-        String passengerId = userId;//getIntent().getStringExtra(PASSENGER_ID_KEY);
-        String passengerName = "";//getIntent().getStringExtra(PASSENGER_NAME_KEY);
-
-        passengerMainPresenter.setPassenger(new Passenger(passengerId, passengerName));
-
-        mapFragment = (MapFragment) getFragment(mapFragmentTag);
-        routeStatusFragment = (RouteStatusFragment) getFragment(routeStatusFragmentTag);
     }
 
     @Override
@@ -137,26 +130,6 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     }
 
     @Override
-    public void showLocationSettingsError() {
-
-    }
-
-    @Override
-    public void resolveLocationException(ApiException apiException) {
-        try {
-            ResolvableApiException resolvable = (ResolvableApiException) apiException;
-            // Show the dialog by calling startResolutionForResult(),
-            // and check the result in onActivityResult().
-            resolvable.startResolutionForResult(this, REQUEST_CHECK_SETTINGS);
-        } catch (IntentSender.SendIntentException e) {
-            // Ignore the error.
-        } catch (ClassCastException e) {
-            // Ignore, should be an impossible error.
-        }
-    }
-
-
-    @Override
     public void goRouteChange(DualTextRoute dualTextRoute) {
         Intent intent = new Intent(this, RouteSelectActivity.class);
 
@@ -168,7 +141,7 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
 
     @Override
     public void onItemClick(UserAndRoute<? extends User> userAndRoute) {
-        passengerMainPresenter.onItemClick(userAndRoute);
+        presenter.onItemClick(userAndRoute);
     }
 
     @Override
@@ -182,7 +155,7 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
                 .setMessage("Send request to " + userAndRoute.getUser().getName())
                 .setNegativeButton("No", (dialog, which) -> {
                 })
-                .setPositiveButton("Yes", (dialog, which) -> passengerMainPresenter.onRouteSend(userAndRoute))
+                .setPositiveButton("Yes", (dialog, which) -> presenter.onRouteSend(userAndRoute))
                 .create();
 
         alertDialog.show();
@@ -201,21 +174,15 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case REQUEST_CHECK_SETTINGS: {
-                if (resultCode == Activity.RESULT_OK) {
-                    passengerMainPresenter.locationErrorResolve();
-                } else {
-                    passengerMainPresenter.locationErrorNotResolve();
-                }
-                break;
-            }
             case REQUEST_CODE_ROUTE: {
                 if (resultCode == Activity.RESULT_OK) {
                     onRouteSelected(data);
                 }
                 break;
+            }
+            default: {
+                super.onActivityResult(requestCode, resultCode, data);
             }
         }
     }
@@ -226,18 +193,8 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
         DualTextRoute dualTextRoute = new DualTextRoute(start, finish);
         List<LatLng> latLngArray = data.getParcelableArrayListExtra(MULTI_ROUTE_KEY);
 
-        passengerMainPresenter.onRouteSelected(dualTextRoute, latLngArray);
+        presenter.onRouteSelected(dualTextRoute, latLngArray);
         routeStatusFragment.onRouteSelected(dualTextRoute);
         mapFragment.showRoute(latLngArray);
-    }
-
-    private Fragment getFragment(String tag) {
-        return getSupportFragmentManager().findFragmentByTag(tag);
-    }
-
-    @Override
-    public void wasGetUserName(String userName) {
-        Timber.d("wasGetUserName: " + userName);
-        setTitle(userName);
     }
 }

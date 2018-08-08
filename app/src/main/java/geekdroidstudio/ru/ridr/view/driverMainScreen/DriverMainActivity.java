@@ -1,54 +1,36 @@
 package geekdroidstudio.ru.ridr.view.driverMainScreen;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindString;
 import butterknife.ButterKnife;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.model.authentication.AuthDatabase;
 import geekdroidstudio.ru.ridr.model.entity.users.Driver;
 import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
 import geekdroidstudio.ru.ridr.presenter.DriverMainPresenter;
+import geekdroidstudio.ru.ridr.view.UserBaseActivity;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.user_list.UserListFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import timber.log.Timber;
 
 import static geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity.USER_ID_KEY;
 
-public class DriverMainActivity extends MvpAppCompatActivity implements DriverMainView,
-        MapFragment.OnFragmentInteractionListener, UserListFragment.OnFragmentInteractionListener,
-        AuthDatabase.IAuthDatabase {
-
-    private static final int REQUEST_CHECK_SETTINGS = 333;
-    //TODO: объединить где-нибудь вместе с PassengerMainActivity ключами(в AuthActivity)
+public class DriverMainActivity extends UserBaseActivity<DriverMainPresenter> implements DriverMainView,
+        MapFragment.OnFragmentInteractionListener, UserListFragment.OnFragmentInteractionListener {
 
     @InjectPresenter
-    DriverMainPresenter driverMainPresenter;
-
-    @Inject
-    AuthDatabase authDatabase;//TODO: в презентер
+    DriverMainPresenter presenter;
 
     @BindString(R.string.map_fragment_tag)
     String mapFragmentTag;
@@ -62,6 +44,11 @@ public class DriverMainActivity extends MvpAppCompatActivity implements DriverMa
 
     public DriverMainActivity() {
         App.getInstance().getComponent().inject(this);
+    }
+
+    @Override
+    public DriverMainPresenter getPresenter() {
+        return presenter;
     }
 
     @ProvidePresenter
@@ -81,16 +68,13 @@ public class DriverMainActivity extends MvpAppCompatActivity implements DriverMa
         if (savedInstanceState == null) {
             String userId = getIntent().getStringExtra(USER_ID_KEY);
 
-            Timber.d("onCreate: " + userId);
+            loadUserName(userId);
 
-            authDatabase.setContext(this);
-            authDatabase.getUserName(userId);
-
-            driverMainPresenter.setDriver(new Driver(userId, ""));
+            presenter.setDriver(new Driver(userId, ""));
         }
 
-        mapFragment = (MapFragment) getMapFragment(mapFragmentTag);
-        userListFragment = (UserListFragment) getMapFragment(userListFragmentTag);
+        mapFragment = (MapFragment) getFragment(mapFragmentTag);
+        userListFragment = (UserListFragment) getFragment(userListFragmentTag);
     }
 
     @Override
@@ -138,59 +122,11 @@ public class DriverMainActivity extends MvpAppCompatActivity implements DriverMa
     }
 
     private void postDriverResponse(UserAndRoute<Passenger> passengerAndRoute, boolean response) {
-        driverMainPresenter.onDriverResponse(passengerAndRoute.getUser(), response);
+        presenter.onDriverResponse(passengerAndRoute.getUser(), response);
     }
 
     @Override
     public void onItemClick(UserAndRoute<? extends User> userAndRoute) {
         Toast.makeText(this, "onClick " + userAndRoute.getUser().getName(), Toast.LENGTH_SHORT).show();
-    }
-
-
-    @Override
-    public void resolveLocationException(ApiException exception) {
-        try {
-            ResolvableApiException resolvable = (ResolvableApiException) exception;
-            // Show the dialog by calling startResolutionForResult(),
-            // and check the result in onActivityResult().
-            resolvable.startResolutionForResult(this, REQUEST_CHECK_SETTINGS);
-        } catch (IntentSender.SendIntentException e) {
-            // Ignore the error.
-        } catch (ClassCastException e) {
-            // Ignore, should be an impossible error.
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_CHECK_SETTINGS: {
-                if (resultCode == Activity.RESULT_OK) {
-                    driverMainPresenter.locationErrorResolve();
-                } else {
-                    driverMainPresenter.locationErrorNotResolve();
-                }
-                break;
-            }
-            default: {
-                super.onActivityResult(requestCode, resultCode, data);
-            }
-        }
-    }
-
-    @Override
-    public void showLocationSettingsError() {
-
-    }
-
-    @Nullable
-    private Fragment getMapFragment(String tag) {
-        return getSupportFragmentManager().findFragmentByTag(tag);
-    }
-
-    @Override
-    public void wasGetUserName(String userName) {
-        Timber.d("wasGetUserName: " + userName);
-        setTitle(userName);
     }
 }

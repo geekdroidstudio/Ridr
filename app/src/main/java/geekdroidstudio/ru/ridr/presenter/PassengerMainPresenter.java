@@ -1,12 +1,9 @@
 package geekdroidstudio.ru.ridr.presenter;
 
-import android.annotation.SuppressLint;
+import android.location.Location;
 import android.support.annotation.NonNull;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -14,8 +11,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import geekdroidstudio.ru.ridr.model.EmulateGeo;
-import geekdroidstudio.ru.ridr.model.Repository;
 import geekdroidstudio.ru.ridr.model.communication.IPassengerCommunication;
 import geekdroidstudio.ru.ridr.model.entity.communication.PassengerRequest;
 import geekdroidstudio.ru.ridr.model.entity.routes.Coordinate;
@@ -28,67 +23,48 @@ import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
 import geekdroidstudio.ru.ridr.view.passengerMainScreen.PassengerMainView;
 import io.reactivex.Scheduler;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 @InjectViewState
-public class PassengerMainPresenter extends MvpPresenter<PassengerMainView> {
+public class PassengerMainPresenter extends UserBasePresenter<PassengerMainView> {
 
-    @Inject
-    Repository repository;
 
     @Inject
     IPassengerCommunication passengerCommunication;
 
-    @Inject
-    EmulateGeo emulateGeo;
-
-    private Scheduler scheduler;
-
     private Passenger passenger;
-
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private DualRoute dualRoute;
 
     public PassengerMainPresenter(Scheduler scheduler) {
-        this.scheduler = scheduler;
+        super(scheduler);
     }
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        checkLocationServices();
-    }
-
-    @SuppressLint("CheckResult")
-    private void checkLocationServices() {
-        repository.checkLocationResponse()
-                .subscribe(this::startListenGeo,
-                        throwable -> {
-                            if (!(throwable instanceof ApiException)) {
-                                getViewState().showLocationSettingsError();
-                                Timber.e(throwable);
-                                return;
-                            }
-                            ApiException apiException = (ApiException) throwable;
-                            if (apiException.getStatusCode() != LocationSettingsStatusCodes
-                                    .RESOLUTION_REQUIRED) {
-                                getViewState().showLocationSettingsError();
-                                Timber.e(throwable);
-                                return;
-                            }
-                            getViewState().resolveLocationException(apiException);
-                        });
     }
 
     public void setPassenger(Passenger passenger) {
         this.passenger = passenger;
 
         compositeDisposable.add(startListenDrivers());
-        compositeDisposable.add(startListenGeo());
+        //runRealGeo();
+        runEmulateGeo();
+    }
+
+    @Override
+    protected void onLocationChanged(Location location) {
+        Timber.d(location.toString());
+
+        passenger.setLocation(new Coordinate(location.getLatitude(),
+                location.getLongitude()));
+        passengerCommunication.postLocation(passenger)
+                .subscribe();
+
+        getViewState().showPassengerOnMap(passenger);
     }
 
     @NonNull
@@ -109,37 +85,6 @@ public class PassengerMainPresenter extends MvpPresenter<PassengerMainView> {
                     getViewState().showDriversOnMap(drivers);
                     getViewState().showDriversOnList(driversAndRoutes);
                 }, Timber::e);
-    }
-
-    private Disposable startListenGeo() {
-        return repository.startListenLocation()
-                .subscribeOn(Schedulers.io())
-                .observeOn(scheduler)
-                .subscribe(location -> {
-                    Timber.d(location.toString());
-
-                    passenger.setLocation(new Coordinate(location.getLatitude(),
-                            location.getLongitude()));
-                    passengerCommunication.postLocation(passenger)
-                            .subscribe();
-
-                    getViewState().showPassengerOnMap(passenger);
-                }, Timber::e);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        compositeDisposable.dispose();
-    }
-
-    public void locationErrorResolve() {
-        startListenGeo();
-    }
-
-    public void locationErrorNotResolve() {
-        getViewState().showLocationSettingsError();
     }
 
     public void onRouteSelected(DualTextRoute dualTextRoute, List<LatLng> latLngArray) {

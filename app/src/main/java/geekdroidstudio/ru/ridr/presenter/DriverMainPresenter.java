@@ -1,12 +1,9 @@
 package geekdroidstudio.ru.ridr.presenter;
 
-import android.annotation.SuppressLint;
+import android.location.Location;
 import android.support.annotation.NonNull;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,47 +12,35 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import geekdroidstudio.ru.ridr.model.EmulateGeo;
-import geekdroidstudio.ru.ridr.model.Repository;
 import geekdroidstudio.ru.ridr.model.communication.IDriverCommunication;
 import geekdroidstudio.ru.ridr.model.entity.communication.DriverResponse;
 import geekdroidstudio.ru.ridr.model.entity.communication.PassengerRequest;
+import geekdroidstudio.ru.ridr.model.entity.routes.Coordinate;
 import geekdroidstudio.ru.ridr.model.entity.routes.DualRoute;
 import geekdroidstudio.ru.ridr.model.entity.users.Driver;
 import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
 import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
 import geekdroidstudio.ru.ridr.view.driverMainScreen.DriverMainView;
 import io.reactivex.Scheduler;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 @InjectViewState
-public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
-
-    @Inject
-    Repository repository;
+public class DriverMainPresenter extends UserBasePresenter<DriverMainView> {
 
     @Inject
     IDriverCommunication driverCommunication;
 
-    @Inject
-    EmulateGeo emulateGeo;
-
     private Driver driver;
-
-    private Scheduler scheduler;
-
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private Map<String, UserAndRoute<Passenger>> passengersAndRoutes = new HashMap<>();
 
     private List<Passenger> passengers = new ArrayList<>();
 
     public DriverMainPresenter(Scheduler scheduler) {
-        this.scheduler = scheduler;
+        super(scheduler);
     }
 
     @Override
@@ -68,7 +53,21 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
 
         compositeDisposable.add(startListenPassengersLocation());
         compositeDisposable.add(startListenPassengersRequests(driver));
-        compositeDisposable.add(startListenGeo());
+
+        //runRealGeo();
+        runEmulateGeo();
+    }
+
+    @Override
+    protected void onLocationChanged(Location location) {
+        Timber.d(location.toString());
+
+        driver.setLocation(new Coordinate(location.getLatitude(),
+                location.getLongitude()));
+        driverCommunication.postLocation(driver)
+                .subscribe();
+
+        getViewState().showDriverOnMap(driver);
     }
 
     @NonNull
@@ -90,13 +89,6 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
                 .subscribe(getPassengerRequestConsumer(), Timber::e);
-    }
-
-    private Disposable startListenGeo() {
-        return repository.startListenLocation()
-                .subscribeOn(Schedulers.io())
-                .observeOn(scheduler)
-                .subscribe(location -> Timber.d(String.valueOf(location.getLatitude())), Timber::e);
     }
 
     @NonNull
@@ -140,34 +132,5 @@ public class DriverMainPresenter extends MvpPresenter<DriverMainView> {
 
         driverCommunication.postPassengerResponse(driverResponse)
                 .subscribe();
-    }
-
-    @SuppressLint("CheckResult")
-    private void checkLocationServices() {
-        repository.checkLocationResponse()
-                .subscribe(this::startListenGeo
-                        , throwable -> {
-                            if (!(throwable instanceof ApiException)) {
-                                getViewState().showLocationSettingsError();
-                                Timber.e(throwable);
-                                return;
-                            }
-                            ApiException apiException = (ApiException) throwable;
-                            if (apiException.getStatusCode() != LocationSettingsStatusCodes
-                                    .RESOLUTION_REQUIRED) {
-                                getViewState().showLocationSettingsError();
-                                Timber.e(throwable);
-                                return;
-                            }
-                            getViewState().resolveLocationException(apiException);
-                        });
-    }
-
-    public void locationErrorResolve() {
-        startListenGeo();
-    }
-
-    public void locationErrorNotResolve() {
-        getViewState().showLocationSettingsError();
     }
 }

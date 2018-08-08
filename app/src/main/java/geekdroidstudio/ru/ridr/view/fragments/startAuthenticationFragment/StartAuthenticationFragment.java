@@ -21,10 +21,11 @@ import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
 import geekdroidstudio.ru.ridr.model.authentication.Authentication;
-import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity;
+import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainView;
 import timber.log.Timber;
 
-public class StartAuthenticationFragment extends MvpAppCompatFragment implements StartAuthenticationView, Authentication.IAuthenticationSignIn {
+public class StartAuthenticationFragment extends MvpAppCompatFragment implements
+        StartAuthenticationView, Authentication.IAuthenticationSignIn {
 
     @Inject
     Authentication authentication;
@@ -86,14 +87,15 @@ public class StartAuthenticationFragment extends MvpAppCompatFragment implements
     @OnClick(R.id.button_choose_passenger)
     @Override
     public void onClickSignInPassenger() {
+        ((UserMainView) getActivity()).onPassengerSingingIn();
         doSignIn();
     }
 
     @OnClick(R.id.button_choose_driver)
     @Override
     public void onClickSignInDriver() {
+        ((UserMainView) getActivity()).onDriverSingingIn();
         doSignIn();
-        //((UserMainActivity) getActivity()).launchDriverActivity();
     }
 
     private void doSignIn() {
@@ -121,7 +123,7 @@ public class StartAuthenticationFragment extends MvpAppCompatFragment implements
     @Override
     public void wasSignIn(String userId) {
         Timber.d("wasSignIn()");
-        ((UserMainActivity) getActivity()).launchPassengerActivity(userId);
+        ((UserMainView) getActivity()).onSignedIn(userId);
 
     }
 
