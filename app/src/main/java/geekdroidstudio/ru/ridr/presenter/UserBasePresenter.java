@@ -11,6 +11,8 @@ import javax.inject.Inject;
 
 import geekdroidstudio.ru.ridr.model.EmulateGeo;
 import geekdroidstudio.ru.ridr.model.Repository;
+import geekdroidstudio.ru.ridr.model.authentication.AuthDatabase;
+import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.view.UserBaseView;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.CompositeDisposable;
@@ -20,16 +22,33 @@ import timber.log.Timber;
 
 public abstract class UserBasePresenter<T extends UserBaseView> extends MvpPresenter<T> {
 
+    @Inject
+    Repository repository;
+
+    @Inject
+    EmulateGeo emulateGeo;
+
     protected final Scheduler scheduler;
     protected final CompositeDisposable compositeDisposable = new CompositeDisposable();
     @Inject
-    Repository repository;
-    @Inject
-    EmulateGeo emulateGeo;
+    AuthDatabase authDatabase;
 
     public UserBasePresenter(Scheduler scheduler) {
         this.scheduler = scheduler;
     }
+
+    public void setUserId(String id) {
+        authDatabase.setListener(userName -> {
+            getUser().setName(userName);
+            getViewState().setUserName(userName);
+        });
+        authDatabase.getUserName(id);
+
+        //runRealGeo();
+        runEmulateGeo();
+    }
+
+    public abstract User getUser();
 
     @Override
     public void onDestroy() {
@@ -50,7 +69,6 @@ public abstract class UserBasePresenter<T extends UserBaseView> extends MvpPrese
     protected void runRealGeo() {
         checkLocationServices();
     }
-
 
     protected void runEmulateGeo() {
         compositeDisposable.add(emulateGeo.getSubject()

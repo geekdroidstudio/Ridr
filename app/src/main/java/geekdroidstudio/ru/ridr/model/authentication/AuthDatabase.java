@@ -1,6 +1,5 @@
 package geekdroidstudio.ru.ridr.model.authentication;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -28,8 +27,8 @@ public class AuthDatabase {
         databaseReference = firebaseDatabase.getReference();
     }
 
-    public void setContext(Context context) {
-        iAuthDatabase = (IAuthDatabase) context;
+    public void setListener(IAuthDatabase iAuthDatabase) {
+        this.iAuthDatabase = iAuthDatabase;
     }
 
     //добавление пользователя в базу

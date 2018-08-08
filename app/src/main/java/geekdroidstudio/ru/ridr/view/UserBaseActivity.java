@@ -3,6 +3,7 @@ package geekdroidstudio.ru.ridr.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
@@ -10,26 +11,27 @@ import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 
-import javax.inject.Inject;
-
-import geekdroidstudio.ru.ridr.model.authentication.AuthDatabase;
 import geekdroidstudio.ru.ridr.presenter.UserBasePresenter;
+import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity;
 
 public abstract class UserBaseActivity<T extends UserBasePresenter<? extends UserBaseView>>
-        extends MvpAppCompatActivity implements UserBaseView, AuthDatabase.IAuthDatabase {
+        extends MvpAppCompatActivity implements UserBaseView {
 
     private static final int REQUEST_CHECK_SETTINGS = 333;
 
-    @Inject
-    AuthDatabase authDatabase;//TODO: в презентер
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    protected void loadUserName(String userId) {
-        authDatabase.setContext(this);
-        authDatabase.getUserName(userId);
+        if (savedInstanceState == null) {
+            String userId = getIntent().getStringExtra(UserMainActivity.USER_ID_KEY);
+
+            getPresenter().setUserId(userId);
+        }
     }
 
     @Override
-    public void wasGetUserName(String userName) {
+    public void setUserName(String userName) {
         setTitle(userName);
     }
 

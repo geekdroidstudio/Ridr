@@ -19,6 +19,7 @@ import geekdroidstudio.ru.ridr.model.entity.routes.Coordinate;
 import geekdroidstudio.ru.ridr.model.entity.routes.DualRoute;
 import geekdroidstudio.ru.ridr.model.entity.users.Driver;
 import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
+import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
 import geekdroidstudio.ru.ridr.view.driverMainScreen.DriverMainView;
 import io.reactivex.Scheduler;
@@ -48,14 +49,19 @@ public class DriverMainPresenter extends UserBasePresenter<DriverMainView> {
         super.onFirstViewAttach();
     }
 
-    public void setDriver(Driver driver) {
-        this.driver = driver;
+    @Override
+    public void setUserId(String id) {
+        super.setUserId(id);
+
+        driver = new Driver(id, "");
 
         compositeDisposable.add(startListenPassengersLocation());
         compositeDisposable.add(startListenPassengersRequests(driver));
+    }
 
-        //runRealGeo();
-        runEmulateGeo();
+    @Override
+    public User getUser() {
+        return driver;
     }
 
     @Override

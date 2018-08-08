@@ -16,10 +16,8 @@ import butterknife.BindString;
 import butterknife.ButterKnife;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.model.authentication.AuthDatabase;
 import geekdroidstudio.ru.ridr.model.entity.communication.DriverResponse;
 import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
-import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
 import geekdroidstudio.ru.ridr.presenter.PassengerMainPresenter;
@@ -28,7 +26,6 @@ import geekdroidstudio.ru.ridr.view.UserBaseActivity;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.route_status.RouteStatusFragment;
 import geekdroidstudio.ru.ridr.view.fragments.user_list.UserListFragment;
-import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.FINISH_KEY;
@@ -40,8 +37,7 @@ public class PassengerMainActivity extends UserBaseActivity<PassengerMainPresent
         PassengerMainView,
         MapFragment.OnFragmentInteractionListener,
         RouteStatusFragment.OnFragmentInteractionListener,
-        UserListFragment.OnFragmentInteractionListener,
-        AuthDatabase.IAuthDatabase {
+        UserListFragment.OnFragmentInteractionListener {
 
     public static final int REQUEST_CODE_ROUTE = 1;
 
@@ -56,7 +52,6 @@ public class PassengerMainActivity extends UserBaseActivity<PassengerMainPresent
 
     @BindString(R.string.user_list_fragment_tag)
     String userListFragmentTag;
-
 
     private MapFragment mapFragment;
     private RouteStatusFragment routeStatusFragment;
@@ -85,14 +80,6 @@ public class PassengerMainActivity extends UserBaseActivity<PassengerMainPresent
         setContentView(R.layout.activity_passenger_main);
 
         ButterKnife.bind(this);
-
-        if (savedInstanceState == null) {
-            String userId = getIntent().getStringExtra(UserMainActivity.USER_ID_KEY);
-
-            loadUserName(userId);
-
-            presenter.setPassenger(new Passenger(userId, ""));
-        }
 
         mapFragment = (MapFragment) getFragment(mapFragmentTag);
         routeStatusFragment = (RouteStatusFragment) getFragment(routeStatusFragmentTag);

@@ -47,12 +47,18 @@ public class PassengerMainPresenter extends UserBasePresenter<PassengerMainView>
         super.onFirstViewAttach();
     }
 
-    public void setPassenger(Passenger passenger) {
-        this.passenger = passenger;
+    @Override
+    public void setUserId(String id) {
+        super.setUserId(id);
+
+        passenger = new Passenger(id, "");
 
         compositeDisposable.add(startListenDrivers());
-        //runRealGeo();
-        runEmulateGeo();
+    }
+
+    @Override
+    public User getUser() {
+        return passenger;
     }
 
     @Override
@@ -96,6 +102,8 @@ public class PassengerMainPresenter extends UserBasePresenter<PassengerMainView>
     public void onItemClick(UserAndRoute<? extends User> userAndRoute) {
         if (dualRoute != null) {
             getViewState().showSendRequestDialog(userAndRoute);
+        } else {
+            getViewState().showNeedRouteMessage();
         }
     }
 

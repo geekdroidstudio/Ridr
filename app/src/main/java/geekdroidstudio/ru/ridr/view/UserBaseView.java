@@ -11,4 +11,6 @@ public interface UserBaseView extends MvpView {
     void showLocationSettingsError();
 
     void resolveLocationException(ApiException apiException);
+
+    void setUserName(String userName);
 }

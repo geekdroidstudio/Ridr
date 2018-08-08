@@ -14,7 +14,6 @@ import butterknife.BindString;
 import butterknife.ButterKnife;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.model.entity.users.Driver;
 import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
@@ -23,8 +22,6 @@ import geekdroidstudio.ru.ridr.view.UserBaseActivity;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.user_list.UserListFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-
-import static geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity.USER_ID_KEY;
 
 public class DriverMainActivity extends UserBaseActivity<DriverMainPresenter> implements DriverMainView,
         MapFragment.OnFragmentInteractionListener, UserListFragment.OnFragmentInteractionListener {
@@ -64,14 +61,6 @@ public class DriverMainActivity extends UserBaseActivity<DriverMainPresenter> im
         setContentView(R.layout.activity_driver_main);
 
         ButterKnife.bind(this);
-
-        if (savedInstanceState == null) {
-            String userId = getIntent().getStringExtra(USER_ID_KEY);
-
-            loadUserName(userId);
-
-            presenter.setDriver(new Driver(userId, ""));
-        }
 
         mapFragment = (MapFragment) getFragment(mapFragmentTag);
         userListFragment = (UserListFragment) getFragment(userListFragmentTag);
