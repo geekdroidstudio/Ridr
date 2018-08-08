@@ -23,8 +23,8 @@
         app:layout_constraintVertical_bias="0.015" />
 
     <android.support.design.widget.TextInputEditText
-        android:id="@+id/edit_text_phone_email"
-        android:text="qw@qw.qw"
+        android:id="@+id/edit_text_user_name"
+        android:text="userName"
         android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,13 +32,30 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
         android:gravity="center"
+        android:hint="@string/edit_text_user_name_hint"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_change_phone_email"
+        tools:ignore="TextFields" />
+
+    <android.support.design.widget.TextInputEditText
+        android:id="@+id/edit_text_phone_email"
+        android:text="qw@qw.qw"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
         android:hint="@string/edit_text_email_phone_hint"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.096"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_user_name"
         tools:ignore="TextFields" />
 
     <android.support.design.widget.TextInputEditText
@@ -57,6 +74,20 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_text_phone_email"
         tools:ignore="TextFields" />
 
+    <Switch
+        android:id="@+id/switch_passenger_or_driver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:textSize="20sp"
+        android:text="@string/switch_text_passenger"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_registration_password" />
+
     <TextView
         android:id="@+id/text_view_license_agreement"
         android:layout_width="wrap_content"
@@ -70,9 +101,8 @@
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_registration_password"
+        app:layout_constraintTop_toBottomOf="@+id/switch_passenger_or_driver"
         app:layout_constraintVertical_bias="0.013" />
-
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/button_sign_up"
@@ -85,5 +115,6 @@
         app:layout_constraintTop_toBottomOf="@+id/text_view_license_agreement"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

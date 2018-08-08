@@ -18,8 +18,6 @@ public class AuthDatabase {
     public static final String AUTH_USER_EMAIL = "userEmail";
     public static final String AUTH_USER_STATUS = "userStatus";
 
-    private static String userId;
-
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private IAuthDatabase iAuthDatabase;
@@ -28,10 +26,6 @@ public class AuthDatabase {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
-    }
-
-    public static void setUserId(String userId) {
-        AuthDatabase.userId = userId;
     }
 
     public void setContext(Context context) {
@@ -46,7 +40,7 @@ public class AuthDatabase {
         databaseReference.child(AUTH_BOOK).child(userId).child(AUTH_USER_STATUS).setValue(userStatus);
     }
 
-    public void getUserName() {
+    public void getUserName(String userId) {
 
         databaseReference
                 .child(AUTH_BOOK)
@@ -55,19 +49,20 @@ public class AuthDatabase {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        iAuthDatabase.getUserName(dataSnapshot.getValue().toString());
+                        iAuthDatabase.wasGetUserName(dataSnapshot.getValue().toString());
+                        Timber.d(dataSnapshot.getValue().toString());
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Timber.e("getUserName: onCancelled");
+                        Timber.e("wasGetUserName: onCancelled");
                     }
                 });
 
     }
 
     public interface IAuthDatabase {
-        void getUserName(String userName);
+        void wasGetUserName(String userName);
     }
 
 
