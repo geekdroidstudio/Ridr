@@ -36,12 +36,14 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
     @BindView(R.id.switch_passenger_or_driver)
     Switch switchPassengerOrDriver;
 
-    @Inject Authentication authentication;
+    @Inject
+    Authentication authentication;
 
     private Unbinder unbinder;
     private RegistrationFragment.OnFragmentInteractionListener onFragmentInteractionListener;
 
-    public RegistrationFragment(){}
+    public RegistrationFragment() {
+    }
 
     public static RegistrationFragment newInstance() {
         return new RegistrationFragment();
@@ -74,9 +76,9 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
 
     private void addListenerToSwitch() {
         switchPassengerOrDriver.setOnCheckedChangeListener((compoundButton, b) -> {
-            if(switchPassengerOrDriver.isChecked()){
+            if (switchPassengerOrDriver.isChecked()) {
                 switchPassengerOrDriver.setText("Водитель");
-            }else if(!switchPassengerOrDriver.isChecked()){
+            } else if (!switchPassengerOrDriver.isChecked()) {
                 switchPassengerOrDriver.setText("Пассажир");
 
             }
@@ -96,11 +98,6 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
         unbinder.unbind();
     }
 
-    public interface OnFragmentInteractionListener {
-        void startDriverActivity(String userId);
-        void startPassengerActivity(String userId);
-    }
-
     @OnClick(R.id.button_sign_up)
     @Override
     public void doSignUp() {
@@ -110,14 +107,13 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
         Timber.d("doSignUp()");
 
 
+        if (phoneEmail.isEmpty() || registrationPassword.isEmpty()) {
+            Toast.makeText(getContext(), R.string.registration_error_text, Toast.LENGTH_SHORT).show();
 
-        if(phoneEmail.isEmpty() || registrationPassword.isEmpty()){
-            Toast.makeText(getContext(),R.string.registration_error_text, Toast.LENGTH_SHORT).show();
-
-        }else {
-            if(switchPassengerOrDriver.isChecked()){
+        } else {
+            if (switchPassengerOrDriver.isChecked()) {
                 authentication.signUp(userName, phoneEmail, registrationPassword, "driver");
-            }else if(!switchPassengerOrDriver.isChecked()){
+            } else if (!switchPassengerOrDriver.isChecked()) {
                 authentication.signUp(userName, phoneEmail, registrationPassword, "passenger");
             }
         }
@@ -126,11 +122,17 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
     @Override
     public void wasSignUp(String userId, String userStatus) {
         Timber.d("wasSignUp()");
-        if(userStatus.equals("driver")){
+        if (userStatus.equals("driver")) {
             onFragmentInteractionListener.startDriverActivity(userId);
-        }else if(userStatus.equals("passenger")){
+        } else if (userStatus.equals("passenger")) {
             onFragmentInteractionListener.startPassengerActivity(userId);
         }
+    }
+
+    public interface OnFragmentInteractionListener {
+        void startDriverActivity(String userId);
+
+        void startPassengerActivity(String userId);
     }
 
     @Override

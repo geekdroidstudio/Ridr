@@ -39,6 +39,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
 import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.FINISH_KEY;
+import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.MULTI_ROUTE_KEY;
 import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.START_KEY;
 
 
@@ -237,5 +238,6 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     @Override
     public void wasGetUserName(String userName) {
         Timber.d("wasGetUserName: " + userName);
+        setTitle(userName);
     }
 }

@@ -9,5 +9,6 @@ public interface StartAuthenticationView extends MvpView {
     void onClickSignInPassenger();
 
     void onClickSignInDriver();
+
     void onClickSignUp();
 }

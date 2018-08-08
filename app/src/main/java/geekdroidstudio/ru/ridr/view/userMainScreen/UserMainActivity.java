@@ -91,13 +91,13 @@ public class UserMainActivity extends MvpAppCompatActivity implements UserMainVi
     @Override
     public void launchDriverActivity(String userId) {
         startActivity(new Intent(getApplicationContext(), DriverMainActivity.class)
-        .putExtra(USER_ID_KEY, userId));
+                .putExtra(USER_ID_KEY, userId));
     }
 
     @Override
     public void launchPassengerActivity(String userId) {
         startActivity(new Intent(getApplicationContext(), PassengerMainActivity.class)
-        .putExtra(USER_ID_KEY, userId));
+                .putExtra(USER_ID_KEY, userId));
     }
 
     //StartAuthenticationFragment method implementations

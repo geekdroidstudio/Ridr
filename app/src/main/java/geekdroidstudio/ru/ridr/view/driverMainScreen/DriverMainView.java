@@ -21,8 +21,6 @@ public interface DriverMainView extends MvpView {
 
     void showPassengersOnMap(List<? extends User> users);
 
-    void showDriverRecycler();
-
     void resolveLocationException(ApiException exception);
 
     void showLocationSettingsError();

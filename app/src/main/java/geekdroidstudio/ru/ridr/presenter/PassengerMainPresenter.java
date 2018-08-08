@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -64,10 +65,9 @@ public class PassengerMainPresenter extends MvpPresenter<PassengerMainView> {
 
     @SuppressLint("CheckResult")
     private void checkLocationServices() {
-        repository
-                .checkLocationResponse()
-                .subscribe(this::startListenGeo
-                        , throwable -> {
+        repository.checkLocationResponse()
+                .subscribe(this::startListenGeo,
+                        throwable -> {
                             if (!(throwable instanceof ApiException)) {
                                 getViewState().showLocationSettingsError();
                                 Timber.e(throwable);

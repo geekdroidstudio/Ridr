@@ -24,22 +24,22 @@ import butterknife.BindString;
 import butterknife.ButterKnife;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
+import geekdroidstudio.ru.ridr.model.authentication.AuthDatabase;
 import geekdroidstudio.ru.ridr.model.entity.users.Driver;
 import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
-import geekdroidstudio.ru.ridr.model.authentication.AuthDatabase;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
 import geekdroidstudio.ru.ridr.presenter.DriverMainPresenter;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.user_list.UserListFragment;
-import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
 import static geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity.USER_ID_KEY;
 
 public class DriverMainActivity extends MvpAppCompatActivity implements DriverMainView,
-        MapFragment.OnFragmentInteractionListener, UserListFragment.OnFragmentInteractionListener {
+        MapFragment.OnFragmentInteractionListener, UserListFragment.OnFragmentInteractionListener,
+        AuthDatabase.IAuthDatabase {
 
     private static final int REQUEST_CHECK_SETTINGS = 333;
     //TODO: объединить где-нибудь вместе с PassengerMainActivity ключами(в AuthActivity)
@@ -48,7 +48,7 @@ public class DriverMainActivity extends MvpAppCompatActivity implements DriverMa
     DriverMainPresenter driverMainPresenter;
 
     @Inject
-    AuthDatabase authDatabase;
+    AuthDatabase authDatabase;//TODO: в презентер
 
     @BindString(R.string.map_fragment_tag)
     String mapFragmentTag;
@@ -59,6 +59,10 @@ public class DriverMainActivity extends MvpAppCompatActivity implements DriverMa
     private MapFragment mapFragment;
     private UserListFragment userListFragment;
     private AlertDialog alertDialog;
+
+    public DriverMainActivity() {
+        App.getInstance().getComponent().inject(this);
+    }
 
     @ProvidePresenter
     public DriverMainPresenter providePresenter() {
@@ -73,21 +77,16 @@ public class DriverMainActivity extends MvpAppCompatActivity implements DriverMa
         setContentView(R.layout.activity_driver_main);
 
         ButterKnife.bind(this);
-        String userId = getIntent().getStringExtra(USER_ID_KEY);
-        Timber.d("onCreate: " + userId);
-        App.getInstance().getComponent().inject(this);
-        authDatabase.setContext(this);
-        authDatabase.getUserName(userId);
 
         if (savedInstanceState == null) {
-            String driverId = getIntent().getStringExtra(USER_ID_KEY);
-            String driverName = getIntent().getStringExtra(USER_NAME_KEY);
+            String userId = getIntent().getStringExtra(USER_ID_KEY);
 
-            //TODO: убрать при передаче настоящих значений
-            driverId = "test2id";
-            driverName = "test2name";
+            Timber.d("onCreate: " + userId);
 
-            driverMainPresenter.setDriver(new Driver(driverId, driverName));
+            authDatabase.setContext(this);
+            authDatabase.getUserName(userId);
+
+            driverMainPresenter.setDriver(new Driver(userId, ""));
         }
 
         mapFragment = (MapFragment) getMapFragment(mapFragmentTag);
@@ -192,5 +191,6 @@ public class DriverMainActivity extends MvpAppCompatActivity implements DriverMa
     @Override
     public void wasGetUserName(String userName) {
         Timber.d("wasGetUserName: " + userName);
+        setTitle(userName);
     }
 }
