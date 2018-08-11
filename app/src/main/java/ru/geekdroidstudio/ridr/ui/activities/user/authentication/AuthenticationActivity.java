@@ -1,4 +1,4 @@
-package ru.geekdroidstudio.ridr.ui.activities.signin;
+package ru.geekdroidstudio.ridr.ui.activities.user.authentication;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -16,18 +16,18 @@ import ru.geekdroidstudio.ridr.R;
 import ru.geekdroidstudio.ridr.model.permissions.android.PermissionsHelper;
 import ru.geekdroidstudio.ridr.ui.activities.driver.DriverActivity;
 import ru.geekdroidstudio.ridr.ui.activities.passenger.PassengerActivity;
-import ru.geekdroidstudio.ridr.ui.fragments.authentication.AuthenticationFragment;
-import ru.geekdroidstudio.ridr.ui.fragments.registration.RegistrationFragment;
+import ru.geekdroidstudio.ridr.ui.fragments.signin.SignInFragment;
+import ru.geekdroidstudio.ridr.ui.fragments.signup.SignUpFragment;
 import timber.log.Timber;
 
-public class SignInActivity extends MvpAppCompatActivity implements SignInView,
-        AuthenticationFragment.OnFragmentInteractionListener,
-        RegistrationFragment.OnFragmentInteractionListener {
+public class AuthenticationActivity extends MvpAppCompatActivity implements AuthenticationView,
+        SignInFragment.OnFragmentInteractionListener,
+        SignUpFragment.OnFragmentInteractionListener {
 
     public static final String USER_ID_KEY = "userIdKey";
 
     @InjectPresenter
-    SignInPresenter signInPresenter;
+    AuthenticationPresenter authenticationPresenter;
 
     @Inject
     PermissionsHelper permissionsHelper;
@@ -37,7 +37,7 @@ public class SignInActivity extends MvpAppCompatActivity implements SignInView,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_authentication);
         App.getInstance().getComponent().inject(this);
     }
 
@@ -59,7 +59,7 @@ public class SignInActivity extends MvpAppCompatActivity implements SignInView,
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode == permissionsHelper.getLocationPermissReqCode()) {
-            signInPresenter.onLocationPermissionsResult(permissionsHelper
+            authenticationPresenter.onLocationPermissionsResult(permissionsHelper
                     .isPermissReqResultGranted(requestCode, permissions, grantResults));
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -76,7 +76,7 @@ public class SignInActivity extends MvpAppCompatActivity implements SignInView,
     public void showAuthorizationFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fl_container, AuthenticationFragment.newInstance())
+                .replace(R.id.fl_container, SignInFragment.newInstance())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }
@@ -85,7 +85,7 @@ public class SignInActivity extends MvpAppCompatActivity implements SignInView,
     public void showRegistrationFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fl_container, RegistrationFragment.newInstance())
+                .replace(R.id.fl_container, SignUpFragment.newInstance())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }
@@ -93,9 +93,9 @@ public class SignInActivity extends MvpAppCompatActivity implements SignInView,
     @Override
     public void checkPermissions() {
         if (permissionsHelper.checkLocationPermission(this)) {
-            signInPresenter.locationPermissionsGranted();
+            authenticationPresenter.locationPermissionsGranted();
         } else {
-            signInPresenter.locationPermissionsNotGranted();
+            authenticationPresenter.locationPermissionsNotGranted();
         }
     }
 
@@ -130,7 +130,7 @@ public class SignInActivity extends MvpAppCompatActivity implements SignInView,
 
     private void showLoading() {
         alertDialog = new AlertDialog.Builder(this)
-                .setView(R.layout.singning_in_loading)//TODO: сделать для SDK 15 и выше
+                .setView(R.layout.dialog_signin_loading)//TODO: сделать для SDK 15 и выше
                 .setCancelable(false)
                 .create();
 
@@ -153,7 +153,7 @@ public class SignInActivity extends MvpAppCompatActivity implements SignInView,
         showRegistrationFragment();
     }
 
-    //RegistrationFragment method implementations
+    //SignUpFragment method implementations
     @Override
     public void startDriverActivity(String userId) {
         launchDriverActivity(userId);

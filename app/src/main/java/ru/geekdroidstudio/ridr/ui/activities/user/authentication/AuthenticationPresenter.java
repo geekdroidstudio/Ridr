@@ -1,10 +1,10 @@
-package ru.geekdroidstudio.ridr.ui.activities.signin;
+package ru.geekdroidstudio.ridr.ui.activities.user.authentication;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
 @InjectViewState
-public class SignInPresenter extends MvpPresenter<SignInView> {
+public class AuthenticationPresenter extends MvpPresenter<AuthenticationView> {
 
     @Override
     protected void onFirstViewAttach() {

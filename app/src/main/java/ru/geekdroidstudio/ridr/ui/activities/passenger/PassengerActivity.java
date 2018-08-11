@@ -22,7 +22,7 @@ import ru.geekdroidstudio.ridr.model.communication.entity.UserAndRoute;
 import ru.geekdroidstudio.ridr.model.communication.location.entity.DualTextRoute;
 import ru.geekdroidstudio.ridr.model.communication.request.entity.DriverResponse;
 import ru.geekdroidstudio.ridr.ui.activities.routeselect.RouteSelectActivity;
-import ru.geekdroidstudio.ridr.ui.activities.userbase.UserBaseActivity;
+import ru.geekdroidstudio.ridr.ui.activities.user.userbase.UserBaseActivity;
 import ru.geekdroidstudio.ridr.ui.fragments.map.MapFragment;
 import ru.geekdroidstudio.ridr.ui.fragments.routestatus.RouteStatusFragment;
 import ru.geekdroidstudio.ridr.ui.fragments.userlist.UserListFragment;

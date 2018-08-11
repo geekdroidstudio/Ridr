@@ -1,4 +1,4 @@
-package ru.geekdroidstudio.ridr.ui.fragments.registration;
+package ru.geekdroidstudio.ridr.ui.fragments.signup;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -24,7 +24,7 @@ import ru.geekdroidstudio.ridr.R;
 import ru.geekdroidstudio.ridr.model.authentication.Authentication;
 import timber.log.Timber;
 
-public class RegistrationFragment extends MvpAppCompatFragment implements RegistrationView, Authentication.IAuthenticationSignUp {
+public class SignUpFragment extends MvpAppCompatFragment implements SignUpView, Authentication.IAuthenticationSignUp {
     @BindView(R.id.edit_text_user_name)
     TextInputEditText editTextUserName;
     @BindView(R.id.edit_text_phone_email)
@@ -40,20 +40,20 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
     Authentication authentication;
 
     private Unbinder unbinder;
-    private RegistrationFragment.OnFragmentInteractionListener onFragmentInteractionListener;
+    private SignUpFragment.OnFragmentInteractionListener onFragmentInteractionListener;
 
-    public RegistrationFragment() {
+    public SignUpFragment() {
     }
 
-    public static RegistrationFragment newInstance() {
-        return new RegistrationFragment();
+    public static SignUpFragment newInstance() {
+        return new SignUpFragment();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof RegistrationFragment.OnFragmentInteractionListener) {
-            onFragmentInteractionListener = (RegistrationFragment.OnFragmentInteractionListener) context;
+        if (context instanceof SignUpFragment.OnFragmentInteractionListener) {
+            onFragmentInteractionListener = (SignUpFragment.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + getString(R.string.error_implement_fragment_interaction_listener));
@@ -63,7 +63,7 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_registration, container, false);
+        View view = inflater.inflate(R.layout.fragment_signup, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         App.getInstance().getComponent().inject(this);

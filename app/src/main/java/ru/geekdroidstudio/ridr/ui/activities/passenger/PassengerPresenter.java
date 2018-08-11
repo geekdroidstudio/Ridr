@@ -24,7 +24,7 @@ import ru.geekdroidstudio.ridr.model.communication.location.entity.DualCoordinat
 import ru.geekdroidstudio.ridr.model.communication.location.entity.DualRoute;
 import ru.geekdroidstudio.ridr.model.communication.location.entity.DualTextRoute;
 import ru.geekdroidstudio.ridr.model.communication.request.entity.PassengerRequest;
-import ru.geekdroidstudio.ridr.ui.activities.userbase.UserBasePresenter;
+import ru.geekdroidstudio.ridr.ui.activities.user.userbase.UserBasePresenter;
 import timber.log.Timber;
 
 @InjectViewState

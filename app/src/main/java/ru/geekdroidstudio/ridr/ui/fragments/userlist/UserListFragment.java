@@ -18,7 +18,7 @@ import butterknife.Unbinder;
 import ru.geekdroidstudio.ridr.R;
 import ru.geekdroidstudio.ridr.model.communication.entity.User;
 import ru.geekdroidstudio.ridr.model.communication.entity.UserAndRoute;
-import ru.geekdroidstudio.ridr.ui.fragments.userlist.adapter.DriverRecyclerViewAdapter;
+import ru.geekdroidstudio.ridr.ui.fragments.userlist.adapter.UserListRecyclerViewAdapter;
 
 import static android.widget.LinearLayout.VERTICAL;
 
@@ -30,7 +30,7 @@ public class UserListFragment extends Fragment {
     private OnFragmentInteractionListener listener;
     private Unbinder unbinder;
 
-    private DriverRecyclerViewAdapter adapter;
+    private UserListRecyclerViewAdapter adapter;
 
     public UserListFragment() {
     }
@@ -43,7 +43,7 @@ public class UserListFragment extends Fragment {
 
         unbinder = ButterKnife.bind(this, view);
 
-        adapter = new DriverRecyclerViewAdapter(listener);
+        adapter = new UserListRecyclerViewAdapter(listener);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), VERTICAL, false));
         recyclerView.setAdapter(adapter);

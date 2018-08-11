@@ -13,11 +13,11 @@ import ru.geekdroidstudio.ridr.ui.activities.driver.DriverActivity;
 import ru.geekdroidstudio.ridr.ui.activities.driver.DriverPresenter;
 import ru.geekdroidstudio.ridr.ui.activities.passenger.PassengerActivity;
 import ru.geekdroidstudio.ridr.ui.activities.passenger.PassengerPresenter;
-import ru.geekdroidstudio.ridr.ui.activities.signin.SignInActivity;
-import ru.geekdroidstudio.ridr.ui.fragments.authentication.AuthenticationFragment;
+import ru.geekdroidstudio.ridr.ui.activities.user.authentication.AuthenticationActivity;
 import ru.geekdroidstudio.ridr.ui.fragments.map.MapFragment;
-import ru.geekdroidstudio.ridr.ui.fragments.registration.RegistrationFragment;
 import ru.geekdroidstudio.ridr.ui.fragments.routedata.RouteDataPresenter;
+import ru.geekdroidstudio.ridr.ui.fragments.signin.SignInFragment;
+import ru.geekdroidstudio.ridr.ui.fragments.signup.SignUpFragment;
 
 
 @Singleton
@@ -28,15 +28,15 @@ public interface AppComponent {
 
     void inject(MapFragment mapFragment);
 
-    void inject(AuthenticationFragment authenticationFragment);
+    void inject(SignInFragment signInFragment);
 
-    void inject(RegistrationFragment registrationFragment);
+    void inject(SignUpFragment signUpFragment);
 
     void inject(PassengerPresenter presenter);
 
     void inject(DriverPresenter presenter);
 
-    void inject(SignInActivity signInActivity);
+    void inject(AuthenticationActivity authenticationActivity);
 
     void inject(PassengerActivity passengerActivity);
 

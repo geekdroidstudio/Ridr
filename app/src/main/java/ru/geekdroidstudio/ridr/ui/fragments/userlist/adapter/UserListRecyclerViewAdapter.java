@@ -14,12 +14,12 @@ import ru.geekdroidstudio.ridr.model.communication.location.entity.DualRoute;
 import ru.geekdroidstudio.ridr.model.communication.location.entity.DualTextRoute;
 import ru.geekdroidstudio.ridr.ui.fragments.userlist.UserListFragment;
 
-public class DriverRecyclerViewAdapter extends RecyclerView.Adapter<DriverRecyclerItemViewHolder> {
+public class UserListRecyclerViewAdapter extends RecyclerView.Adapter<UserListRecyclerItemViewHolder> {
 
     private List<UserAndRoute<? extends User>> userAndRouteList = new ArrayList<>();
     private UserListFragment.OnFragmentInteractionListener onItemClickListener;
 
-    public DriverRecyclerViewAdapter(UserListFragment.OnFragmentInteractionListener onItemClickListener) {
+    public UserListRecyclerViewAdapter(UserListFragment.OnFragmentInteractionListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
@@ -29,13 +29,13 @@ public class DriverRecyclerViewAdapter extends RecyclerView.Adapter<DriverRecycl
 
     @NonNull
     @Override
-    public DriverRecyclerItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public UserListRecyclerItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        return new DriverRecyclerItemViewHolder(inflater, parent);
+        return new UserListRecyclerItemViewHolder(inflater, parent);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DriverRecyclerItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull UserListRecyclerItemViewHolder holder, int position) {
         UserAndRoute userAndRoute = userAndRouteList.get(position);
 
         holder.nameTextView.setText(userAndRoute.getUser().getName());

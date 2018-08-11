@@ -1,4 +1,4 @@
-package ru.geekdroidstudio.ridr.ui.activities.userbase;
+package ru.geekdroidstudio.ridr.ui.activities.user.userbase;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 
-import ru.geekdroidstudio.ridr.ui.activities.signin.SignInActivity;
+import ru.geekdroidstudio.ridr.ui.activities.user.authentication.AuthenticationActivity;
 
 public abstract class UserBaseActivity<T extends UserBasePresenter<? extends UserBaseView>>
         extends MvpAppCompatActivity implements UserBaseView {
@@ -23,7 +23,7 @@ public abstract class UserBaseActivity<T extends UserBasePresenter<? extends Use
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
-            String userId = getIntent().getStringExtra(SignInActivity.USER_ID_KEY);
+            String userId = getIntent().getStringExtra(AuthenticationActivity.USER_ID_KEY);
 
             getPresenter().setUserId(userId);
         }

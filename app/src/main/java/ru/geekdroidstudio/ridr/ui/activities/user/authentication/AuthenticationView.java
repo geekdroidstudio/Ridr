@@ -1,4 +1,4 @@
-package ru.geekdroidstudio.ridr.ui.activities.signin;
+package ru.geekdroidstudio.ridr.ui.activities.user.authentication;
 
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
@@ -6,7 +6,7 @@ import com.arellomobile.mvp.viewstate.strategy.SingleStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 
 @StateStrategyType(OneExecutionStateStrategy.class)
-public interface SignInView extends MvpView {
+public interface AuthenticationView extends MvpView {
 
     void checkPermissions();
 

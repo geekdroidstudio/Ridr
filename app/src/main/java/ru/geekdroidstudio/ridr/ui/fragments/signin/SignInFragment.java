@@ -1,4 +1,4 @@
-package ru.geekdroidstudio.ridr.ui.fragments.authentication;
+package ru.geekdroidstudio.ridr.ui.fragments.signin;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -21,11 +21,11 @@ import butterknife.Unbinder;
 import ru.geekdroidstudio.ridr.App;
 import ru.geekdroidstudio.ridr.R;
 import ru.geekdroidstudio.ridr.model.authentication.Authentication;
-import ru.geekdroidstudio.ridr.ui.activities.signin.SignInView;
+import ru.geekdroidstudio.ridr.ui.activities.user.authentication.AuthenticationView;
 import timber.log.Timber;
 
-public class AuthenticationFragment extends MvpAppCompatFragment implements
-        AuthenticationView, Authentication.IAuthenticationSignIn {
+public class SignInFragment extends MvpAppCompatFragment implements
+        SignInView, Authentication.IAuthenticationSignIn {
 
     @Inject
     Authentication authentication;
@@ -40,20 +40,20 @@ public class AuthenticationFragment extends MvpAppCompatFragment implements
     AppCompatButton buttonChoosePassenger;
 
     private Unbinder unbinder;
-    private AuthenticationFragment.OnFragmentInteractionListener onFragmentInteractionListener;
+    private SignInFragment.OnFragmentInteractionListener onFragmentInteractionListener;
 
-    public AuthenticationFragment() {
+    public SignInFragment() {
     }
 
-    public static AuthenticationFragment newInstance() {
-        return new AuthenticationFragment();
+    public static SignInFragment newInstance() {
+        return new SignInFragment();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof AuthenticationFragment.OnFragmentInteractionListener) {
-            onFragmentInteractionListener = (AuthenticationFragment.OnFragmentInteractionListener) context;
+        if (context instanceof SignInFragment.OnFragmentInteractionListener) {
+            onFragmentInteractionListener = (SignInFragment.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + getString(R.string.error_implement_fragment_interaction_listener));
@@ -63,7 +63,7 @@ public class AuthenticationFragment extends MvpAppCompatFragment implements
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_authentication, container, false);
+        View view = inflater.inflate(R.layout.fragment_signin, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         App.getInstance().getComponent().inject(this);
@@ -87,14 +87,14 @@ public class AuthenticationFragment extends MvpAppCompatFragment implements
     @OnClick(R.id.button_choose_passenger)
     @Override
     public void onClickSignInPassenger() {
-        ((SignInView) getActivity()).onPassengerSingingIn();
+        ((AuthenticationView) getActivity()).onPassengerSingingIn();
         doSignIn();
     }
 
     @OnClick(R.id.button_choose_driver)
     @Override
     public void onClickSignInDriver() {
-        ((SignInView) getActivity()).onDriverSingingIn();
+        ((AuthenticationView) getActivity()).onDriverSingingIn();
         doSignIn();
     }
 
@@ -123,7 +123,7 @@ public class AuthenticationFragment extends MvpAppCompatFragment implements
     @Override
     public void wasSignIn(String userId) {
         Timber.d("wasSignIn()");
-        ((SignInView) getActivity()).onSignedIn(userId);
+        ((AuthenticationView) getActivity()).onSignedIn(userId);
 
     }
 

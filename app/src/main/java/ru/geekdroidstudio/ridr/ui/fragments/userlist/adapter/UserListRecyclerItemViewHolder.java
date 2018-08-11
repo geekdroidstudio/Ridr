@@ -10,7 +10,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.geekdroidstudio.ridr.R;
 
-class DriverRecyclerItemViewHolder extends RecyclerView.ViewHolder {
+class UserListRecyclerItemViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.cl_container)
     View mainView;
@@ -24,7 +24,7 @@ class DriverRecyclerItemViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.list_item_text_view_point_finish)
     AppCompatTextView finishTextView;
 
-    DriverRecyclerItemViewHolder(LayoutInflater inflater, ViewGroup parent) {
+    UserListRecyclerItemViewHolder(LayoutInflater inflater, ViewGroup parent) {
         super(inflater.inflate(R.layout.recycler_objects_item_around, parent, false));
 
         ButterKnife.bind(this, itemView);

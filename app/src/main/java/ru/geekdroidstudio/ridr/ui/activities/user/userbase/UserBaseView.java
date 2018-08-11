@@ -1,4 +1,4 @@
-package ru.geekdroidstudio.ridr.ui.activities.userbase;
+package ru.geekdroidstudio.ridr.ui.activities.user.userbase;
 
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
