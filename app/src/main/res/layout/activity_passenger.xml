@@ -8,7 +8,7 @@
     tools:context=".ui.activities.passenger.PassengerActivity">
 
     <fragment
-        android:name="geekdroidstudio.ru.ridr.ui.fragments.map.MapFragment"
+        android:name="ru.geekdroidstudio.ridr.ui.fragments.map.MapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -16,14 +16,14 @@
         tools:layout="@layout/fragment_map" />
 
     <fragment
-        android:name="geekdroidstudio.ru.ridr.ui.fragments.routestatus.RouteStatusFragment"
+        android:name="ru.geekdroidstudio.ridr.ui.fragments.routestatus.RouteStatusFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:tag="@string/route_status_fragment_tag"
         tools:layout="@layout/fragment_route_status" />
 
     <fragment
-        android:name="geekdroidstudio.ru.ridr.ui.fragments.userlist.UserListFragment"
+        android:name="ru.geekdroidstudio.ridr.ui.fragments.userlist.UserListFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

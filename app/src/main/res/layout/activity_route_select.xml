@@ -6,7 +6,7 @@
     tools:context=".ui.activities.routeselect.RouteSelectActivity">
 
     <fragment
-        android:name="geekdroidstudio.ru.ridr.ui.fragments.routedata.RouteDataFragment"
+        android:name="ru.geekdroidstudio.ridr.ui.fragments.routedata.RouteDataFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:tag="@string/route_data_fragment_tag"
