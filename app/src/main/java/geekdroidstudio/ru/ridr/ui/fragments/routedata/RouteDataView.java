@@ -7,7 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
-import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
+import geekdroidstudio.ru.ridr.model.communication.location.entity.DualTextRoute;
 
 @StateStrategyType(AddToEndSingleStrategy.class)
 public interface RouteDataView extends MvpView {

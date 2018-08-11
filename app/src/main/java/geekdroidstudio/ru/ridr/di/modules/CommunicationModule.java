@@ -12,10 +12,10 @@ import geekdroidstudio.ru.ridr.model.communication.DriverCommunication;
 import geekdroidstudio.ru.ridr.model.communication.IDriverCommunication;
 import geekdroidstudio.ru.ridr.model.communication.IPassengerCommunication;
 import geekdroidstudio.ru.ridr.model.communication.PassengerCommunication;
-import geekdroidstudio.ru.ridr.model.communication.repository.IUserLocationRepository;
-import geekdroidstudio.ru.ridr.model.communication.repository.UserLocationRepositoryFirebase;
-import geekdroidstudio.ru.ridr.model.communication.repository.request.IPassengerRequestRepository;
-import geekdroidstudio.ru.ridr.model.communication.repository.request.PassengerRequestRepositoryFirebase;
+import geekdroidstudio.ru.ridr.model.communication.location.IUserLocationRepository;
+import geekdroidstudio.ru.ridr.model.communication.location.UserLocationRepositoryFirebase;
+import geekdroidstudio.ru.ridr.model.communication.request.IPassengerRequestRepository;
+import geekdroidstudio.ru.ridr.model.communication.request.PassengerRequestRepositoryFirebase;
 
 @Module
 public class CommunicationModule {

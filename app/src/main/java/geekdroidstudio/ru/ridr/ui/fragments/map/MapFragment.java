@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.model.entity.users.User;
+import geekdroidstudio.ru.ridr.model.communication.entity.User;
 import geekdroidstudio.ru.ridr.model.maphelper.IMapHelper;
 
 

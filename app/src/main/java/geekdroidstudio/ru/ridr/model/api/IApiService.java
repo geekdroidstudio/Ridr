@@ -1,6 +1,6 @@
 package geekdroidstudio.ru.ridr.model.api;
 
-import geekdroidstudio.ru.ridr.model.entity.RouteDrivingModelResponse;
+import geekdroidstudio.ru.ridr.model.repository.entity.RouteDrivingModelResponse;
 import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Query;

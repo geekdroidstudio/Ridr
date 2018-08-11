@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
+import geekdroidstudio.ru.ridr.model.communication.location.entity.DualTextRoute;
 import geekdroidstudio.ru.ridr.ui.fragments.routedata.adapter.AutocompleteAdapter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 

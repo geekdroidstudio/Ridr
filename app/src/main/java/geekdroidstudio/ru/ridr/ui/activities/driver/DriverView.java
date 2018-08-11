@@ -6,9 +6,9 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
-import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
-import geekdroidstudio.ru.ridr.model.entity.users.User;
-import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
+import geekdroidstudio.ru.ridr.model.communication.entity.Passenger;
+import geekdroidstudio.ru.ridr.model.communication.entity.User;
+import geekdroidstudio.ru.ridr.model.communication.entity.UserAndRoute;
 import geekdroidstudio.ru.ridr.ui.activities.userbase.UserBaseView;
 
 @StateStrategyType(OneExecutionStateStrategy.class)

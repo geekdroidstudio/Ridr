@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
+import geekdroidstudio.ru.ridr.model.communication.location.entity.DualTextRoute;
 
 public class RouteStatusFragment extends Fragment implements RouteStatusView {
 

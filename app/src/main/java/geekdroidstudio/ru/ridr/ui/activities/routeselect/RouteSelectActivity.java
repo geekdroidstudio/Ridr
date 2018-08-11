@@ -16,7 +16,7 @@ import java.util.List;
 import butterknife.BindString;
 import butterknife.ButterKnife;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
+import geekdroidstudio.ru.ridr.model.communication.location.entity.DualTextRoute;
 import geekdroidstudio.ru.ridr.ui.fragments.routedata.RouteDataFragment;
 
 public class RouteSelectActivity extends AppCompatActivity implements

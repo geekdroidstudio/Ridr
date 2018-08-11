@@ -8,8 +8,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.List;
 
-import geekdroidstudio.ru.ridr.model.entity.routes.Coordinate;
-import geekdroidstudio.ru.ridr.model.entity.users.User;
+import geekdroidstudio.ru.ridr.model.communication.entity.User;
+import geekdroidstudio.ru.ridr.model.communication.location.entity.Coordinate;
 
 @InjectViewState
 public class MapPresenter extends MvpPresenter<MapView> {

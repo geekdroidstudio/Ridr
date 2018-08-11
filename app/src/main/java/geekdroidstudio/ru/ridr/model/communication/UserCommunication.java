@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import geekdroidstudio.ru.ridr.model.communication.repository.IUserLocationRepository;
-import geekdroidstudio.ru.ridr.model.entity.routes.Coordinate;
-import geekdroidstudio.ru.ridr.model.entity.users.User;
+import geekdroidstudio.ru.ridr.model.communication.entity.User;
+import geekdroidstudio.ru.ridr.model.communication.location.IUserLocationRepository;
+import geekdroidstudio.ru.ridr.model.communication.location.entity.Coordinate;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;

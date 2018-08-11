@@ -10,9 +10,9 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import javax.inject.Inject;
 
 import geekdroidstudio.ru.ridr.model.EmulateGeo;
-import geekdroidstudio.ru.ridr.model.Repository;
 import geekdroidstudio.ru.ridr.model.authentication.AuthDatabase;
-import geekdroidstudio.ru.ridr.model.entity.users.User;
+import geekdroidstudio.ru.ridr.model.communication.entity.User;
+import geekdroidstudio.ru.ridr.model.repository.Repository;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;

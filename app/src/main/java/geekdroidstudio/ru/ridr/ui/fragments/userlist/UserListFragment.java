@@ -16,8 +16,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.model.entity.users.User;
-import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
+import geekdroidstudio.ru.ridr.model.communication.entity.User;
+import geekdroidstudio.ru.ridr.model.communication.entity.UserAndRoute;
 import geekdroidstudio.ru.ridr.ui.fragments.userlist.adapter.DriverRecyclerViewAdapter;
 
 import static android.widget.LinearLayout.VERTICAL;

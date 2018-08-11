@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import geekdroidstudio.ru.ridr.model.entity.routes.DualRoute;
-import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
-import geekdroidstudio.ru.ridr.model.entity.users.User;
-import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
+import geekdroidstudio.ru.ridr.model.communication.entity.User;
+import geekdroidstudio.ru.ridr.model.communication.entity.UserAndRoute;
+import geekdroidstudio.ru.ridr.model.communication.location.entity.DualRoute;
+import geekdroidstudio.ru.ridr.model.communication.location.entity.DualTextRoute;
 import geekdroidstudio.ru.ridr.ui.fragments.userlist.UserListFragment;
 
 public class DriverRecyclerViewAdapter extends RecyclerView.Adapter<DriverRecyclerItemViewHolder> {

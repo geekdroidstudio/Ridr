@@ -2,12 +2,12 @@ package geekdroidstudio.ru.ridr.model.communication;
 
 import java.util.List;
 
-import geekdroidstudio.ru.ridr.model.communication.repository.IUserLocationRepository;
-import geekdroidstudio.ru.ridr.model.communication.repository.request.IPassengerRequestRepository;
-import geekdroidstudio.ru.ridr.model.entity.communication.DriverResponse;
-import geekdroidstudio.ru.ridr.model.entity.communication.PassengerRequest;
-import geekdroidstudio.ru.ridr.model.entity.users.Driver;
-import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
+import geekdroidstudio.ru.ridr.model.communication.entity.Driver;
+import geekdroidstudio.ru.ridr.model.communication.entity.Passenger;
+import geekdroidstudio.ru.ridr.model.communication.location.IUserLocationRepository;
+import geekdroidstudio.ru.ridr.model.communication.request.IPassengerRequestRepository;
+import geekdroidstudio.ru.ridr.model.communication.request.entity.DriverResponse;
+import geekdroidstudio.ru.ridr.model.communication.request.entity.PassengerRequest;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;

@@ -13,9 +13,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import geekdroidstudio.ru.ridr.model.Repository;
-import geekdroidstudio.ru.ridr.model.entity.RouteDrivingModelResponse;
-import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
+import geekdroidstudio.ru.ridr.model.communication.location.entity.DualTextRoute;
+import geekdroidstudio.ru.ridr.model.repository.Repository;
+import geekdroidstudio.ru.ridr.model.repository.entity.RouteDrivingModelResponse;
 import io.reactivex.Scheduler;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
