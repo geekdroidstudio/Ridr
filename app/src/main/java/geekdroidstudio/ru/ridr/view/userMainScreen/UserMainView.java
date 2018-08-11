@@ -16,13 +16,14 @@ public interface UserMainView extends MvpView {
     @StateStrategyType(SingleStateStrategy.class)
     void showStartAuthorisationFragment();
 
-
     @StateStrategyType(SingleStateStrategy.class)
     void showRegistrationFragment();
 
-    void launchDriverActivity(String userId);
-
-    void launchPassengerActivity(String userId);
-
     void requestPermissions();
+
+    void onDriverSingingIn();
+
+    void onPassengerSingingIn();
+
+    void onSignedIn(String userId);
 }

@@ -1,5 +1,6 @@
 package geekdroidstudio.ru.ridr.view.userMainScreen;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,6 +33,8 @@ public class UserMainActivity extends MvpAppCompatActivity implements UserMainVi
     @Inject
     PermissionsHelper permissionsHelper;
 
+    boolean driver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,13 +42,13 @@ public class UserMainActivity extends MvpAppCompatActivity implements UserMainVi
         App.getInstance().getComponent().inject(this);
     }
 
+    private AlertDialog alertDialog;
+
     @Override
-    public void checkPermissions() {
-        if (permissionsHelper.checkLocationPermission(this)) {
-            userMainPresenter.locationPermissionsGranted();
-        } else {
-            userMainPresenter.locationPermissionsNotGranted();
-        }
+    protected void onDestroy() {
+        super.onDestroy();
+
+        hideLoading();
     }
 
     @Override
@@ -89,15 +92,60 @@ public class UserMainActivity extends MvpAppCompatActivity implements UserMainVi
     }
 
     @Override
-    public void launchDriverActivity(String userId) {
-        startActivity(new Intent(getApplicationContext(), DriverMainActivity.class)
-        .putExtra(USER_ID_KEY, userId));
+    public void checkPermissions() {
+        if (permissionsHelper.checkLocationPermission(this)) {
+            userMainPresenter.locationPermissionsGranted();
+        } else {
+            userMainPresenter.locationPermissionsNotGranted();
+        }
     }
 
     @Override
-    public void launchPassengerActivity(String userId) {
+    public void onDriverSingingIn() {
+        showLoading();
+        driver = true;
+    }
+
+    @Override
+    public void onPassengerSingingIn() {
+        showLoading();
+        driver = false;
+    }
+
+    @Override
+    public void onSignedIn(String userId) {
+        hideLoading();
+        if (driver) {
+            launchDriverActivity(userId);
+        } else {
+            launchPassengerActivity(userId);
+        }
+    }
+
+    private void hideLoading() {
+        if (alertDialog != null) {
+            alertDialog.hide();
+        }
+    }
+
+
+    private void showLoading() {
+        alertDialog = new AlertDialog.Builder(this)
+                .setView(R.layout.singning_in_loading)//TODO: сделать для SDK 15 и выше
+                .setCancelable(false)
+                .create();
+
+        alertDialog.show();
+    }
+
+    private void launchDriverActivity(String userId) {
+        startActivity(new Intent(getApplicationContext(), DriverMainActivity.class)
+                .putExtra(USER_ID_KEY, userId));
+    }
+
+    private void launchPassengerActivity(String userId) {
         startActivity(new Intent(getApplicationContext(), PassengerMainActivity.class)
-        .putExtra(USER_ID_KEY, userId));
+                .putExtra(USER_ID_KEY, userId));
     }
 
     //StartAuthenticationFragment method implementations

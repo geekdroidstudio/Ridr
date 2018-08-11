@@ -10,7 +10,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import geekdroidstudio.ru.ridr.model.entity.communication.DriverResponse;
 import geekdroidstudio.ru.ridr.model.entity.communication.PassengerRequest;
-import geekdroidstudio.ru.ridr.model.entity.communication.SimpleRoute;
+import geekdroidstudio.ru.ridr.model.entity.routes.DualCoordinateRoute;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -39,7 +39,7 @@ public class PassengerRequestRepositoryFirebase implements IPassengerRequestRepo
             DatabaseReference requestReference = reference.child(REQUEST);
             DatabaseReference responseReference = reference.child(RESPONSE);
 
-            requestReference.setValue(request.getSimpleRoute());
+            requestReference.setValue(request.getDualCoordinateRoute());
 
             responseReference.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -48,7 +48,7 @@ public class PassengerRequestRepositoryFirebase implements IPassengerRequestRepo
 
                     if (accept != null) {
                         responseReference.removeEventListener(this);
-                        responseReference.setValue(null);
+                        reference.setValue(null);
 
                         emitter.onSuccess(new DriverResponse(driverId, passengerId, accept));
                     }
@@ -90,9 +90,9 @@ public class PassengerRequestRepositoryFirebase implements IPassengerRequestRepo
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 DataSnapshot request = dataSnapshot.child(REQUEST);
-                SimpleRoute simpleRoute = request.getValue(SimpleRoute.class);
-                if (simpleRoute != null) {
-                    emitter.onNext(new PassengerRequest(dataSnapshot.getKey(), driverId, simpleRoute));
+                DualCoordinateRoute dualCoordinateRoute = request.getValue(DualCoordinateRoute.class);
+                if (dualCoordinateRoute != null) {
+                    emitter.onNext(new PassengerRequest(dataSnapshot.getKey(), driverId, dualCoordinateRoute));
                 }
             }
 

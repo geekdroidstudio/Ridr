@@ -1,15 +1,17 @@
 package geekdroidstudio.ru.ridr.model.entity.communication;
 
+import geekdroidstudio.ru.ridr.model.entity.routes.DualCoordinateRoute;
+
 public class PassengerRequest {
 
     private String driverId;
     private String passengerId;
-    private SimpleRoute simpleRoute;
+    private DualCoordinateRoute dualCoordinateRoute;
 
-    public PassengerRequest(String passengerId, String driverId, SimpleRoute simpleRoute) {
+    public PassengerRequest(String passengerId, String driverId, DualCoordinateRoute dualCoordinateRoute) {
         this.passengerId = passengerId;
         this.driverId = driverId;
-        this.simpleRoute = simpleRoute;
+        this.dualCoordinateRoute = dualCoordinateRoute;
     }
 
     public PassengerRequest() {
@@ -31,11 +33,11 @@ public class PassengerRequest {
         this.driverId = driverId;
     }
 
-    public SimpleRoute getSimpleRoute() {
-        return simpleRoute;
+    public DualCoordinateRoute getDualCoordinateRoute() {
+        return dualCoordinateRoute;
     }
 
-    public void setSimpleRoute(SimpleRoute simpleRoute) {
-        this.simpleRoute = simpleRoute;
+    public void setDualCoordinateRoute(DualCoordinateRoute dualCoordinateRoute) {
+        this.dualCoordinateRoute = dualCoordinateRoute;
     }
 }

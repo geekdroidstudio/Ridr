@@ -1,6 +1,7 @@
 package geekdroidstudio.ru.ridr.presenter;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -13,9 +14,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import geekdroidstudio.ru.ridr.model.Repository;
+import geekdroidstudio.ru.ridr.model.entity.RouteDrivingModelResponse;
+import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
 import geekdroidstudio.ru.ridr.view.fragments.routeDataFragment.RouteDataView;
 import io.reactivex.Scheduler;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 @InjectViewState
 public class RouteDataPresenter extends MvpPresenter<RouteDataView> {
@@ -58,28 +63,38 @@ public class RouteDataPresenter extends MvpPresenter<RouteDataView> {
         repository.getRoute(startPointPlaceId, endPointPlaceId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
-                .subscribe(response -> {
-                    if (response.getStatus().equals("OK")) {
-                        /*получаем пока 1 маршрут, может быть не один*/
-                        String overViewPolyLine = response.getRoutes().get(0).getOverviewPolyline()
-                                .getPoints();
+                .subscribe(getResponseConsumer(), throwable -> {
+                    Timber.e(throwable);
+                    getViewState().showErrorLoadRoute();
+                });
 
-                        /*Выполнив запрос и получив объект Route мы можем получить из
-                         * него строку overViewPolyLine.В своем исходном состоянии она нам мало
-                         * что дает.Для того, чтобы добыть из нее какую -то информацию,
-                         * нам нужно расшифровать ее.Здесь нам придет на помощь класс PolyUtil
-                         * из библиотеки Google Maps Android API utility library.
-                         * PolyUtil содержит метод decode (), принимающий строку overViewPolyLine
-                         * и возвращающий набор объектов LatLng, узлов нашего маршрута*/
-                        List<LatLng> latLngsList = PolyUtil.decode(overViewPolyLine);
+    }
 
-                        getViewState().routeLoadCompleted(startPointPlaceId, endPointPlaceId,
-                                latLngsList);
-                    } else {
-                        getViewState().showErrorLoadRoute();
-                    }
-                }, throwable -> getViewState().showErrorLoadRoute());
+    @NonNull
+    private Consumer<RouteDrivingModelResponse> getResponseConsumer() {
+        return response -> {
+            if (response.getStatus().equals("OK")) {
+                /*получаем пока 1 маршрут, может быть не один*/
+                String overViewPolyLine = response.getRoutes().get(0).getOverviewPolyline()
+                        .getPoints();
 
+                /*Выполнив запрос и получив объект Route мы можем получить из
+                 * него строку overViewPolyLine.В своем исходном состоянии она нам мало
+                 * что дает.Для того, чтобы добыть из нее какую -то информацию,
+                 * нам нужно расшифровать ее.Здесь нам придет на помощь класс PolyUtil
+                 * из библиотеки Google Maps Android API utility library.
+                 * PolyUtil содержит метод decode (), принимающий строку overViewPolyLine
+                 * и возвращающий набор объектов LatLng, узлов нашего маршрута*/
+                List<LatLng> latLngsList = PolyUtil.decode(overViewPolyLine);
+
+                //TODO: вот тут нужны человеческие названия
+                DualTextRoute dualTextRoute = new DualTextRoute(routeStartPoint, routeEndPoint);
+
+                getViewState().routeLoadCompleted(dualTextRoute, latLngsList);
+            } else {
+                getViewState().showErrorLoadRoute();
+            }
+        };
     }
 
     public void retryLoadRoute() {

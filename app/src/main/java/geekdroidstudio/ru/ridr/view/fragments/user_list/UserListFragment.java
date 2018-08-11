@@ -1,48 +1,52 @@
-package geekdroidstudio.ru.ridr.view.fragments.route_status;
+package geekdroidstudio.ru.ridr.view.fragments.user_list;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.arellomobile.mvp.presenter.InjectPresenter;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
-import geekdroidstudio.ru.ridr.presenter.RouteStatusPresenter;
+import geekdroidstudio.ru.ridr.model.entity.users.User;
+import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
+import geekdroidstudio.ru.ridr.view.adapters.DriverRecyclerViewAdapter;
 
-public class RouteStatusFragment extends Fragment implements RouteStatusView {
+import static android.widget.LinearLayout.VERTICAL;
 
-    @BindView(R.id.tv_info)
-    TextView textViewInfo;
+public class UserListFragment extends Fragment {
 
-    @InjectPresenter
-    RouteStatusPresenter presenter;
+    @BindView(R.id.holder_recycler_view_objects_around)
+    RecyclerView recyclerView;
 
     private OnFragmentInteractionListener listener;
-
-    private DualTextRoute dualTextRoute;
-
     private Unbinder unbinder;
 
-    public RouteStatusFragment() {
+    private DriverRecyclerViewAdapter adapter;
 
+    public UserListFragment() {
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_route_status, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_user_list, container, false);
 
         unbinder = ButterKnife.bind(this, view);
+
+        adapter = new DriverRecyclerViewAdapter(listener);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), VERTICAL, false));
+        recyclerView.setAdapter(adapter);
 
         return view;
     }
@@ -72,30 +76,12 @@ public class RouteStatusFragment extends Fragment implements RouteStatusView {
         listener = null;
     }
 
-    @OnClick(R.id.btn_change)
-    public void onClickChange(View view) {
-        if (listener != null) {
-            listener.goRouteChange(dualTextRoute);
-        }
-    }
-
-    @Override
-    public void setInfo() {
-        if (dualTextRoute == null) {
-            textViewInfo.setText(R.string.route_is_not_selected);
-        } else {
-            //TODO: в ресурсы
-            String info = "От " + dualTextRoute.getStart() + " до " + dualTextRoute.getFinish();
-            textViewInfo.setText(info);
-        }
-    }
-
-    public void onRouteSelected(DualTextRoute dualTextRoute) {
-        this.dualTextRoute = dualTextRoute;
-        setInfo();
+    public void setUsersAndRoutes(List<UserAndRoute<? extends User>> usersAndRoutes) {
+        adapter.setUserAndRouteList(usersAndRoutes);
+        recyclerView.getAdapter().notifyDataSetChanged();
     }
 
     public interface OnFragmentInteractionListener {
-        void goRouteChange(DualTextRoute dualTextRoute);
+        void onItemClick(UserAndRoute<? extends User> userAndRoute);
     }
 }

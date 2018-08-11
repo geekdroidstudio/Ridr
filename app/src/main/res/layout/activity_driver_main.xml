@@ -3,32 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     android:orientation="vertical"
     tools:context=".view.driverMainScreen.DriverMainActivity">
 
-    <FrameLayout
-        android:id="@+id/fl_activity_driver_map_frame"
+    <fragment
+        android:name="geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment"
+        android:layout_weight="2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2" />
+        android:tag="@string/map_fragment_tag"
+        tools:layout="@layout/fragment_map" />
 
-    <FrameLayout
-        android:id="@+id/fl_activity_driver_recycler_frame"
+    <fragment
+        android:name="geekdroidstudio.ru.ridr.view.fragments.user_list.UserListFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/holder_recycler_view_objects_around"
-            android:layout_width="match_parent"
-            android:layout_height="229dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:scrollbars="vertical" />
-    </FrameLayout>
+        android:layout_weight="2"
+        android:tag="@string/user_list_fragment_tag"
+        tools:layout="@layout/fragment_user_list" />
 
 </LinearLayout>

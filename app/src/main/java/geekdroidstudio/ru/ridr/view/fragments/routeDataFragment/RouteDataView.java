@@ -7,12 +7,14 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
+import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
+
 @StateStrategyType(AddToEndSingleStrategy.class)
 public interface RouteDataView extends MvpView {
 
     void init();
 
-    void routeLoadCompleted(String start, String finish, List<LatLng> latLngsList);
+    void routeLoadCompleted(DualTextRoute dualTextRoute, List<LatLng> latLngsList);
 
     void showErrorLoadRoute();
 }

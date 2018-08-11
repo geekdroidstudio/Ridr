@@ -20,7 +20,10 @@ public class GoogleMapHelper implements IMapHelper<GoogleMap, BitmapDescriptor, 
 
     private GoogleMap googleMap;
     private Marker userMarker;
+    private List<LatLng> mapObjects;
     private BitmapDescriptor userIcon;
+    private BitmapDescriptor mapObjectIcon;
+    private PolylineOptions routeLine;
 
     @Override
     public void init(GoogleMap map) {
@@ -32,13 +35,17 @@ public class GoogleMapHelper implements IMapHelper<GoogleMap, BitmapDescriptor, 
     }
 
     @Override
-    public void drawRoute(int size, int routeLineColor, float routeLineWidth, BitmapDescriptor endPointIcon, BitmapDescriptor startPointIcon, List<LatLng> routePoints) {
+    public void drawRoute(int size, int routeLineColor, float routeLineWidth,
+                          BitmapDescriptor endPointIcon, BitmapDescriptor startPointIcon,
+                          List<LatLng> routePoints) {
         if (googleMap == null) {
             return;
         }
         googleMap.clear();
+        restoreMapObjects();
+        restoreUser();
 
-        PolylineOptions line = new PolylineOptions()
+        routeLine = new PolylineOptions()
                 .width(routeLineWidth)
                 .color(routeLineColor);
 
@@ -50,10 +57,10 @@ public class GoogleMapHelper implements IMapHelper<GoogleMap, BitmapDescriptor, 
             } else if (i == routePointsSize - 1) {
                 drawMarker(routePoints.get(routePointsSize - 1), endPointIcon);
             }
-            line.add(routePoints.get(i));
+            routeLine.add(routePoints.get(i));
             latLngBuilder.include(routePoints.get(i));
         }
-        googleMap.addPolyline(line);
+        googleMap.addPolyline(routeLine);
 
         CameraUpdate track = CameraUpdateFactory.newLatLngBounds(latLngBuilder.build(), size, size,
                 MAP_WITH_ROUTE_PADDING);
@@ -65,11 +72,12 @@ public class GoogleMapHelper implements IMapHelper<GoogleMap, BitmapDescriptor, 
         if (googleMap == null) {
             return;
         }
-
         googleMap.clear();
-        if (userMarker != null) {
-            drawUser(userMarker.getPosition(), userIcon);
-        }
+        restoreUser();
+        restoreRoute();
+
+        this.mapObjectIcon = objectIcon;
+        this.mapObjects = mapObjects;
 
         for (LatLng mapObject : mapObjects) {
             drawMarker(mapObject, objectIcon);
@@ -96,13 +104,33 @@ public class GoogleMapHelper implements IMapHelper<GoogleMap, BitmapDescriptor, 
         uiSettings.setZoomControlsEnabled(true);
     }
 
+    private GoogleMap.OnMapClickListener createOnMapClickListener() {
+        return latLng -> {/*do something action*/};
+    }
+
+    private void restoreRoute() {
+        if (routeLine != null) {
+            googleMap.addPolyline(routeLine);
+        }
+    }
+
+    private void restoreUser() {
+        if (userMarker != null) {
+            drawUser(userMarker.getPosition(), userIcon);
+        }
+    }
+
+    private void restoreMapObjects() {
+        if (mapObjects != null) {
+            for (LatLng mapObject : mapObjects) {
+                drawMarker(mapObject, mapObjectIcon);
+            }
+        }
+    }
+
     private Marker drawMarker(LatLng position, BitmapDescriptor icon) {
         return googleMap.addMarker(new MarkerOptions()
                 .position(position)
                 .icon(icon));
-    }
-
-    private GoogleMap.OnMapClickListener createOnMapClickListener() {
-        return latLng -> {/*do something action*/};
     }
 }

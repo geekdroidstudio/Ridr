@@ -62,6 +62,8 @@
     <string name="map_fragment_tag">mapTag</string>
     <string name="route_status_fragment_tag">routeStatusTag</string>
     <string name="route_data_fragment_tag">routeSelectTag</string>
+    <string name="user_list_fragment_tag">userListTag</string>
     <string name="switch_text_passenger">Пассажир</string>
+    <string name="authorize_title">Авторизация...</string>
 
 </resources>

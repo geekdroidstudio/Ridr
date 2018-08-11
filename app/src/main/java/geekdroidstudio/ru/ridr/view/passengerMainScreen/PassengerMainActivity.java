@@ -1,49 +1,48 @@
 package geekdroidstudio.ru.ridr.view.passengerMainScreen;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindString;
 import butterknife.ButterKnife;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
+import geekdroidstudio.ru.ridr.model.entity.communication.DriverResponse;
+import geekdroidstudio.ru.ridr.model.entity.routes.DualTextRoute;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
+import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
 import geekdroidstudio.ru.ridr.presenter.PassengerMainPresenter;
-import geekdroidstudio.ru.ridr.server.authentication.AuthDatabase;
 import geekdroidstudio.ru.ridr.view.RouteSelectActivity;
+import geekdroidstudio.ru.ridr.view.UserBaseActivity;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
 import geekdroidstudio.ru.ridr.view.fragments.route_status.RouteStatusFragment;
-import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity;
+import geekdroidstudio.ru.ridr.view.fragments.user_list.UserListFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import timber.log.Timber;
 
 import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.FINISH_KEY;
-import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.ROUTE_KEY;
+import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.MULTI_ROUTE_KEY;
 import static geekdroidstudio.ru.ridr.view.RouteSelectActivity.START_KEY;
 
 
-public class PassengerMainActivity extends MvpAppCompatActivity implements PassengerMainView,
+public class PassengerMainActivity extends UserBaseActivity<PassengerMainPresenter> implements
+        PassengerMainView,
         MapFragment.OnFragmentInteractionListener,
-        RouteStatusFragment.OnFragmentInteractionListener, AuthDatabase.IAuthDatabase {
-
-    public static final String PASSENGER_ID_KEY = "passengerIdKey";
-    public static final String PASSENGER_NAME_KEY = "passengerNameKey";
+        RouteStatusFragment.OnFragmentInteractionListener,
+        UserListFragment.OnFragmentInteractionListener {
 
     public static final int REQUEST_CODE_ROUTE = 1;
 
     @InjectPresenter
-    PassengerMainPresenter passengerMainPresenter;
+    PassengerMainPresenter presenter;
 
     @BindString(R.string.map_fragment_tag)
     String mapFragmentTag;
@@ -51,10 +50,17 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     @BindString(R.string.route_status_fragment_tag)
     String routeStatusFragmentTag;
 
-    @Inject AuthDatabase authDatabase;
+    @BindString(R.string.user_list_fragment_tag)
+    String userListFragmentTag;
 
-    MapFragment mapFragment;
-    RouteStatusFragment routeStatusFragment;
+    private MapFragment mapFragment;
+    private RouteStatusFragment routeStatusFragment;
+    private UserListFragment userListFragment;
+    private AlertDialog alertDialog;
+
+    public PassengerMainActivity() {
+        App.getInstance().getComponent().inject(this);
+    }
 
     @ProvidePresenter
     public PassengerMainPresenter providePresenter() {
@@ -64,33 +70,33 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
     }
 
     @Override
+    public PassengerMainPresenter getPresenter() {
+        return presenter;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passenger_main);
+
         ButterKnife.bind(this);
-
-        App.getInstance().getComponent().inject(this);
-        String userId = getIntent().getStringExtra(UserMainActivity.USER_ID_KEY);
-        Timber.d("onCreate: " + userId);
-        authDatabase.setContext(this);
-        authDatabase.getUserName(userId);
-
-        String passengerId = getIntent().getStringExtra(PASSENGER_ID_KEY);
-        String passengerName = getIntent().getStringExtra(PASSENGER_NAME_KEY);
-
-        //TODO: убрать при передаче настоящих значений
-        passengerId = "test1id";
-        passengerName = "test1name";
-
-        passengerMainPresenter.setPassenger(new Passenger(passengerId, passengerName));
 
         mapFragment = (MapFragment) getFragment(mapFragmentTag);
         routeStatusFragment = (RouteStatusFragment) getFragment(routeStatusFragmentTag);
+        userListFragment = (UserListFragment) getFragment(userListFragmentTag);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (alertDialog != null) {
+            alertDialog.hide();
+        }
     }
 
     //LatLang - временное решение - вместо них, лучше использовать свои класс координат
     @Override
-    public void showRouteInMapFragment(List<LatLng> routePoints) {
+    public void showRouteOnMap(List<LatLng> routePoints) {
         mapFragment.showRoute(routePoints);
     }
 
@@ -101,43 +107,81 @@ public class PassengerMainActivity extends MvpAppCompatActivity implements Passe
 
     @Override
     public void showDriversOnMap(List<? extends User> users) {
-        mapFragment.showMapObjects(users);
+        mapFragment.showUsersOnMap(users);
     }
 
     @Override
-    public void goRouteChange(String start, String finish) {
+    public void showDriversOnList(List<UserAndRoute<? extends User>> driversAndRoutes) {
+
+        userListFragment.setUsersAndRoutes(driversAndRoutes);
+    }
+
+    @Override
+    public void goRouteChange(DualTextRoute dualTextRoute) {
         Intent intent = new Intent(this, RouteSelectActivity.class);
 
-        intent.putExtra(START_KEY, start);
-        intent.putExtra(FINISH_KEY, finish);
+        intent.putExtra(START_KEY, "");//dualTextRoute.getStart());
+        intent.putExtra(FINISH_KEY, "");//dualTextRoute.getFinish());
 
         startActivityForResult(intent, REQUEST_CODE_ROUTE);
     }
 
     @Override
+    public void onItemClick(UserAndRoute<? extends User> userAndRoute) {
+        presenter.onItemClick(userAndRoute);
+    }
+
+    @Override
+    public void showNeedRouteMessage() {
+        Toast.makeText(this, "Need select route", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showSendRequestDialog(UserAndRoute<? extends User> userAndRoute) {
+        alertDialog = new AlertDialog.Builder(this)
+                .setMessage("Send request to " + userAndRoute.getUser().getName())
+                .setNegativeButton("No", (dialog, which) -> {
+                })
+                .setPositiveButton("Yes", (dialog, which) -> presenter.onRouteSend(userAndRoute))
+                .create();
+
+        alertDialog.show();
+    }
+
+    @Override
+    public void showResponse(DriverResponse driverResponse) {
+        final String message;
+        if (driverResponse.getAccept()) {
+            message = driverResponse.getDriverId() + " accepted request";
+        } else {
+            message = driverResponse.getDriverId() + " rejected request";
+        }
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_CODE_ROUTE:
-                    String start = data.getStringExtra(START_KEY);
-                    String finish = data.getStringExtra(FINISH_KEY);
-                    List<LatLng> latLngArray = data.getParcelableArrayListExtra(ROUTE_KEY);
-
-                    routeStatusFragment.onRouteSelected(start, finish);
-                    mapFragment.showRoute(latLngArray);
-                    break;
+        switch (requestCode) {
+            case REQUEST_CODE_ROUTE: {
+                if (resultCode == Activity.RESULT_OK) {
+                    onRouteSelected(data);
+                }
+                break;
+            }
+            default: {
+                super.onActivityResult(requestCode, resultCode, data);
             }
         }
     }
 
-    private Fragment getFragment(String tag) {
-        return getSupportFragmentManager().findFragmentByTag(tag);
-    }
+    private void onRouteSelected(Intent data) {
+        String start = data.getStringExtra(START_KEY);
+        String finish = data.getStringExtra(FINISH_KEY);
+        DualTextRoute dualTextRoute = new DualTextRoute(start, finish);
+        List<LatLng> latLngArray = data.getParcelableArrayListExtra(MULTI_ROUTE_KEY);
 
-    @Override
-    public void wasGetUserName(String userName) {
-        Timber.d("wasGetUserName: " +userName);
+        presenter.onRouteSelected(dualTextRoute, latLngArray);
+        routeStatusFragment.onRouteSelected(dualTextRoute);
+        mapFragment.showRoute(latLngArray);
     }
 }

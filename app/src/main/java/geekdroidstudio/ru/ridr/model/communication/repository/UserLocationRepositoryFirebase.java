@@ -10,7 +10,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import geekdroidstudio.ru.ridr.model.entity.users.Coordinate;
+import geekdroidstudio.ru.ridr.model.entity.routes.Coordinate;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import io.reactivex.Completable;
 import io.reactivex.Observable;

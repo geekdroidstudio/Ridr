@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import geekdroidstudio.ru.ridr.model.communication.repository.IUserLocationRepository;
-import geekdroidstudio.ru.ridr.model.entity.users.Coordinate;
+import geekdroidstudio.ru.ridr.model.entity.routes.Coordinate;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;

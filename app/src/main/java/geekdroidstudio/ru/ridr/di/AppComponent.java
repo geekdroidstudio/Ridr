@@ -38,7 +38,7 @@ public interface AppComponent {
 
     void inject(UserMainActivity userMainActivity);
 
-    void inject (PassengerMainActivity passengerMainActivity);
+    void inject(PassengerMainActivity passengerMainActivity);
 
-    void inject (DriverMainActivity driverMainActivity);
+    void inject(DriverMainActivity driverMainActivity);
 }

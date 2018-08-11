@@ -1,46 +1,52 @@
 package geekdroidstudio.ru.ridr.view.driverMainScreen;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
-import butterknife.BindView;
+import butterknife.BindString;
 import butterknife.ButterKnife;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.di.AppComponent;
+import geekdroidstudio.ru.ridr.model.entity.users.Passenger;
 import geekdroidstudio.ru.ridr.model.entity.users.User;
+import geekdroidstudio.ru.ridr.model.entity.users.UserAndRoute;
 import geekdroidstudio.ru.ridr.presenter.DriverMainPresenter;
-import geekdroidstudio.ru.ridr.server.authentication.AuthDatabase;
-import geekdroidstudio.ru.ridr.view.adapters.DriverRecyclerViewAdapter;
+import geekdroidstudio.ru.ridr.view.UserBaseActivity;
 import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
-import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity;
+import geekdroidstudio.ru.ridr.view.fragments.user_list.UserListFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import timber.log.Timber;
 
-import static android.widget.LinearLayout.VERTICAL;
-
-public class DriverMainActivity extends MvpAppCompatActivity implements DriverMainView,
-        MapFragment.OnFragmentInteractionListener, AuthDatabase.IAuthDatabase {
-    @BindView(R.id.holder_recycler_view_objects_around)
-    RecyclerView rvPassengerList;
+public class DriverMainActivity extends UserBaseActivity<DriverMainPresenter> implements DriverMainView,
+        MapFragment.OnFragmentInteractionListener, UserListFragment.OnFragmentInteractionListener {
 
     @InjectPresenter
-    DriverMainPresenter driverMainPresenter;
+    DriverMainPresenter presenter;
 
-    @Inject AuthDatabase authDatabase;
+    @BindString(R.string.map_fragment_tag)
+    String mapFragmentTag;
+
+    @BindString(R.string.user_list_fragment_tag)
+    String userListFragmentTag;
+
+    private MapFragment mapFragment;
+    private UserListFragment userListFragment;
+    private AlertDialog alertDialog;
+
+    public DriverMainActivity() {
+        App.getInstance().getComponent().inject(this);
+    }
+
+    @Override
+    public DriverMainPresenter getPresenter() {
+        return presenter;
+    }
 
     @ProvidePresenter
     public DriverMainPresenter providePresenter() {
@@ -53,63 +59,63 @@ public class DriverMainActivity extends MvpAppCompatActivity implements DriverMa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_main);
+
         ButterKnife.bind(this);
-        String userId = getIntent().getStringExtra(UserMainActivity.USER_ID_KEY);
-        Timber.d("onCreate: " + userId);
-        App.getInstance().getComponent().inject(this);
-        authDatabase.setContext(this);
-        authDatabase.getUserName(userId);
 
-
+        mapFragment = (MapFragment) getFragment(mapFragmentTag);
+        userListFragment = (UserListFragment) getFragment(userListFragmentTag);
     }
 
     @Override
-    public void showMapFragment() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fl_activity_driver_map_frame, MapFragment.newInstance(),
-                        MapFragment.TAG)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit();
-    }
-
-    @Override
-    public void showRouteInMapFragment(List<LatLng> routePoints) {
-        Fragment fragment = getMapFragment();
-        if (fragment != null) {
-            ((MapFragment) fragment).showRoute(routePoints);
+    protected void onDestroy() {
+        super.onDestroy();
+        if (alertDialog != null) {
+            alertDialog.hide();
         }
     }
 
     @Override
-    public void showUserInMapFragment(User user) {
-        Fragment fragment = getMapFragment();
-        if (fragment != null) {
-            ((MapFragment) fragment).showUser(user);
-        }
+    public void showRouteOnMap(List<LatLng> routePoints) {
+        mapFragment.showRoute(routePoints);
     }
 
     @Override
-    public void showMapObjectsInMapFragment(List<User> users) {
-        Fragment fragment = getMapFragment();
-        if (fragment != null) {
-            ((MapFragment) fragment).showMapObjects(users);
-        }
+    public void showDriverOnMap(User user) {
+        mapFragment.showUser(user);
     }
 
     @Override
-    public void showDriverRecycler() {
-        rvPassengerList.setLayoutManager(new LinearLayoutManager(this, VERTICAL, false));
-        rvPassengerList.setAdapter(new DriverRecyclerViewAdapter());
-    }
-
-    @Nullable
-    private Fragment getMapFragment() {
-        return getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+    public void showPassengersOnMap(List<? extends User> users) {
+        mapFragment.showUsersOnMap(users);
     }
 
     @Override
-    public void wasGetUserName(String userName) {
-        Timber.d("wasGetUserName: " + userName);
+    public void showPassengersOnList(List<UserAndRoute<? extends User>> passengersAndRoutes) {
+        userListFragment.setUsersAndRoutes(passengersAndRoutes);
+    }
+
+    @Override
+    public void showPassengerRequest(UserAndRoute<Passenger> passengerAndRoute) {
+        final String message = passengerAndRoute.getUser().getName()
+                + " request: " + passengerAndRoute.getDualRoute().getCoordinateRoute();
+        alertDialog = new AlertDialog.Builder(this)
+                .setMessage(message)
+                .setNegativeButton("Reject",
+                        (dialog, which) -> postDriverResponse(passengerAndRoute, false))
+                .setPositiveButton("Accept",
+                        (dialog, which) -> postDriverResponse(passengerAndRoute, true))
+                .setCancelable(false)
+                .create();
+
+        alertDialog.show();
+    }
+
+    private void postDriverResponse(UserAndRoute<Passenger> passengerAndRoute, boolean response) {
+        presenter.onDriverResponse(passengerAndRoute.getUser(), response);
+    }
+
+    @Override
+    public void onItemClick(UserAndRoute<? extends User> userAndRoute) {
+        Toast.makeText(this, "onClick " + userAndRoute.getUser().getName(), Toast.LENGTH_SHORT).show();
     }
 }

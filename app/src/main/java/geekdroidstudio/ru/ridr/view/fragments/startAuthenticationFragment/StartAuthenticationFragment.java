@@ -20,13 +20,15 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import geekdroidstudio.ru.ridr.App;
 import geekdroidstudio.ru.ridr.R;
-import geekdroidstudio.ru.ridr.server.authentication.Authentication;
-import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity;
+import geekdroidstudio.ru.ridr.model.authentication.Authentication;
+import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainView;
 import timber.log.Timber;
 
-public class StartAuthenticationFragment extends MvpAppCompatFragment implements StartAuthenticationView, Authentication.IAuthenticationSignIn {
+public class StartAuthenticationFragment extends MvpAppCompatFragment implements
+        StartAuthenticationView, Authentication.IAuthenticationSignIn {
 
-    @Inject Authentication authentication;
+    @Inject
+    Authentication authentication;
 
     @BindView(R.id.edit_text_email)
     TextInputEditText editTextEmail;
@@ -40,7 +42,8 @@ public class StartAuthenticationFragment extends MvpAppCompatFragment implements
     private Unbinder unbinder;
     private StartAuthenticationFragment.OnFragmentInteractionListener onFragmentInteractionListener;
 
-    public StartAuthenticationFragment(){}
+    public StartAuthenticationFragment() {
+    }
 
     public static StartAuthenticationFragment newInstance() {
         return new StartAuthenticationFragment();
@@ -84,14 +87,15 @@ public class StartAuthenticationFragment extends MvpAppCompatFragment implements
     @OnClick(R.id.button_choose_passenger)
     @Override
     public void onClickSignInPassenger() {
+        ((UserMainView) getActivity()).onPassengerSingingIn();
         doSignIn();
     }
 
     @OnClick(R.id.button_choose_driver)
     @Override
     public void onClickSignInDriver() {
+        ((UserMainView) getActivity()).onDriverSingingIn();
         doSignIn();
-        //((UserMainActivity) getActivity()).launchDriverActivity();
     }
 
     private void doSignIn() {
@@ -106,11 +110,11 @@ public class StartAuthenticationFragment extends MvpAppCompatFragment implements
     }
 
     @OnClick(R.id.text_view_sign_up)
-	@Override
-	public void onClickSignUp(){
-    	Timber.d("onClickSignUp()");
-		onFragmentInteractionListener.changeFragmentToRegistration();
-	}
+    @Override
+    public void onClickSignUp() {
+        Timber.d("onClickSignUp()");
+        onFragmentInteractionListener.changeFragmentToRegistration();
+    }
 
     public interface OnFragmentInteractionListener {
         void changeFragmentToRegistration();
@@ -119,13 +123,13 @@ public class StartAuthenticationFragment extends MvpAppCompatFragment implements
     @Override
     public void wasSignIn(String userId) {
         Timber.d("wasSignIn()");
-        ((UserMainActivity) getActivity()).launchPassengerActivity(userId);
+        ((UserMainView) getActivity()).onSignedIn(userId);
 
     }
 
     @Override
     public void wasNotSignIn() {
-        Toast.makeText(getContext(),R.string.invalid_email_or_password, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.invalid_email_or_password, Toast.LENGTH_SHORT).show();
     }
 
 
