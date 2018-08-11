@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.fragments.routeDataFragment.RouteDataFragment">
+    tools:context=".ui.fragments.routedata.RouteDataFragment">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/til_act_pass_main_start_point"
@@ -17,7 +17,7 @@
             android:id="@+id/atv_act_pass_main_start_point"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Начальная точка маршрута"
+            android:hint="@string/start_route_point"
             android:textAppearance="?android:textAppearanceSmall" />
     </android.support.design.widget.TextInputLayout>
 
@@ -31,7 +31,7 @@
             android:id="@+id/atv_act_pass_main_end_point"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Конечная точка маршрута"
+            android:hint="@string/end_route_point"
             android:textAppearance="?android:textAppearanceSmall" />
     </android.support.design.widget.TextInputLayout>
 

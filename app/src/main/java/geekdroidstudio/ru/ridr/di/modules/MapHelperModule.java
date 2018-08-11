@@ -6,8 +6,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 import dagger.Module;
 import dagger.Provides;
-import geekdroidstudio.ru.ridr.model.mapHelper.IMapHelper;
-import geekdroidstudio.ru.ridr.model.mapHelper.googleMapHelper.GoogleMapHelper;
+import geekdroidstudio.ru.ridr.model.maphelper.IMapHelper;
+import geekdroidstudio.ru.ridr.model.maphelper.googlemaphelper.GoogleMapHelper;
 
 @Module
 public class MapHelperModule {

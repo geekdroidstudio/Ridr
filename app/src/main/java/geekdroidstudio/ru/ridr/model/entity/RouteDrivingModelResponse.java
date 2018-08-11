@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import geekdroidstudio.ru.ridr.model.entity.directionApiResponse.GeocodedWayPoint;
-import geekdroidstudio.ru.ridr.model.entity.directionApiResponse.Route;
+import geekdroidstudio.ru.ridr.model.entity.directionapiresponse.GeocodedWayPoint;
+import geekdroidstudio.ru.ridr.model.entity.directionapiresponse.Route;
 
 
 public class RouteDrivingModelResponse {

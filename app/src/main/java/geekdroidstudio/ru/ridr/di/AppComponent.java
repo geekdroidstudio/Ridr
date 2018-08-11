@@ -9,15 +9,15 @@ import geekdroidstudio.ru.ridr.di.modules.CommunicationModule;
 import geekdroidstudio.ru.ridr.di.modules.MapHelperModule;
 import geekdroidstudio.ru.ridr.di.modules.PermissionModule;
 import geekdroidstudio.ru.ridr.di.modules.RepositoryModule;
-import geekdroidstudio.ru.ridr.presenter.DriverMainPresenter;
-import geekdroidstudio.ru.ridr.presenter.PassengerMainPresenter;
-import geekdroidstudio.ru.ridr.presenter.RouteDataPresenter;
-import geekdroidstudio.ru.ridr.view.driverMainScreen.DriverMainActivity;
-import geekdroidstudio.ru.ridr.view.fragments.mapFragment.MapFragment;
-import geekdroidstudio.ru.ridr.view.fragments.registrationFragment.RegistrationFragment;
-import geekdroidstudio.ru.ridr.view.fragments.startAuthenticationFragment.StartAuthenticationFragment;
-import geekdroidstudio.ru.ridr.view.passengerMainScreen.PassengerMainActivity;
-import geekdroidstudio.ru.ridr.view.userMainScreen.UserMainActivity;
+import geekdroidstudio.ru.ridr.ui.activities.driver.DriverActivity;
+import geekdroidstudio.ru.ridr.ui.activities.driver.DriverPresenter;
+import geekdroidstudio.ru.ridr.ui.activities.passenger.PassengerActivity;
+import geekdroidstudio.ru.ridr.ui.activities.passenger.PassengerPresenter;
+import geekdroidstudio.ru.ridr.ui.activities.signin.SignInActivity;
+import geekdroidstudio.ru.ridr.ui.fragments.authentication.AuthenticationFragment;
+import geekdroidstudio.ru.ridr.ui.fragments.map.MapFragment;
+import geekdroidstudio.ru.ridr.ui.fragments.registration.RegistrationFragment;
+import geekdroidstudio.ru.ridr.ui.fragments.routedata.RouteDataPresenter;
 
 
 @Singleton
@@ -28,17 +28,17 @@ public interface AppComponent {
 
     void inject(MapFragment mapFragment);
 
-    void inject(StartAuthenticationFragment startAuthenticationFragment);
+    void inject(AuthenticationFragment authenticationFragment);
 
     void inject(RegistrationFragment registrationFragment);
 
-    void inject(PassengerMainPresenter presenter);
+    void inject(PassengerPresenter presenter);
 
-    void inject(DriverMainPresenter presenter);
+    void inject(DriverPresenter presenter);
 
-    void inject(UserMainActivity userMainActivity);
+    void inject(SignInActivity signInActivity);
 
-    void inject(PassengerMainActivity passengerMainActivity);
+    void inject(PassengerActivity passengerActivity);
 
-    void inject(DriverMainActivity driverMainActivity);
+    void inject(DriverActivity driverActivity);
 }
