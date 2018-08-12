@@ -1,4 +1,4 @@
-package ru.geekdroidstudio.ridr.ui.activities.user.authentication;
+package ru.geekdroidstudio.ridr.ui.activities.user;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -20,14 +20,14 @@ import ru.geekdroidstudio.ridr.ui.fragments.signin.SignInFragment;
 import ru.geekdroidstudio.ridr.ui.fragments.signup.SignUpFragment;
 import timber.log.Timber;
 
-public class AuthenticationActivity extends MvpAppCompatActivity implements AuthenticationView,
+public class UserActivity extends MvpAppCompatActivity implements UserView,
         SignInFragment.OnFragmentInteractionListener,
         SignUpFragment.OnFragmentInteractionListener {
 
     public static final String USER_ID_KEY = "userIdKey";
 
     @InjectPresenter
-    AuthenticationPresenter authenticationPresenter;
+    UserPresenter userPresenter;
 
     @Inject
     PermissionsHelper permissionsHelper;
@@ -37,7 +37,7 @@ public class AuthenticationActivity extends MvpAppCompatActivity implements Auth
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_authentication);
+        setContentView(R.layout.activity_user);
         App.getInstance().getComponent().inject(this);
     }
 
@@ -59,7 +59,7 @@ public class AuthenticationActivity extends MvpAppCompatActivity implements Auth
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode == permissionsHelper.getLocationPermissReqCode()) {
-            authenticationPresenter.onLocationPermissionsResult(permissionsHelper
+            userPresenter.onLocationPermissionsResult(permissionsHelper
                     .isPermissReqResultGranted(requestCode, permissions, grantResults));
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -93,9 +93,9 @@ public class AuthenticationActivity extends MvpAppCompatActivity implements Auth
     @Override
     public void checkPermissions() {
         if (permissionsHelper.checkLocationPermission(this)) {
-            authenticationPresenter.locationPermissionsGranted();
+            userPresenter.locationPermissionsGranted();
         } else {
-            authenticationPresenter.locationPermissionsNotGranted();
+            userPresenter.locationPermissionsNotGranted();
         }
     }
 

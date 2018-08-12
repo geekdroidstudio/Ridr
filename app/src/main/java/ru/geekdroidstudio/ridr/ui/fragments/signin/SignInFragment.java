@@ -21,7 +21,7 @@ import butterknife.Unbinder;
 import ru.geekdroidstudio.ridr.App;
 import ru.geekdroidstudio.ridr.R;
 import ru.geekdroidstudio.ridr.model.authentication.Authentication;
-import ru.geekdroidstudio.ridr.ui.activities.user.authentication.AuthenticationView;
+import ru.geekdroidstudio.ridr.ui.activities.user.UserView;
 import timber.log.Timber;
 
 public class SignInFragment extends MvpAppCompatFragment implements
@@ -87,14 +87,14 @@ public class SignInFragment extends MvpAppCompatFragment implements
     @OnClick(R.id.button_choose_passenger)
     @Override
     public void onClickSignInPassenger() {
-        ((AuthenticationView) getActivity()).onPassengerSingingIn();
+        ((UserView) getActivity()).onPassengerSingingIn();
         doSignIn();
     }
 
     @OnClick(R.id.button_choose_driver)
     @Override
     public void onClickSignInDriver() {
-        ((AuthenticationView) getActivity()).onDriverSingingIn();
+        ((UserView) getActivity()).onDriverSingingIn();
         doSignIn();
     }
 
@@ -123,7 +123,7 @@ public class SignInFragment extends MvpAppCompatFragment implements
     @Override
     public void wasSignIn(String userId) {
         Timber.d("wasSignIn()");
-        ((AuthenticationView) getActivity()).onSignedIn(userId);
+        ((UserView) getActivity()).onSignedIn(userId);
 
     }
 

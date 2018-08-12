@@ -6,7 +6,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:orientation="vertical"
-    tools:context=".ui.activities.user.authentication.AuthenticationActivity">
+    tools:context=".ui.activities.user.UserActivity">
 
     <FrameLayout
         android:id="@+id/fl_container"

@@ -13,7 +13,7 @@ import ru.geekdroidstudio.ridr.ui.activities.driver.DriverActivity;
 import ru.geekdroidstudio.ridr.ui.activities.driver.DriverPresenter;
 import ru.geekdroidstudio.ridr.ui.activities.passenger.PassengerActivity;
 import ru.geekdroidstudio.ridr.ui.activities.passenger.PassengerPresenter;
-import ru.geekdroidstudio.ridr.ui.activities.user.authentication.AuthenticationActivity;
+import ru.geekdroidstudio.ridr.ui.activities.user.UserActivity;
 import ru.geekdroidstudio.ridr.ui.fragments.map.MapFragment;
 import ru.geekdroidstudio.ridr.ui.fragments.routedata.RouteDataPresenter;
 import ru.geekdroidstudio.ridr.ui.fragments.signin.SignInFragment;
@@ -36,7 +36,7 @@ public interface AppComponent {
 
     void inject(DriverPresenter presenter);
 
-    void inject(AuthenticationActivity authenticationActivity);
+    void inject(UserActivity userActivity);
 
     void inject(PassengerActivity passengerActivity);
 
