@@ -18,7 +18,7 @@ import ru.geekdroidstudio.ridr.R;
 import ru.geekdroidstudio.ridr.model.communication.entity.Passenger;
 import ru.geekdroidstudio.ridr.model.communication.entity.User;
 import ru.geekdroidstudio.ridr.model.communication.entity.UserAndRoute;
-import ru.geekdroidstudio.ridr.ui.activities.user.userbase.UserBaseActivity;
+import ru.geekdroidstudio.ridr.ui.activities.userbase.UserBaseActivity;
 import ru.geekdroidstudio.ridr.ui.fragments.map.MapFragment;
 import ru.geekdroidstudio.ridr.ui.fragments.userlist.UserListFragment;
 

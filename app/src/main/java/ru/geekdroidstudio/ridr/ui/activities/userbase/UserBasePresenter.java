@@ -1,4 +1,4 @@
-package ru.geekdroidstudio.ridr.ui.activities.user.userbase;
+package ru.geekdroidstudio.ridr.ui.activities.userbase;
 
 import android.annotation.SuppressLint;
 import android.location.Location;

@@ -9,7 +9,7 @@ import java.util.List;
 import ru.geekdroidstudio.ridr.model.communication.entity.User;
 import ru.geekdroidstudio.ridr.model.communication.entity.UserAndRoute;
 import ru.geekdroidstudio.ridr.model.communication.request.entity.DriverResponse;
-import ru.geekdroidstudio.ridr.ui.activities.user.userbase.UserBaseView;
+import ru.geekdroidstudio.ridr.ui.activities.userbase.UserBaseView;
 
 @StateStrategyType(OneExecutionStateStrategy.class)
 public interface PassengerView extends UserBaseView {

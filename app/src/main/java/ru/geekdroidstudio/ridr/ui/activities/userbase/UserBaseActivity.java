@@ -1,4 +1,4 @@
-package ru.geekdroidstudio.ridr.ui.activities.user.userbase;
+package ru.geekdroidstudio.ridr.ui.activities.userbase;
 
 import android.app.Activity;
 import android.content.Intent;
