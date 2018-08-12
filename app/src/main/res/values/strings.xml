@@ -65,5 +65,7 @@
     <string name="user_list_fragment_tag">userListTag</string>
     <string name="switch_text_passenger">Пассажир</string>
     <string name="authorize_title">Авторизация...</string>
+    <string name="end_route_point">Конечная точка маршрута</string>
+    <string name="start_route_point">Начальная точка маршрута</string>
 
 </resources>

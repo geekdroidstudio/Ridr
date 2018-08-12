@@ -16,7 +16,7 @@ android {
     compileOptions.incremental = false
     compileSdkVersion 27
     defaultConfig {
-        applicationId "geekdroidstudio.ru.ridr"
+        applicationId "ru.geekdroidstudio.ridr"
         minSdkVersion 15
         targetSdkVersion 27
         versionCode 1
@@ -26,8 +26,6 @@ android {
         buildConfigField "String", "DIRECTIONS_API_KEY", localProperties['DIRECTIONS_API_KEY']
 
     }
-
-
 
     buildTypes {
         release {
@@ -85,10 +83,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-config:16.0.0'
     implementation 'com.google.firebase:firebase-database:16.0.1'
     implementation 'com.google.firebase:firebase-core:16.0.1'
-
-    implementation 'com.google.dagger:dagger:2.13'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
-
 }
 
 apply plugin: 'com.google.gms.google-services'

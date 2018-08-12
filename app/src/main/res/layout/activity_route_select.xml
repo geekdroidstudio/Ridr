@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.RouteSelectActivity">
+    tools:context=".ui.activities.routeselect.RouteSelectActivity">
 
     <fragment
-        android:name="geekdroidstudio.ru.ridr.view.fragments.routeDataFragment.RouteDataFragment"
+        android:name="ru.geekdroidstudio.ridr.ui.fragments.routedata.RouteDataFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:tag="@string/route_data_fragment_tag"

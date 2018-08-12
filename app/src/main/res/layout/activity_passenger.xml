@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_authentication"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.activities.passenger.PassengerActivity">
+
+    <fragment
+        android:name="ru.geekdroidstudio.ridr.ui.fragments.map.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:tag="@string/map_fragment_tag"
+        tools:layout="@layout/fragment_map" />
+
+    <fragment
+        android:name="ru.geekdroidstudio.ridr.ui.fragments.routestatus.RouteStatusFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:tag="@string/route_status_fragment_tag"
+        tools:layout="@layout/fragment_route_status" />
+
+    <fragment
+        android:name="ru.geekdroidstudio.ridr.ui.fragments.userlist.UserListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:tag="@string/user_list_fragment_tag"
+        tools:layout="@layout/fragment_user_list" />
+
+</LinearLayout>
